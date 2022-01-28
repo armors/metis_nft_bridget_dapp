@@ -1,0 +1,338 @@
+{
+  "projectName": "SWF",
+  "projectTitle": "SEAWEED",
+  "connect": "连接钱包",
+  "disconnect": "断开连接",
+  "tabs": [
+    {
+      "name": "交易",
+      "path": "trade"
+    },
+    {
+      "name": "质押",
+      "path": "stake"
+    },
+    {
+      "name": "奖励",
+      "path": "reward"
+    }
+  ],
+  "headTitle": [
+    "简洁易用的高流动性期权交易平台",
+    "交易期权 ｜ 对冲头寸 ｜ 固定成本 ｜无限可能｜ 无需注册"
+  ],
+  "documentTitle": [
+    "信息文档",
+    "Seaweed协议",
+    "期权交易基础"
+  ],
+  "documentItem1": [
+    "关于期权",
+    "期权可以定义为授予买方在指定的到期日前以特定价格购买或出售基础资产的权利或衍生合同所基于的证券的合同。该特定价格通常称为行权价。 这是可以购买或出售衍生合约的金额。",
+    "延伸阅读:",
+    "https://docs.seaweed.finance/seaweed/option/what-are-options"
+  ],
+  "documentItem2": [
+    "Seaweed 协议白皮书",
+    "与传统金融系统中的现货市场相比，衍生品市场的交易量为100倍。 随着资产朝着数字化和Defi基础设施的持续相互转化的方向发展，在通货膨胀迅速增长的时代出现了未来全球金融体系的新范式。 从HBTC，HETH和HT等HECO原生资产开始，Seaweed正在为DeFi生态系统带来新的金融工具。",
+    "延伸阅读:",
+    "https://docs.seaweed.finance/seaweed/"
+  ],
+  "joinTitle": [
+    "加入",
+    "社群",
+    "人与人的",
+    "网路"
+  ],
+  "joinList": [
+    {
+      "title": "推特",
+      "url": "https://twitter.com/FinanceSeaweed",
+      "text": "在这里，我们主要发布Seaweed Finance的最新进展，Seaweed Finance社区活动以及我们对期权领域中时事的理解和分析。"
+    },
+    {
+      "title": "电报",
+      "url": "https://t.me/Seaweedfinance",
+      "text": "如果您想进一步了解我们的项目，请加入我们的Telegram社区。 我们将更新项目进度，技术突破，空投奖励措施等。"
+    },
+    {
+      "title": "Medium",
+      "url": "https://medium.com/seaweed-finance",
+      "text": "Seaweed Finance Publication 会发布海藻金融的最新发展，期权交易知识，新闻和相关发展研究。"
+    }
+  ],
+  "connectUs": [
+    "需要帮助？",
+    "请发送电邮至 info@seaweed.finance"
+  ],
+  "trade": {
+    "contractHead": [
+      "类型",
+      "数量",
+      "行权价",
+      "现价",
+      "盈亏平衡",
+      "成交时间",
+      "过期时间",
+      "行权"
+    ],
+    "contractTab": [
+      "进行中",
+      "历史"
+    ],
+    "leftTitle": [
+      "就是如此",
+      "简洁易用",
+      "的期权交易"
+    ],
+    "tradeIntro": [
+      "点击并使用 ≈",
+      " HT.",
+      "期权头寸在HECO网路确认交易后立刻生效，并可在到期日前任意时间行权。",
+      "期权合约价值随标的物价格浮动:"
+    ],
+    "chartFlag": [
+      "盈利空间",
+      "无价到期"
+    ],
+    "chartTitle": [
+      "盈亏平衡",
+      "现价t",
+      "行权价"
+    ],
+    "tradeTitle": [
+      "期权数量",
+      "行权价格",
+      "到期时间"
+    ],
+    "optionType": [
+      "看跌期权",
+      "看涨期权"
+    ],
+    "price": [
+      "行权价格",
+      "花费总计",
+      "盈亏平衡"
+    ],
+    "operate": [
+      "购买期权合约",
+      "等待链接"
+    ],
+    "optionsListLeft": [
+      "您的",
+      "期权",
+      "合约"
+    ],
+    "noOptions": "暂无数据"
+  },
+  "stake": {
+    "leftTitle": [
+      "您的",
+      "收益",
+      "面板",
+      "提供",
+      "流动性",
+      "面板"
+    ],
+    "pool": " 池",
+    "box1Text": [
+      "已提供流动性",
+      "存入",
+      "净收益",
+      "提取收益",
+      "您的占比",
+      " Pool Size"
+    ],
+    "box2Text": [
+      "期权合约价值",
+      "随底层资产波动:",
+      "总",
+      "取出",
+      "等待链接"
+    ],
+    "liquidityMain": {
+      "word": [
+        "描述",
+        "提示",
+        "等待链接",
+        "授权",
+        "存入"
+      ]
+    },
+    "liquidityProblem": [
+      "流动性提供者将收到 ",
+      "用以代表所占该池的比例，同时也是后续获得交易红利的证明。"
+    ],
+    "liquidityRemind": [
+      "点击“提供”并发送 ",
+      " 至流动性池。在交易被HECO网络确认后会自动收到writeHBTC代币。"
+    ],
+    "liquidityTitle": [
+      "提供",
+      "换取"
+    ],
+    "dialog": [
+      "取出流动性",
+      "数量:",
+      "您的余额: "
+    ],
+    "liquidityList": [
+      {
+        "desc": "向此流动性池添加HBTC从而开始出售HBTC合约并赚取收益"
+      },
+      {
+        "desc": "向此流动性池添加HETH从而开始出售HBTC合约并赚取收益"
+      },
+      {
+        "desc": "向此流动性池添加HT从而开始出售HBTC合约并赚取收益"
+      }
+    ]
+  },
+  "reward": {
+    "totalProvided": "锁定总量:",
+    "leftTitle": [
+      "帮助我们",
+      "进行",
+      "SWF",
+      "价格发现"
+    ],
+    "lockText": [
+      "锁定流动性代币 (write代币) 以获取 Seaweed 代币奖励",
+      "流动性提供者将 HBTC/HETH/HT 提供到对应流动性池后会获得 writeBTC/writeETH/writeHT 代币。您需要将这些 write 代币锁定至以下奖励池以获得 SEAWEED 代币奖励。您的奖励会在锁定期间随区块而逐渐增多。您需要手动领取该奖励。"
+    ],
+    "holdText": [
+      "认领 Seaweed 聚宝盆并获取 HBTC/HETH/HT 分红",
+      "质押 200,000 SWF 代币换取一个 Seaweed 聚宝盆并持续获取对应资产期权交易手续费的分红。目前手续费分红比例为2%。您需要手动领取该奖励。"
+    ],
+    "elastic": "弹性拍卖：提供 SWF 代币流动性",
+    "swfTitleText": [
+      "现价",
+      "余额",
+      "剩余"
+    ],
+    "bondInputText": [
+      "您要 ",
+      "的 SWF 数量",
+      "您要 ",
+      " 的 HT 数量"
+    ],
+    "btn_buy": "买入",
+    "btn_sell": "卖出",
+    "tokenText": [
+      "总质押量",
+      "活跃聚宝盆",
+      "结算手续费率"
+    ],
+    "dialogPlaceholder": "数量",
+    "dialog1": [
+      "锁定流动性 write 代币",
+      "数量:"
+    ],
+    "dialog2": [
+      "解锁流动性 write 代币",
+      "数量:"
+    ],
+    "dialog3": [
+      "Withdraw From The Pool",
+      "数量:"
+    ],
+    "dialog4": [
+      "认领聚宝盆",
+      "数量:"
+    ],
+    "interfaceTabList": [
+      {
+        "name": "流动性<br>锁定期奖励",
+        "type": "ending"
+      },
+      {
+        "name": "流动性<br>使用奖励",
+        "type": "utilization"
+      },
+      {
+        "name": "SEAWEED<br>聚宝盆奖励",
+        "type": "stakeEarn"
+      },
+      {
+        "name": "SWF代币<br>弹性报价交易",
+        "type": "bonding"
+      },
+      {
+        "name": "SWF代币<br>数据分析",
+        "type": "token"
+      }
+    ],
+    "endTotalList": [
+      {
+        "type": "claim",
+        "btn_text": "领取奖励",
+        "title": "HETH 流动性池奖励",
+        "sub_title": "点击“领取奖励”并确认交易以获取奖励。"
+      },
+      {
+        "type": "lock",
+        "btn_text": "锁定代币",
+        "title": "您的余额",
+        "sub_title": [
+          "锁定 write",
+          "并开始领取奖励。您需要手动领取该奖励。"
+        ]
+      },
+      {
+        "type": "unlock",
+        "btn_text": "解锁代币",
+        "title": "已锁定",
+        "sub_title": [
+          "解锁 write",
+          " 并开始从流动性池领取rSEAWEED奖励",
+          ""
+        ]
+      }
+    ],
+    "stakeEarnList": [
+      {
+        "btn_text": "提取",
+        "title": "总质押",
+        "sub_title": "点击“领取奖励”并确认交易以获取奖励。"
+      },
+      {
+        "btn_text": "质押 SEAWEED",
+        "title": "您的聚宝盆",
+        "sub_title": [
+          "锁定 write",
+          "并开始领取奖励。您需要手动领取该奖励。"
+        ]
+      },
+      {
+        "btn_text": "领取奖励",
+        "title": "奖励",
+        "sub_title": [
+          "解锁 write",
+          "并领取 rSEAWEED 奖励。",
+          ""
+        ]
+      }
+    ],
+    "utilizationTabList": [
+      {
+        "currency": "全部"
+      },
+      {
+        "currency": "WBTC"
+      },
+      {
+        "currency": "HETH"
+      }
+    ],
+    "boundTab": {
+      "list": [
+        "买入",
+        "卖出"
+      ],
+      "text": [
+        "发送",
+        "接收"
+      ]
+    }
+  }
+}

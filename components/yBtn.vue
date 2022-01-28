@@ -44,22 +44,17 @@ export default {
 <style lang="less">
 @import "../assets/css/main";
   .submit {
-    width: 100%;
-    height: 80px;
+    width: 420px;
+    height: 48px;
+    background: @emColor;
     border-radius: 8px;
-    background-color: @bdColorddd;
-    text-align: center;
-    line-height: 80px;
-    font-size: 28px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: @color333;
+    margin: 20px auto 0;
     cursor: pointer;
-    .icon-img{
-      width: 24px;
-      height: 24px;
-      margin-left: 24px;
-    }
+
+    font-size: 20px;
+    font-family: Helvetica-Bold, Helvetica;
+    font-weight: bold;
+    color: #060816;
   }
   .primary {
     background: linear-gradient(265deg, #2E3D98 0%, #9F66A9 100%);
@@ -71,11 +66,11 @@ export default {
   }
   .choice {
     background-color: @bgColor;
-    border: 2px solid $bdColorddd;
+    border: 2px solid @bdColorddd;
   }
   .select{
     background-color: @bgColor;
-    border: 2px solid $emColor;
+    border: 2px solid @emColor;
     color: @emColor;
   }
 </style>

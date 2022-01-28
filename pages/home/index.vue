@@ -24,6 +24,9 @@
       </div>
       <y-btn>Approve</y-btn>
     </div>
+    <div class="display-flex">
+      <a href="javascript:;" class="history-text">View your history ></a>
+    </div>
   </div>
 </template>
 
@@ -100,6 +103,15 @@ export { default } from './js/index'
       height: 14px;
       margin-right: 6px;
     }
+  }
+  .history-text{
+    padding-top: 53px;
+    margin: 0 auto;
+    font-size: 16px;
+    font-family: Helvetica;
+    color: #64D9CD;
+    font-weight: 400;
+    text-decoration:underline;
   }
 }
 </style>

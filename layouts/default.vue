@@ -12,7 +12,10 @@
       <div class="box-flex1 content no-scroller" style="overflow-y: scroll;">
         <nuxt/>
         <div class="footer-box">
-          <div class="display-flex box-center">
+<!--          <div class="display-flex">-->
+<!--            <a href="javascript:;" class="history-text">View your history ></a>-->
+<!--          </div>-->
+          <div class="display-flex box-center tag">
             <div>Terms of Service</div>
             <div class="policy">Privacy policy</div>
           </div>
@@ -134,9 +137,8 @@ export { default } from './js/default'
         position: relative;
       }
     }
-
     .footer-box {
-      padding-top: 42px;
+      /*padding-top: 53px;*/
       text-align: center;
       font-size: 16px;
       font-family: PingFangSC-Semibold, PingFang SC;
@@ -150,6 +152,17 @@ export { default } from './js/default'
       .policy {
         margin-left: 32px;
       }
+      .tag{
+        padding-top: 64px;
+      }
+      /*.history-text{*/
+      /*  margin: 0 auto;*/
+      /*  font-size: 16px;*/
+      /*  font-family: Helvetica;*/
+      /*  color: #64D9CD;*/
+      /*  font-weight: 400;*/
+      /*  text-decoration:underline;*/
+      /*}*/
     }
   }
 

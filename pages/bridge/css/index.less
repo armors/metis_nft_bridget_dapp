@@ -1,56 +1,66 @@
-<template>
-  <div class="bridgeView">
-    <div class="bridge-box">
-      <div class="network-box display-flex box-center-Y">
-        <div class="box-flex1 from-chain">Ethereum</div>
-        <div>-></div>
-        <div class="box-flex1 to-chain">Andromeda</div>
-      </div>
-      <div class="title-text">NFT Token Address(ETH)</div>
-      <div> <a-input placeholder="Add text" /></div>
-      <div class="title-text">Receiver Address(Andromeda)</div>
-      <div> <a-input placeholder="Add text" /></div>
-      <div class="title-text">Token IDs</div>
-      <div class="token-id-list display-flex box-nowrap">
-        <div class="token-id-item no-select" @click="selectTokenId(v, i)" v-for="(v, i) in tokenIdList" :key="`token-id-${i}`" :class="{active: tokenIdIndex === i}">#{{v.key}}</div>
-      </div>
-      <div class="title-text">NFT Token Standard</div>
-      <div class="token-id-list display-flex box-nowrap">
-        <div class="token-id-item no-select token-standard-item" @click="selectTokenStandard(v, i)" v-for="(v, i) in tokenStandardList" :key="`token-standard-${i}`" :class="{active: tokenStandardIndex === i}">#{{v.key}}</div>
-      </div>
-      <div class="display-flex ic-box">
-        <div class="ic-img"><img src="../../assets/image/ic@2x.png" alt=""></div>
-        <div class="box-flex1">Please note that at this time，the Metis NFT bridge only supports transferring one copy at a time</div>
-      </div>
-      <y-btn>Approve</y-btn>
-    </div>
-    <div class="display-flex">
-      <a href="javascript:;" class="history-text">View your history ></a>
-    </div>
-  </div>
-</template>
-
-<script>
-export { default } from './js/index'
-</script>
-
-<style scoped lang="less">
+@import "../../../assets/css/fun";
 .bridgeView{
+  padding-top: 30px;
   .bridge-box{
     width: 560px;
     background: #060816;
     border-radius: 16px;
     padding: 32px 40px 24px;
     margin: 0 auto;
+    box-shadow: 0px 0px 30px rgba(0, 148, 199, 0.49);
+    .bridge-title{
+      font-size: 24px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 33px;
+      text-align: center;
+    }
+    .step-list{
+      padding-top: 32px;
+      padding-bottom: 44px;
+      .step-item{
+        cursor: pointer;
+        font-size: 16px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 22px;
+        position: relative;
+        &.active{
+          color: @emColor;
+        }
+        &.active:after{
+          content: '';
+          position: absolute;
+          left: 50%;
+          margin-left: -50px;
+          width: 100px;
+          height: 2px;
+          background: #65DACF;
+          bottom: -18px;
+        }
+        &:nth-child(2){
+          text-align: center;
+        }
+      }
+    }
     .network-box{
       height: 72px;
       padding: 0 40px;
       border-radius: 4px;
       background: rgba(101, 218, 207, 0.05);
-
       font-size: 20px;
       font-family: Helvetica;
       color: #64D9CD;
+      .exchange-img{
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+      }
+      &.wrap{
+        background-color: #0C1130;
+      }
       .to-chain{
         text-align: right;
       }
@@ -103,6 +113,29 @@ export { default } from './js/index'
       height: 14px;
       margin-right: 6px;
     }
+    &.wrap{
+      min-height: 729px;
+      .network-box {
+        background-color: #0C1130;
+      }
+      .wallet-address{
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+        text-align: center;
+        padding-top: 16px;
+      }
+      .input-item{
+        margin-top: 16px;
+        .label{
+          width: 80px;
+          font-size: 14px;
+          font-family: Helvetica;
+          color: #64D9CD;
+        }
+      }
+    }
   }
   .history-text{
     padding-top: 53px;
@@ -114,4 +147,3 @@ export { default } from './js/index'
     text-decoration:underline;
   }
 }
-</style>

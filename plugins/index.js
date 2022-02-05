@@ -8,6 +8,10 @@ import ToastBox from '../components/toastBox/toast'
 import LoadMore from '../components/loadmoreBox/loadMore'
 import yTitle from '../components/yTitle'
 import ySubTitle from '../components/ySubTitle'
+import VueClipboard from 'vue-clipboard2'
+VueClipboard.config.autoSetContainer = true // add this line
+Vue.use(VueClipboard)
+
 // const lang = require('../lang/cn.json')
 const lang = require('../lang/en.js').langInfoData()
 Vue.component('y-loadmore', LoadMore)

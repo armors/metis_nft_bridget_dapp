@@ -44,7 +44,7 @@ export default {
 <style lang="less">
 @import "../assets/css/main";
   .submit {
-    width: 420px;
+    width: 85.7%;
     height: 48px;
     background: @emColor;
     border-radius: 8px;

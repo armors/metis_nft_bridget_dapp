@@ -4,15 +4,6 @@ export default () => ({
   dialogConfirm: true,
   accounts: [],
   transactions: [],
-  currencyArray: ['UNI', 'WETH', 'BTC'],
-  currencyPayArray: ['USDT'],
-  formaterWei: {
-    6: 'mwei',
-    12: 'szabo',
-    18: 'ether'
-  },
-  currencyList: [],
-  currencyPayList: [],
   pending_transactions: [],
   confirm_transactions: [],
   lang: {

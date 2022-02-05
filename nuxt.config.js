@@ -13,7 +13,7 @@ export default {
   env: env.parsed,
   head: {
     titleTemplate: '%s',
-    title: 'Venus Investment Protocol',
+    title: 'Metis NFT Bridge',
     meta: [
       { charset: 'utf-8' },
       // { name: 'viewport', content: 'user-scalable=yes' },

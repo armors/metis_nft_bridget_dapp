@@ -9,9 +9,9 @@ export default function ({ isHMR, app, store, route, params, error, redirect }) 
 */
   const e = route.query.e || 'none'
   if (route.fullPath === '/') {
-    return redirect('/home')
+    return redirect('/bridge')
   }
   if (route.fullPath.substr(0, 2) === '/?') {
-    return redirect('/home')
+    return redirect('/bridge')
   }
 }

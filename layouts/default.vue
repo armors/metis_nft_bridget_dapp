@@ -4,7 +4,9 @@
       <div class="display-flex box-center-Y nav-box">
         <div class="logo-img"><img src="../assets/image/logo.png" alt=""></div>
         <div class="project-name">{{langInfo.projectName}}</div>
+        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>
         <div class="box-flex1"></div>
+        <div class="net-btn no-select">Test Network</div>
         <div class="account-btn" v-if="account !== null">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
                                                          account.length)}}
         </div>
@@ -59,16 +61,73 @@ export { default } from './js/default'
 </style>
 <style lang="less">
   .ant-input {
-    width: 100%;
-    height: 56px;
-    background: #060816;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding-left: 16px;
-    font-size: 14px;
+    width: 100% !important;
+    height: 56px !important;
+    background-color: #060816 !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding-left: 16px !important;
+    font-size: 14px !important;
     font-family: Helvetica;
-    color: #FFFFFF;
-    margin-top: 16px;
+    color: #FFFFFF !important;
+    margin-top: 16px !important;
+  }
+  .ant-modal-mask{
+    background-color: rgba(0, 0, 0, 0.6) !important;
+  }
+  .ant-modal{
+    padding-bottom: 0 !important;
+    .ant-modal-content{
+      background: #060816;
+      border-radius: 16px;
+      border: 1px solid #65DBCF;
+      .ant-modal-body{
+        height: 100%;
+        padding: 65px 40px 48px;
+        .title-box{
+          text-align: center;
+          font-size: 28px;
+          font-family: AppleSymbols;
+          color: #64D9CD;
+        }
+        .address-box{
+          width: 100%;
+          height: 64px;
+          background: #060816;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          font-size: 16px;
+          font-family: Helvetica;
+          color: #FFFFFF;
+          padding: 0 16px;
+          margin-top: 48px;
+          .copy-img{
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+          }
+        }
+        .confirm-btn{
+          width: 56.7%;
+          height: 48px;
+          background: #65DACF;
+          border-radius: 4px;
+          text-align: center;
+          line-height: 48px;
+          margin: 48px auto 0;
+          font-size: 16px;
+          font-family: Helvetica-Bold, Helvetica;
+          font-weight: bold;
+          color: #060816;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .input-item{
+    .ant-input{
+      margin-top: 0 !important;
+    }
   }
 </style>
 <style scoped lang="less">
@@ -108,14 +167,53 @@ export { default } from './js/default'
           display: block;
         }
       }
-
+      .nav-item{
+        font-size: 16px;
+        color: #fff;
+        min-width: 160px;
+        padding-left: 30px;
+        text-align: center;
+        cursor: pointer;
+        padding-top: 5px;
+        /*font-family: 'Nunito Sans', sans-serif;*/
+        text-transform: uppercase;
+        &.active{
+          color: @emColor;
+        }
+      }
       .project-name {
         font-size: 24px;
         font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
         color: @emColor;
       }
-
+      .net-btn{
+        padding: 0 32px 0 16px ;
+        min-width: 167px;
+        height: 48px;
+        line-height: 48px;
+        background-color: #65DACF;
+        border-radius: 4px;
+        position: relative;
+        margin-right: 32px;
+        cursor: pointer;
+        font-size: 18px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #060816;
+        &:after{
+          content: '';
+          position: absolute;
+          right: 14px;
+          top: 19px;
+          width: 0px;
+          height: 0px;
+          border-left: 6px solid transparent;
+          border-bottom: 6px solid transparent;//向上的三角
+          border-right: 8px solid transparent;
+          border-top: 8px solid #060816;
+        }
+      }
       .account-btn {
         width: 176px;
         height: 56px;

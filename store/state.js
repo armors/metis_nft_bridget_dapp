@@ -1,7 +1,8 @@
 export default () => ({
   isLoading: false,
+  dialogNetwork: false,
   dialogAccount: false,
-  dialogConfirm: true,
+  connectType: 'MetaMask',
   accounts: [],
   transactions: [],
   pending_transactions: [],

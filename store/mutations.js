@@ -1,14 +1,7 @@
 import CheckTransactions from '../utils/web3/checkerTransactions'
 import { localTransaction } from '../utils/local/vuexLocal'
 export default {
-  // changeLang (state, item) {
   changeLang (state, langIndex) {
-    // console.log(item)
-    // const langIndex = state.langList.findIndex(function (value) {
-    //   return value.name === item.name
-    // })
-    // state.lang = state.langList[langIndex]
-
     console.log(langIndex)
     state.lang = langIndex
     state.langInfo = require(`../lang/${state.lang.cur_lang}.js`).langInfoData()
@@ -17,17 +10,14 @@ export default {
   changeLoading (state, payload) {
     state.isLoading = payload
   },
+  changeDialogNetwork (state, payload) {
+    state.dialogNetwork = payload
+  },
   changeDialogAccount (state, payload) {
     state.dialogAccount = payload
   },
-  changeDialogConfirm (state, payload) {
-    state.dialogConfirm = payload
-  },
-  changeCurrencyList (state, payload) {
-    state.currencyList = payload
-  },
-  changeCurrencyPayList (state, payload) {
-    state.currencyPayList = payload
+  changeConnectType (state, payload) {
+    state.connectType = payload
   },
   changeAccounts (state, payload) {
     state.accounts = payload

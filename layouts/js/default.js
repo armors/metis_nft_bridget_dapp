@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import mixins from '~/plugins/mixins'
 import yLloading from '../../components/yLloading'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import dialogConfirm from '../../components/dialogConfirm'
 import { useTokenContract } from '../../utils/web3/web3Utils'
 import COIN_ABI from '../../utils/web3/coinABI'
@@ -9,16 +9,28 @@ Vue.mixin(mixins)
 export default {
   data () {
     return {
+      visible: true,
       showLangs: false,
       account: null,
       all_transaction: [],
-      tab: 0
+      tab: 0,
+      connectList: [
+        {
+          name: 'Connect by Polis',
+          type: 'Polis',
+          icon_img: require('../../assets/image/logo.png')
+        },
+        {
+          name: 'Connect by MetaMask',
+          type: 'MetaMask',
+          icon_img: require('../../assets/image/metamask.svg')
+        }
+      ]
     }
   },
   computed: {
     ...mapState({
-      isLoading: state => state.isLoading,
-      dialogAccount: state => state.dialogAccount
+      isLoading: state => state.isLoading
     }),
     'store.state.accounts': function () {
       return this.$store.state.accounts
@@ -51,6 +63,21 @@ export default {
     }
   },
   methods: {
+    changeConnectType (v) {
+      this.$store.dispatch('updateConnectType', v.type)
+    },
+    closeDialogNetwork () {
+      this.$store.dispatch('updateDialogNetwork', false)
+    },
+    openNetWork () {
+      this.$store.dispatch('updateDialogNetwork', true)
+    },
+    openAccount () {
+      this.$store.dispatch('updateDialogAccount', true)
+    },
+    closeDialogAccount () {
+      this.$store.dispatch('updateDialogAccount', false)
+    },
     connectAccountFunc () {
       this.connectAccount()
     },

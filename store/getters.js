@@ -5,19 +5,22 @@ export default {
   getLang (state) {
     return state.lang
   },
+  connectType (state) {
+    return state.connectType
+  },
+  dialogAccount (state) {
+    return state.dialogAccount
+  },
   getLoading (state) {
     return state.isLoading
   },
-  getDialogAccount (state) {
-    return state.dialogAccount
+  dialogNetwork (state) {
+    return state.dialogNetwork
   },
   getAccounts (state) {
     return state.accounts
   },
   getTransactions (state) {
     return state.transactions
-  },
-  getDialogConfirm (state) {
-    return state.dialogConfirm
   }
 }

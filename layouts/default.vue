@@ -6,10 +6,9 @@
         <div class="project-name">{{langInfo.projectName}}</div>
         <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>
         <div class="box-flex1"></div>
-        <div class="net-btn no-select">Test Network</div>
-        <div class="account-btn" v-if="account !== null">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
-                                                         account.length)}}
-        </div>
+        <div class="net-btn no-select" @click="openNetWork">Test Network</div>
+        <div class="account-btn no-select" @click="openAccount" v-if="account !== null">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
+                                                         account.length)}}</div>
       </div>
       <div class="box-flex1 content no-scroller" style="overflow-y: scroll;">
         <nuxt/>
@@ -26,6 +25,58 @@
       </div>
       <yLloading></yLloading>
     </div>
+
+    <a-modal
+      v-model="$store.state.dialogNetwork"
+      title=""
+      class="bridge-model"
+      width="480px"
+      centered
+      :keyboard="false"
+      :maskClosable="false"
+      :footer="null"
+      :closable="true"
+      @cancel="closeDialogNetwork"
+    >
+      <div class="display-flex box-center-Y">
+        <div class="back-img" @click="closeDialogNetwork"><img src="../assets/image/ic_back@2x.png" alt=""></div>
+        <div class="back-text no-select" @click="closeDialogNetwork">Back</div>
+      </div>
+      <div class="title-box"> Connect your account</div>
+
+      <div class="connect-list">
+        <div class="connect-item display-flex box-center-Y no-select" v-for="(v, i) in connectList" :key="`connect-item-${i}`" :class="{active: $store.state.connectType === v.type}" @click="changeConnectType(v)">
+          <div class="circle"></div>
+          <div class="box-flex1">{{v.name}}</div>
+          <div class="icon-img"><img :src="v.icon_img" alt=""></div>
+        </div>
+      </div>
+    </a-modal>
+    <a-modal
+      v-model="$store.state.dialogAccount"
+      title=""
+      class="account-model"
+      width="560px"
+      centered
+      :keyboard="false"
+      :maskClosable="false"
+      :footer="null"
+      :closable="true"
+      @cancel="closeDialogAccount"
+    >
+      <div class="title-box">Account</div>
+      <div class="account-info-box">
+        <div class="display-flex box-center-Y connect-type">
+          <div class="box-flex1">Connected with Metamask</div>
+          <div class="change-btn no-select">Change</div>
+        </div>
+        <div class="account-info display-flex box-center-Y">
+          <div class="connect-type-img"><img src="../assets/image/logo.png" alt=""></div>
+          <div class="box-flex1" v-if="account !== null">{{account.substr(0, 4)}}...{{account.substr(account.length - 5, account.length)}}</div>
+        </div>
+      </div>
+      <div class="tab-info">View transactions on Andromeda Explorer</div>
+    </a-modal>
   </div>
 </template>
 
@@ -77,6 +128,12 @@ export { default } from './js/default'
   }
   .ant-modal{
     padding-bottom: 0 !important;
+    .ant-modal-close{
+      color: #64D9CD;
+      &:focus, &:hover{
+        color: #64D9CD;
+      }
+    }
     .ant-modal-content{
       background: #060816;
       border-radius: 16px;
@@ -140,6 +197,49 @@ export { default } from './js/default'
             height: 20px;
             cursor: pointer;
           }
+          .back-text{
+            font-size: 20px;
+            font-family: Helvetica;
+            color: #64D9CD;
+            line-height: 24px;
+            padding-left: 12px;
+          }
+          .connect-list{
+            padding-top: 48px;
+            .connect-item{
+              width: 71.8%;
+              height: 56px;
+              background-color: #122537;
+              border-radius: 8px;
+              line-height: 56px;
+              margin: 16px auto 0;
+              padding: 0 24px;
+
+              font-size: 16px;
+              font-family: Helvetica;
+              color: #65DACF;
+              .circle{
+                display: none;
+                width: 8px;
+                height: 8px;
+                background-color: #F4B74F;
+                border-radius: 50%;
+              }
+              .icon-img{
+                width: 28px;
+                height: 28px;
+              }
+              &.active{
+                .circle{
+                  display: block;
+                  margin-right: 8px;
+                }
+              }
+              &:first-child{
+                margin-top: 0;
+              }
+            }
+          }
           .title-box{
             text-align: center;
             font-size: 28px;
@@ -201,6 +301,66 @@ export { default } from './js/default'
           .confirm-btn{
             margin-top: 20px;
             width: 100%;
+          }
+        }
+      }
+    }
+  }
+  .account-model{
+    .ant-modal {
+      .ant-modal-content {
+        border: none;
+        box-shadow: 0px 5px 20px rgba(0, 148, 199, 0.49);
+        .ant-modal-body {
+          height: 100%;
+          padding: 56px 40px 64px;
+          color: #64D9CD;
+          .title-box{
+            text-align: left;
+          }
+          .account-info-box{
+            margin-top: 36px;
+            width: 100%;
+            background: #060816;
+            padding: 16px 12px 32px 18px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            .connect-type{
+              font-size: 14px;
+              font-family: Helvetica;
+              .change-btn{
+                text-align: center;
+                width: 96px;
+                height: 32px;
+                background: #64D9CD;
+                border-radius: 4px;
+                line-height: 32px;
+                font-size: 14px;
+                font-family: Helvetica-Bold, Helvetica;
+                font-weight: bold;
+                color: #060816;
+              }
+            }
+            .account-info{
+              font-size: 24px;
+              font-family: Helvetica-Bold, Helvetica;
+              font-weight: bold;
+              color: #FFFFFF;
+              line-height: 29px;
+              padding-top: 24px;
+              .connect-type-img{
+                width: 32px;
+                height: 32px;
+                margin-right: 12px;
+              }
+            }
+          }
+          .tab-info{
+            margin-top: 16px;
+            font-size: 14px;
+            font-family: Helvetica;
+            color: #64D9CD;
+            line-height: 17px;
           }
         }
       }

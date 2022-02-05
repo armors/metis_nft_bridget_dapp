@@ -45,17 +45,17 @@ export default {
   updateLoading (context, item) {
     context.commit('changeLoading', item)
   },
+  updateDialogNetwork (context, item) {
+    context.commit('changeDialogNetwork', item)
+  },
   updateDialogAccount (context, item) {
     context.commit('changeDialogAccount', item)
   },
   updateDialogConfirm (context, item) {
     context.commit('changeDialogConfirm', item)
   },
-  updateCurrencyList (context, item) {
-    context.commit('changeCurrencyList', item)
-  },
-  updateCurrencyPayList (context, item) {
-    context.commit('changeCurrencyPayList', item)
+  updateConnectType (context, item) {
+    context.commit('changeConnectType', item)
   },
   updateAccounts (context, item) {
     context.commit('changeAccounts', item)

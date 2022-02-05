@@ -1,6 +1,5 @@
 @import "font.less";
 @import "common.less";
-@import "resetVuetify";
 @import "space";
 @import "fun.less";
 @import "color.less";
@@ -17,13 +16,6 @@
 .no-scroller::-webkit-scrollbar{
   display: none;
   overflow-y: auto;
-}
-
-@mixin box-shadow{
-  background: $bgColor;
-  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
-  padding: 40px 24px;
 }
 
 /*box 自适应伸缩样式*/
@@ -138,6 +130,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: pointer;
 }
 
 .dialog-title{

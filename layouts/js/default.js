@@ -51,6 +51,10 @@ export default {
   created () {
   },
   async mounted () {
+    this.$message.error('This is a success message', 4)
+    this.$message.success('This is a success message', 3)
+    this.$message.warning('This is a success message', 2)
+    this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
     if (this.$accounts === undefined || (this.$accounts && this.$accounts.length < 1)) {
       const init_wab3 = await this.initWeb3()
       console.log(init_wab3)

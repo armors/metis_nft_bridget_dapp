@@ -366,6 +366,60 @@ export { default } from './js/default'
       }
     }
   }
+  .ant-message{
+    top: 100px !important;
+  }
+  .ant-message-notice{
+    padding-right: 0 !important;
+    text-align: right !important;
+    .ant-message-notice-content{
+      border-radius: 16px 0px 0px 16px;
+      padding: 0 !important;
+      .ant-message-custom-content{
+        padding: 36px 20px 16px;
+        width: 320px;
+        text-align: left;
+        border-radius: 16px 0px 0px 16px;
+        font-size: 14px;
+        font-family: Helvetica-Bold, Helvetica;
+        color: #FFFFFF;
+        line-height: 17px;
+        font-weight: 400;
+        .anticon{
+          display: none;
+        }
+        position: relative;
+        &:before{
+          position: absolute;
+          left: 20px;
+          top: 16px;
+          font-weight: bold;
+        }
+        &.ant-message-error{
+          background-color: #DB603F;
+          &:before{
+            content: 'ERROR';
+          }
+        }
+        &.ant-message-success{
+          background-color: #65DA86;
+          &:before{
+            content: 'transferred';
+          }
+        }
+        &.ant-message-warning{
+          background-color: #F4B74F;
+          &:before{
+            content: 'Pending';
+          }
+        }
+        &.ant-message-info{
+          padding-top: 16px;
+          background-color: #53B3A9;
+        }
+      }
+    }
+  }
 </style>
 <style scoped lang="less">
   @import "../assets/css/fun.less";

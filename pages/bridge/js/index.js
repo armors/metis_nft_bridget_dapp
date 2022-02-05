@@ -3,6 +3,7 @@ let that
 export default {
   data () {
     return {
+      visible: false,
       account: '',
       tokenIdList: [
         {

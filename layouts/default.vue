@@ -129,6 +129,83 @@ export { default } from './js/default'
       margin-top: 0 !important;
     }
   }
+  .bridge-model{
+    .ant-modal{
+      .ant-modal-content{
+        .ant-modal-body{
+          height: 100%;
+          padding: 24px 30px 30px;
+          .back-img{
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+          }
+          .title-box{
+            text-align: center;
+            font-size: 28px;
+            font-family: AppleSymbols;
+            color: #64D9CD;
+          }
+          .chain-box{
+            width: 100%;
+            padding: 24px 30px 18px;
+            text-align: center;
+            font-size: 16px;
+            font-family: Verdana;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 19px;
+            background-color: #122537;
+            border-radius: 4px;
+            margin-top: 38px;
+            .next-img{
+              width: 40px;
+              height: 40px;
+              margin: 15px auto;
+              -webkit-transform: rotate(90deg);
+              -moz-transform: rotate(90deg);
+              -o-transform: rotate(90deg);
+              -ms-transform: rotate(90deg);
+              transform: rotate(90deg);
+            }
+          }
+          .token-info{
+            margin-top: 30px;
+            padding: 20px 16px 24px;
+            width: 100%;
+            background: #060816;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 16px;
+            font-family: Helvetica;
+            color: #64D9CD;
+            line-height: 19px;
+            .token-stand{
+              padding-top: 24px;
+            }
+            .box-flex1{
+              text-align: right;
+            }
+          }
+          .tip-box{
+            font-size: 12px;
+            font-family: Helvetica;
+            color: #64D9CD;
+            line-height: 14px;
+            padding-top: 16px;
+            &.tip-box1{
+              padding-top: 24px;
+              text-align: center;
+              color: #F4B74F;
+            }
+          }
+          .confirm-btn{
+            margin-top: 20px;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 </style>
 <style scoped lang="less">
   @import "../assets/css/fun.less";

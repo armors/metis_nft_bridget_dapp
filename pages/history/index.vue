@@ -39,12 +39,14 @@ export { default } from './js/index'
 <style scoped lang="less">
   @import "../../assets/css/color";
   .historyView{
+    padding-top: 30px;
     .history-box{
       width: 1088px;
       height: 660px;
       background: #060816;
       border-radius: 16px;
       padding: 24px;
+      box-shadow: 0px 0px 30px rgba(0, 148, 199, 0.49);
       .history-title{
         padding-top: 6px;
         text-align: center;

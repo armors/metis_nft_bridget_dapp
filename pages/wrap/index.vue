@@ -10,7 +10,7 @@
       </div>
       <div class="network-box display-flex box-center-Y">
         <div class="box-flex1 from-chain">Andromeda</div>
-        <div>-></div>
+        <div class="exchange-img"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
         <div class="box-flex1 to-chain">Ethereum</div>
       </div>
       <template v-if="stepIndex === 0">

@@ -51,14 +51,22 @@ export default {
   created () {
   },
   async mounted () {
-    this.$message.error('This is a success message', 4)
-    this.$message.success('This is a success message', 3)
-    this.$message.warning('This is a success message', 2)
-    this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
+    // this.$message.error('This is a success message', 4)
+    // this.$message.success('This is a success message', 3)
+    // this.$message.warning('This is a success message', 2)
+    // this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
     if (this.$accounts === undefined || (this.$accounts && this.$accounts.length < 1)) {
       const init_wab3 = await this.initWeb3()
       console.log(init_wab3)
     }
+    // const oauth2Client = new Oauth2Client()
+    // console.log(oauth2Client)
+    // oauth2Client.startOauth2(process.env.APP_ID, process.env.NEXT_PUBLIC_URL, 'newWindow', 'switchAccount')
+    // this.$get(`https://polis.metis.io/api/v1/oauth2/access_token?app_id=${process.env.APP_ID}&app_key=${process.env.APP_SECRET}&code=`, {}, res => {
+    //   console.log(res)
+    // }, err => {
+    //   console.log(err)
+    // })
     for (let i = 0; i < this.langInfo.tabList.length; i++) {
       if (('/' + this.langInfo.tabList[i].path) === this.$route.path) {
         this.tab = i

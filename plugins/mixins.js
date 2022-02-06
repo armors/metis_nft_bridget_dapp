@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { getWeb3 } from '../utils/web3/getWeb3'
+import { Oauth2Client, HttpClient } from '@metis.io/middleware-client'
+import axios from 'axios'
 import { TRANSACTION_ACTIONS } from '../utils/web3/constants'
 import { keepPoint, milliFormat, numDiv, numMulti } from '../utils/function'
 export default {
@@ -49,6 +51,52 @@ export default {
       // console.log(num.div(100000000).toString())
       console.log(numDiv(num, 100000000))
       return numDiv(num, 100000000)
+    },
+    loginMetis () {
+      const oauth2Client = new Oauth2Client()
+      oauth2Client.startOauth2(
+        process.env.NEXT_PUBLIC_APP_ID || '',
+        `${process.env.NEXT_PUBLIC_URL}bridge`
+      )
+    },
+    async fetchData () {
+      let accessToken
+      let refreshToken
+      let expiresIn
+      const query = {
+        code: 13132131313
+      }
+      try {
+        if (!query.code) {
+          console.log('error code')
+          return
+        }
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/api/metis?code=${query.code}`
+        )
+        console.log(res)
+        if (res.status === 200 && res.data && res.data.code === 200) {
+          accessToken = res.data.data.access_token
+          refreshToken = res.data.data.refresh_token
+          expiresIn = res.data.data.expires_in
+          const httpClient = new HttpClient(
+            process.env.NEXT_PUBLIC_APP_ID || '',
+            accessToken,
+            refreshToken,
+            expiresIn
+          )
+          console.log(httpClient)
+          const oauth2Client = new Oauth2Client()
+          console.log(await oauth2Client.getUserInfoAsync(accessToken))
+        } else if (res.status === 200 && res.data) {
+          console.log(res.data.msg)
+        } else {
+          console.log('code error')
+          console.log(res)
+        }
+      } catch (error) {
+        console.error(error)
+      }
     },
     async disConnectAccount () {
       console.log(this.$web3_http.currentProvider)

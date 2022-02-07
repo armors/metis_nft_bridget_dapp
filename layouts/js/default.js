@@ -59,6 +59,7 @@ export default {
       const init_wab3 = await this.initWeb3()
       console.log(init_wab3)
     }
+    // this.loginMetis()
     // const oauth2Client = new Oauth2Client()
     // console.log(oauth2Client)
     // oauth2Client.startOauth2(process.env.APP_ID, process.env.NEXT_PUBLIC_URL, 'newWindow', 'switchAccount')

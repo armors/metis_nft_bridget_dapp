@@ -58,6 +58,7 @@ export default {
         process.env.NEXT_PUBLIC_APP_ID || '',
         `${process.env.NEXT_PUBLIC_URL}bridge`
       )
+      console.log(oauth2Client)
     },
     async fetchData () {
       let accessToken

@@ -43,7 +43,6 @@
         <div class="back-text no-select" @click="closeDialogNetwork">Back</div>
       </div>
       <div class="title-box"> Connect your account</div>
-
       <div class="connect-list">
         <div class="connect-item display-flex box-center-Y no-select" v-for="(v, i) in connectList" :key="`connect-item-${i}`" :class="{active: $store.state.connectType === v.type}" @click="changeConnectType(v)">
           <div class="circle"></div>
@@ -67,7 +66,7 @@
       <div class="title-box">Account</div>
       <div class="account-info-box">
         <div class="display-flex box-center-Y connect-type">
-          <div class="box-flex1">Connected with Metamask</div>
+          <div class="box-flex1">Connected with {{$store.state.connectType}}</div>
           <div class="change-btn no-select">Change</div>
         </div>
         <div class="account-info display-flex box-center-Y">

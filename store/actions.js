@@ -45,8 +45,8 @@ export default {
   updateLoading (context, item) {
     context.commit('changeLoading', item)
   },
-  updateDialogNetwork (context, item) {
-    context.commit('changeDialogNetwork', item)
+  updateDialogConnectType (context, item) {
+    context.commit('changeDialogConnectType', item)
   },
   updateDialogAccount (context, item) {
     context.commit('changeDialogAccount', item)

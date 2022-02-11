@@ -1,6 +1,6 @@
 export default () => ({
   isLoading: false,
-  dialogNetwork: false,
+  dialogConnectType: false,
   dialogAccount: false,
   connectType: 'MetaMask',
   accounts: [],

@@ -10,8 +10,8 @@ export default {
   changeLoading (state, payload) {
     state.isLoading = payload
   },
-  changeDialogNetwork (state, payload) {
-    state.dialogNetwork = payload
+  changeDialogConnectType (state, payload) {
+    state.dialogConnectType = payload
   },
   changeDialogAccount (state, payload) {
     state.dialogAccount = payload

@@ -14,8 +14,8 @@ export default {
   getLoading (state) {
     return state.isLoading
   },
-  dialogNetwork (state) {
-    return state.dialogNetwork
+  dialogConnectType (state) {
+    return state.dialogConnectType
   },
   getAccounts (state) {
     return state.accounts

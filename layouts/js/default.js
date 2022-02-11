@@ -55,10 +55,10 @@ export default {
     // this.$message.success('This is a success message', 3)
     // this.$message.warning('This is a success message', 2)
     // this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
-    if (this.$accounts === undefined || (this.$accounts && this.$accounts.length < 1)) {
-      const init_wab3 = await this.initWeb3()
-      console.log(init_wab3)
-    }
+    // if (this.$accounts === undefined || (this.$accounts && this.$accounts.length < 1)) {
+    //   const init_wab3 = await this.initWeb3()
+    //   console.log(init_wab3)
+    // }
     // this.loginMetis()
     // const oauth2Client = new Oauth2Client()
     // console.log(oauth2Client)
@@ -76,14 +76,46 @@ export default {
     }
   },
   methods: {
+    changeNetWork (e) {
+      console.log(e)
+      console.log(e.key)
+      this.$web3_http && window.ethereum &&
+      window.ethereum
+        .request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: this.$web3_http.utils.numberToHex(e.key)
+            }
+          ]
+        })
+        .then(() => {
+          this.$message.success('Change NetWork Success, Current NetWork Is ', 3)
+        })
+        .catch((e) => {
+
+        })
+    },
+    changeAccountBtn () {
+      this.closeDialogAccount()
+      this.openWalletType()
+    },
+    goAccountDialog () {
+      this.closeWalletType()
+      this.openAccount()
+    },
     changeConnectType (v) {
       this.$store.dispatch('updateConnectType', v.type)
+      this.closeWalletType()
+      if (v.type === 'MetaMask') {
+        this.connectAccountFunc()
+      }
     },
-    closeDialogNetwork () {
-      this.$store.dispatch('updateDialogNetwork', false)
+    closeWalletType () {
+      this.$store.dispatch('updateDialogConnectType', false)
     },
-    openNetWork () {
-      this.$store.dispatch('updateDialogNetwork', true)
+    openWalletType () {
+      this.$store.dispatch('updateDialogConnectType', true)
     },
     openAccount () {
       this.$store.dispatch('updateDialogAccount', true)
@@ -105,7 +137,9 @@ export default {
       })
     },
     setAccount (val) {
-      this.account = this.$store.state.accounts[0]
+      console.log(val)
+      if (val.length > 0) this.account = this.$store.state.accounts[0]
+      console.log(this.account)
     },
     getTransactionStatus (v) {
       return v?.confirmedTime ? (v?.receipt?.status ? 'confirmed' : 'error') : 'pending'

@@ -114,7 +114,9 @@ export default {
         that.resolve = resolve
       })
       const { web3, web3_http, library } = await getWeb3()
-      // const networkVersion = parseInt(window.ethereum.networkVersion)
+      const networkVersion = parseInt(window.ethereum.networkVersion)
+      console.log(networkVersion)
+      console.log(window.ethereum.networkVersion)
       // if (networkVersion !== 4) {
       //   that.resolve({
       //     code: 403,
@@ -127,7 +129,7 @@ export default {
         Vue.prototype.$web3_http = web3_http
         Vue.prototype.$web3 = web3
         Vue.prototype.$library = library
-        let accounts
+        let accounts = []
         if (typeof window.ethereum !== 'undefined') {
           // 请求账号授权
           try {

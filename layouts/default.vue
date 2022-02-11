@@ -6,9 +6,16 @@
         <div class="project-name">{{langInfo.projectName}}</div>
         <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>
         <div class="box-flex1"></div>
-        <div class="net-btn no-select" @click="openNetWork">Test Network</div>
-        <div class="account-btn no-select" @click="openAccount" v-if="account !== null">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
+        <a-dropdown :trigger="['click']">
+          <a-menu slot="overlay" @click="changeNetWork">
+            <a-menu-item key="1">Main Network</a-menu-item>
+            <a-menu-item key="137">Polygon Network</a-menu-item>
+          </a-menu>
+          <div class="net-btn no-select">Polygon Network</div>
+        </a-dropdown>
+        <div class="account-btn no-select" @click="openAccount" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
                                                          account.length)}}</div>
+        <div class="connect-wallet no-select" v-else @click="openWalletType">Connect Wallet</div>
       </div>
       <div class="box-flex1 content no-scroller" style="overflow-y: scroll;">
         <nuxt/>
@@ -27,7 +34,7 @@
     </div>
 
     <a-modal
-      v-model="$store.state.dialogNetwork"
+      v-model="$store.state.dialogConnectType"
       title=""
       class="bridge-model"
       width="480px"
@@ -36,11 +43,11 @@
       :maskClosable="false"
       :footer="null"
       :closable="true"
-      @cancel="closeDialogNetwork"
+      @cancel="closeWalletType"
     >
-      <div class="display-flex box-center-Y">
-        <div class="back-img" @click="closeDialogNetwork"><img src="../assets/image/ic_back@2x.png" alt=""></div>
-        <div class="back-text no-select" @click="closeDialogNetwork">Back</div>
+      <div class="display-flex box-center-Y" v-show="account !== null && account !== undefined" @click="goAccountDialog">
+        <div class="back-img"><img src="../assets/image/ic_back@2x.png" alt=""></div>
+        <div class="back-text no-select">Back</div>
       </div>
       <div class="title-box"> Connect your account</div>
       <div class="connect-list">
@@ -67,11 +74,11 @@
       <div class="account-info-box">
         <div class="display-flex box-center-Y connect-type">
           <div class="box-flex1">Connected with {{$store.state.connectType}}</div>
-          <div class="change-btn no-select">Change</div>
+          <div class="change-btn no-select" @click="changeAccountBtn">Change</div>
         </div>
         <div class="account-info display-flex box-center-Y">
           <div class="connect-type-img"><img src="../assets/image/logo.png" alt=""></div>
-          <div class="box-flex1" v-if="account !== null">{{account.substr(0, 4)}}...{{account.substr(account.length - 5, account.length)}}</div>
+          <div class="box-flex1" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5, account.length)}}</div>
         </div>
       </div>
       <div class="tab-info">View transactions on Andromeda Explorer</div>
@@ -96,17 +103,20 @@ export { default } from './js/default'
   }
 
   .connect-wallet {
-    width: 346px;
-    height: 60px;
-    background: #FFFFFF;
-    border-radius: 4px;
     text-align: center;
-    line-height: 60px;
-    margin: 16px auto 0 !important;
-    font-size: 28px;
-    font-family: PingFang SC;
+    width: 167px;
+    height: 48px;
+    line-height: 48px;
+    background-color: #fff;
+    border: 1px solid #65DACF;
+    border-radius: 4px;
+    position: relative;
+    margin-right: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #293E97;
+    color: #060816;
   }
 </style>
 <style lang="less">
@@ -418,6 +428,12 @@ export { default } from './js/default'
         }
       }
     }
+  }
+  .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
+    padding: 8px 16px !important;
+  }
+  .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover{
+
   }
 </style>
 <style scoped lang="less">

@@ -188,8 +188,9 @@ export default {
         return that.promise
       }
     },
-    initNetWork () {
+    async initNetWork () {
       if (this.$store?.state && this.$store.state.connectType === 'MetaMask') {
+        await this.initWeb3()
         const networkVersion = window.ethereum.networkVersion
         console.log(networkVersion)
         const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)

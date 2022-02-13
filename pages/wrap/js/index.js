@@ -164,6 +164,7 @@ export default {
     },
     async createPair () {
       try {
+        await this.initWeb3()
         const tokenContract = useTokenContract(process.env.factory, COIN_ABI.bridgeFactory)
         if (that.tokenStandardIndex === 0) {
           await useContractMethods({

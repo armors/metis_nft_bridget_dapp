@@ -20,7 +20,7 @@ export function useCallback (response, { summary, eventName, approval }, callbac
         hash: transactionHash,
         type: TRANSACTION_ACTIONS.CONFIRMED
       })
-      callback && callback()
+      callback && callback(res)
     }).catch(e => {
       $store.dispatch('updateLoading', false)
     })
@@ -104,7 +104,7 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
   }
   const { $store, $toastBox } = window.$nuxt
-  $store.dispatch('updateLoading', true)
+  // $store.dispatch('updateLoading', true)
   method.then((response) => {
     $store.dispatch('updateLoading', false)
     useCallback(response, {
@@ -114,7 +114,9 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   })
     .catch((error) => {
       $store.dispatch('updateLoading', false)
-      errorCallback && errorCallback()
+      const networkVersion = window.ethereum.networkVersion
+      console.log(networkVersion)
+      errorCallback && errorCallback(error)
       console.error('Failed to request', error)
       if (error?.data?.message) {
         $toastBox.showToastBox({
@@ -123,18 +125,19 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
         })
         // alert(error?.data?.message || error.message)
       } else {
+        // errorCallback(error)
         console.log(111)
-        if (error.code === 4001) {
-          $toastBox.showToastBox({
-            type: 'none',
-            text: '授权拒绝'
-          })
-        } else {
-          $toastBox.showToastBox({
-            type: 'none',
-            text: error.message
-          })
-        }
+        // if (error.code === 4001) {
+        //   $toastBox.showToastBox({
+        //     type: 'none',
+        //     text: '授权拒绝'
+        //   })
+        // } else {
+        //   $toastBox.showToastBox({
+        //     type: 'none',
+        //     text: error.message
+        //   })
+        // }
       }
     })
 }

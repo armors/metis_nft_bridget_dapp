@@ -7,11 +7,10 @@
         <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>
         <div class="box-flex1"></div>
         <a-dropdown :trigger="['click']">
-          <a-menu slot="overlay" @click="changeNetWork">
-            <a-menu-item key="1">Main Network</a-menu-item>
-            <a-menu-item key="137">Polygon Network</a-menu-item>
+          <a-menu slot="overlay" @click="changeNetWorkFun">
+            <a-menu-item v-for="(v) in $store.state.netWorkList" :key="v.chainId" :chainName="v.chainName" :class="{'item-active-select': v.chainId === $store.state.netWork.chainId}">{{v.chainName}}</a-menu-item>
           </a-menu>
-          <div class="net-btn no-select">Polygon Network</div>
+          <div class="net-btn no-select">{{$store.state.netWork.chainName}}</div>
         </a-dropdown>
         <div class="account-btn no-select" @click="openAccount" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
                                                          account.length)}}</div>
@@ -120,6 +119,20 @@ export { default } from './js/default'
   }
 </style>
 <style lang="less">
+  @import "../assets/css/color";
+  .ant-btn-primary{
+    width: 85.7%;
+    border: none !important;
+    height: 48px !important;
+    background-color: @emColor !important;
+    border-radius: 8px;
+    margin: 20px auto 0;
+    cursor: pointer;
+    font-size: 20px !important;
+    font-family: Helvetica-Bold, Helvetica;
+    font-weight: bold;
+    color: #060816 !important;
+  }
   .ant-input {
     width: 100% !important;
     height: 56px !important;
@@ -429,11 +442,17 @@ export { default } from './js/default'
       }
     }
   }
+  .ant-dropdown-menu{
+    padding: 0 !important;
+  }
   .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
     padding: 8px 16px !important;
   }
   .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover{
-
+  }
+  .item-active-select{
+    font-weight: 500;
+    background-color: #65DACF !important;
   }
 </style>
 <style scoped lang="less">
@@ -495,7 +514,7 @@ export { default } from './js/default'
       }
       .net-btn{
         padding: 0 32px 0 16px ;
-        min-width: 167px;
+        min-width: 120px;
         height: 48px;
         line-height: 48px;
         background-color: #65DACF;

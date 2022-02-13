@@ -63,6 +63,9 @@ export default {
       this.setAccount(val)
     },
     '$store.state.lang': function (val) {
+    },
+    '$store.state.netWork': function (val) {
+      console.log(val)
     }
   },
   created () {

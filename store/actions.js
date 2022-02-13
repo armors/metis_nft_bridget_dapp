@@ -48,6 +48,9 @@ export default {
   updateDialogConnectType (context, item) {
     context.commit('changeDialogConnectType', item)
   },
+  updatePolisInfo (context, item) {
+    context.commit('changePolisInfo', item)
+  },
   updateDialogAccount (context, item) {
     context.commit('changeDialogAccount', item)
   },
@@ -56,6 +59,9 @@ export default {
   },
   updateConnectType (context, item) {
     context.commit('changeConnectType', item)
+  },
+  updateNetWork (context, item) {
+    context.commit('changeNetWork', item)
   },
   updateAccounts (context, item) {
     context.commit('changeAccounts', item)

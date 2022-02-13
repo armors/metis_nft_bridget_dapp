@@ -7,6 +7,15 @@ export default {
     state.langInfo = require(`../lang/${state.lang.cur_lang}.js`).langInfoData()
     sessionStorage.setItem('lang', JSON.stringify(state.lang))
   },
+  changeNetWork (state, payload) {
+    state.netWork = payload
+  },
+  changePolisInfo (state, payload) {
+    state.authPolisParams = payload.authPolisParams
+    state.authUserInfo = payload.authUserInfo
+    localStorage.setItem('auth-polis-params', JSON.stringify(payload.authPolisParams))
+    localStorage.setItem('auth-user-info', JSON.stringify(payload.authUserInfo))
+  },
   changeLoading (state, payload) {
     state.isLoading = payload
   },
@@ -18,6 +27,7 @@ export default {
   },
   changeConnectType (state, payload) {
     state.connectType = payload
+    localStorage.setItem('connectWalletType', payload)
   },
   changeAccounts (state, payload) {
     state.accounts = payload

@@ -9,15 +9,18 @@
         }">{{v}}</div>
       </div>
       <div class="network-box display-flex box-center-Y">
-        <div class="box-flex1 from-chain">Andromeda</div>
-        <div class="exchange-img"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
-        <div class="box-flex1 to-chain">Ethereum</div>
+        <div class="box-flex1 from-chain">{{getChainName(fromNet)}}</div>
+        <div class="exchange-img" @click="exchangeNet"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
+        <div class="box-flex1 to-chain">{{getChainName(toNet)}}</div>
       </div>
       <template v-if="stepIndex === 0">
         <div class="title-text">NFT Token Address(Native)</div>
         <div> <a-input placeholder="Add text" v-model="nftTokenAddress" /></div>
         <div class="box-flex1"></div>
-        <y-btn @submitAction="nextStep">next</y-btn>
+        <a-button type="primary" :loading="iconLoading" @click="nextStep">
+          next
+        </a-button>
+<!--        <y-btn @submitAction="nextStep">next</y-btn>-->
       </template>
       <template v-if="stepIndex === 1">
         <div class="wallet-address">{{nftTokenAddress}}</div>
@@ -27,18 +30,20 @@
         </div>
         <div class="display-flex box-center-Y input-item" v-show="tokenStandardIndex === 0">
           <div class="label">Name</div>
-          <a-input class="box-flex1" placeholder="Add text" />
+          <a-input class="box-flex1" v-model="name" placeholder="Add text" />
         </div>
         <div class="display-flex box-center-Y input-item" v-show="tokenStandardIndex === 0">
           <div class="label">Symbol</div>
-          <a-input class="box-flex1" placeholder="Add text" />
+          <a-input class="box-flex1" v-model="symbol" placeholder="Add text" />
         </div>
         <div class="display-flex box-center-Y input-item">
           <div class="label">BaseURL</div>
-          <a-input class="box-flex1" placeholder="Add text" />
+          <a-input class="box-flex1" v-model="baseUrl" placeholder="Add text" />
         </div>
         <div class="box-flex1"></div>
-        <y-btn @submitAction="visible = true">Confirm&Wrap NFT</y-btn>
+        <a-button type="primary" :loading="iconLoading" @click="confirmWrap">
+          Confirm&Wrap NFT
+        </a-button>
       </template>
     </div>
     <div class="display-flex">

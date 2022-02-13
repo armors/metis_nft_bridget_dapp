@@ -30,18 +30,24 @@ export default {
   },
   mounted () {
     if (process.client) {
+      const that = this
       window.ethereum.on('accountsChanged', function (accounts) {
         window.location.reload()
       })
       window.ethereum.on('networkChanged', function (accounts) {
-        window.location.reload()
+        that.initNetWork()
+        // window.location.reload()
       })
       window.ethereum.on('chainIdChanged', function (accounts) {
-        window.location.reload()
+        that.initNetWork()
+        // window.location.reload()
       })
     }
   },
   methods: {
+    getChainName (network) {
+      return network !== null ? network.chainName : '--'
+    },
     toWei8 (num) {
       // console.log(num.mul(100000000).toString())
       // console.log(numMulti(num, 100000000))
@@ -53,10 +59,21 @@ export default {
       return numDiv(num, 100000000)
     },
     loginMetis () {
+      const authPolisParams = { accessToken: '93c6d73260c44cd8aa17c22da4db3bcf', refreshToken: '14a0264776214959adb9fa0845cae3fa', expiresIn: 43200, expireAt: 1644767979332 }
+      const authUserInfo = { balance: '', display_name: 'Test1_nft', email: 'liupeng@yasite.net', eth_address: '0x5d6576ca71D1911310d841a0fBb1018211bb0E54', last_login_time: 1644724776263, username: 'Test1_nft' }
+      this.$store.dispatch('updatePolisInfo', {
+        authPolisParams,
+        authUserInfo
+      })
+      this.$store.dispatch('updateConnectType', 'Polis')
+      this.$store.dispatch('updateAccounts', [authUserInfo.eth_address])
+      return
       const oauth2Client = new Oauth2Client()
       oauth2Client.startOauth2(
         process.env.NEXT_PUBLIC_APP_ID || '',
-        `${process.env.NEXT_PUBLIC_URL}bridge`
+        `${process.env.NEXT_PUBLIC_URL}`,
+        true,
+        true
       )
       console.log(oauth2Client)
     },
@@ -148,6 +165,7 @@ export default {
         Vue.prototype.$accounts = accounts
         that.account = accounts[0]
         await that.$store.dispatch('updateAccounts', accounts)
+        this.$store.dispatch('updateConnectType', 'MetaMask')
         that.initTransactions()
         if (!accounts) {
           setTimeout(function () {
@@ -168,6 +186,16 @@ export default {
         console.log(err)
         that.resolve(err)
         return that.promise
+      }
+    },
+    initNetWork () {
+      if (this.$store?.state && this.$store.state.connectType === 'MetaMask') {
+        const networkVersion = window.ethereum.networkVersion
+        console.log(networkVersion)
+        const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)
+        if (network.length > 0) {
+          this.$store.dispatch('updateNetWork', network[0])
+        }
       }
     },
     async connectAccount () {
@@ -195,6 +223,8 @@ export default {
         Vue.prototype.$accounts = accounts
         that.account = accounts[0]
         await that.$store.dispatch('updateAccounts', accounts)
+        this.$store.dispatch('updateConnectType', 'MetaMask')
+        this.initNetWork()
       } catch (err) {
         console.log('这里有个error')
         console.log(err)

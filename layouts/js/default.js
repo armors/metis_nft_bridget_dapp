@@ -39,6 +39,7 @@ export default {
   watch: {
     // 获取用户信息
     '$store.state.accounts': function (val) {
+      console.log('获取用户信息', val)
       this.setAccount(val)
     },
     '$store.state.lang': function (val) {
@@ -68,6 +69,16 @@ export default {
     // }, err => {
     //   console.log(err)
     // })
+    const connectWalletType = localStorage.getItem('connectWalletType')
+    if (connectWalletType) {
+      if (connectWalletType === 'Polis') {
+        this.loginMetis()
+        // console.log(this.$store.state.accounts)
+      } else if (connectWalletType === 'MetaMask') {
+        const init_wab3 = await this.initWeb3()
+      }
+    }
+    this.initNetWork()
     for (let i = 0; i < this.langInfo.tabList.length; i++) {
       if (('/' + this.langInfo.tabList[i].path) === this.$route.path) {
         this.tab = i
@@ -76,25 +87,57 @@ export default {
     }
   },
   methods: {
-    changeNetWork (e) {
+    changeNetWorkFun (e) {
       console.log(e)
       console.log(e.key)
-      this.$web3_http && window.ethereum &&
-      window.ethereum
-        .request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: this.$web3_http.utils.numberToHex(e.key)
-            }
-          ]
-        })
-        .then(() => {
-          this.$message.success('Change NetWork Success, Current NetWork Is ', 3)
-        })
-        .catch((e) => {
-
-        })
+      const network = this.$store.state.netWorkList.filter(item => item.chainId === e.key)
+      if (this.$store.state.connectType === 'Polis') {
+        this.$store.dispatch('updateNetWork', network[0])
+      } else if (this.$store.state.connectType === 'MetaMask') {
+        this.$web3_http && window.ethereum &&
+        window.ethereum
+          .request({
+            method: 'wallet_switchEthereumChain',
+            params: [
+              {
+                chainId: this.$web3_http.utils.numberToHex(e.key)
+              }
+            ]
+          })
+          .then(() => {
+            this.$store.dispatch('updateNetWork', network[0])
+            this.initNetWork()
+            this.$message.success('Change NetWork Success, Current NetWork Is ', 3)
+          })
+          .catch((e) => {
+            // if (e?.code && e.code === 4902) {
+            //   window.ethereum &&
+            //   window.ethereum
+            //     .request({
+            //       method: 'wallet_addEthereumChain',
+            //       params: [
+            //         {
+            //           chainId: this.$web3_http.utils.numberToHex(network[0].chainId),
+            //           chainName: network[0].chainName,
+            //           nativeCurrency: {
+            //             name: 'Metis',
+            //             symbol: 'Metis',
+            //             decimals: 18
+            //           },
+            //           rpcUrls: ['https://polis.metis.io/'],
+            //           blockExplorerUrls: ['https://stardust-explorer.metis.io/']
+            //         }
+            //       ]
+            //     })
+            //     .then(() => {
+            //       console.log('网络切换成功')
+            //     })
+            //     .catch((e) => {
+            //       console.log(e)
+            //     })
+            // }
+          })
+      }
     },
     changeAccountBtn () {
       this.closeDialogAccount()
@@ -109,6 +152,8 @@ export default {
       this.closeWalletType()
       if (v.type === 'MetaMask') {
         this.connectAccountFunc()
+      } else if (v.type === 'Polis') {
+        this.loginMetis()
       }
     },
     closeWalletType () {

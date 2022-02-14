@@ -135,10 +135,10 @@ export default {
             this.stepIndex = 1
           } catch (err) {
             console.log(err)
-            that.$message.error(err?.message ? err.message : 'wrap nft error', 3)
+            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
           }
         } else {
-          that.$message.error(e?.message ? e.message : 'wrap nft error', 3)
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         }
       }
       this.iconLoading = false
@@ -172,7 +172,7 @@ export default {
             if (e?.code && e.code === 4902) {
               this.addEthereumChain()
             } else {
-              that.$message.error(e?.message ? e.message : 'wrap nft error', 3)
+              that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
             }
           })
       }
@@ -199,7 +199,7 @@ export default {
           }, 4000)
         })
         .catch((e) => {
-          that.$message.error(e?.message ? e.message : 'wrap nft error', 3)
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         })
     },
     async createPair () {
@@ -224,7 +224,7 @@ export default {
             that.decodeLog(res)
           }, (err) => {
             that.iconLoading = false
-            that.$message.error(err?.message ? err.message : 'wrap nft error', 3)
+            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
           })
         } else if (that.tokenStandardIndex === 1) {
           await useContractMethods({
@@ -242,13 +242,13 @@ export default {
             that.decodeLog(res)
           }, (err) => {
             that.iconLoading = false
-            that.$message.error(err?.message ? err.message : 'wrap nft error', 3)
+            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
           })
         }
       } catch (e) {
         that.iconLoading = false
         console.log(e)
-        that.$message.error(e?.message ? e.message : 'wrap nft error', 3)
+        that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
       }
     },
     async decodeLog () {

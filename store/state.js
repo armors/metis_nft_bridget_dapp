@@ -10,8 +10,16 @@ export default () => ({
     chainId: '1',
     chainName0: 'Ethereum',
     chainId0: '1',
-    chainName1: 'Stardust',
-    chainId1: '588'
+    chainName1: 'Andromeda',
+    chainId1: '1088',
+    chainNameAdd1: 'Andromeda',
+    nativeCurrency1: {
+      name: 'METIS',
+      symbol: 'METIS',
+      decimals: 18
+    },
+    rpcUrls1: ['https://andromeda.metis.io/?owner=1088'],
+    blockExplorerUrls1: ['https://andromeda-explorer.metis.io']
   },
   netWorkList: [
     {
@@ -19,16 +27,40 @@ export default () => ({
       chainId: '1',
       chainName0: 'Ethereum',
       chainId0: '1',
-      chainName1: 'Stardust',
-      chainId1: '588'
+      chainName1: 'Andromeda',
+      chainId1: '1088',
+      chainNameAdd1: 'Andromeda',
+      nativeCurrency1: {
+        name: 'METIS',
+        symbol: 'METIS',
+        decimals: 18
+      },
+      rpcUrls1: ['https://andromeda.metis.io/?owner=1088'],
+      blockExplorerUrls1: ['https://andromeda-explorer.metis.io']
     },
     {
       chainName: 'Testnet',
       chainId: '4',
       chainName0: 'Rinkeby',
       chainId0: '4',
-      chainName1: 'Andromeda',
-      chainId1: '1088'
+      chainNameAdd0: 'Rinkeby',
+      nativeCurrency0: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18
+      },
+      rpcUrls0: ['https://rinkeby.etherscan.io/?owner=4'],
+      blockExplorerUrls0: ['https://rinkeby.etherscan.io/'],
+      chainName1: 'Stardust',
+      chainId1: '588',
+      chainNameAdd1: 'Stardust',
+      nativeCurrency1: {
+        name: 'METIS',
+        symbol: 'METIS',
+        decimals: 18
+      },
+      rpcUrls1: ['https://stardust.metis.io/?owner=588'],
+      blockExplorerUrls1: ['https://stardust-explorer.metis.io']
     }
     // {
     //   chainName: 'Stardust',

@@ -48,14 +48,30 @@ export default {
       if (!val) {
         return
       }
-      this.fromNet = {
-        chainId: val.chainId0,
-        chainName: val.chainName0
+      if (val.chainId0 !== '1') {
+        this.fromNet = {
+          chainId: val.chainId0,
+          chainName: val.chainName0,
+          chainNameAdd: val.chainNameAdd0,
+          nativeCurrency: val.nativeCurrency0,
+          rpcUrls: val.rpcUrls0,
+          blockExplorerUrls: val.blockExplorerUrls0
+        }
+      } else {
+        this.fromNet = {
+          chainId: val.chainId0,
+          chainName: val.chainName0
+        }
       }
       this.toNet = {
         chainId: val.chainId1,
-        chainName: val.chainName1
+        chainName: val.chainName1,
+        chainNameAdd: val.chainNameAdd1,
+        nativeCurrency: val.nativeCurrency1,
+        rpcUrls: val.rpcUrls1,
+        blockExplorerUrls: val.blockExplorerUrls1
       }
+      console.log(this.toNet)
     }
   },
   created () {
@@ -137,6 +153,7 @@ export default {
     },
     async confirmWrap () {
       this.iconLoading = true
+      console.log(this.toNet)
       if (this.$store.state.connectType === 'Polis') {
         // this.$store.dispatch('updateNetWork', network[0])
       } else if (this.$store.state.connectType === 'MetaMask') {
@@ -159,8 +176,44 @@ export default {
             }, 4000)
           })
           .catch((e) => {
+            console.log(e)
+            if (e?.code && e.code === 4902) {
+              this.addEthereumChain()
+            } else {
+              that.$message.error(e?.message ? e.message : 'wrap nft error', 3)
+            }
           })
       }
+    },
+    addEthereumChain () {
+      console.log(this.$web3_http.utils.numberToHex(this.toNet.chainId))
+      this.$web3_http && window.ethereum &&
+      window.ethereum
+        .request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: this.$web3_http.utils.numberToHex(this.toNet.chainId),
+              // chainId: this.toNet.chainId,
+              chainName: this.toNet.chainNameAdd,
+              nativeCurrency: this.toNet.nativeCurrency,
+              rpcUrls: this.toNet.rpcUrls,
+              blockExplorerUrls: this.toNet.blockExplorerUrls
+            }
+          ]
+        })
+        .then(() => {
+          console.log('网络切换成功')
+          console.log(window.ethereum.networkVersion)
+          const that = this
+          setTimeout(() => {
+            console.log(window.ethereum.networkVersion)
+            that.createPair()
+          }, 4000)
+        })
+        .catch((e) => {
+          that.$message.error(e?.message ? e.message : 'wrap nft error', 3)
+        })
     },
     async createPair () {
       try {

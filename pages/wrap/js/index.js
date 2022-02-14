@@ -186,7 +186,6 @@ export default {
       }
     },
     addEthereumChain () {
-      console.log(this.$web3_http.utils.numberToHex(this.toNet.chainId))
       this.$web3_http && window.ethereum &&
       window.ethereum
         .request({
@@ -194,7 +193,6 @@ export default {
           params: [
             {
               chainId: this.$web3_http.utils.numberToHex(this.toNet.chainId),
-              // chainId: this.toNet.chainId,
               chainName: this.toNet.chainNameAdd,
               nativeCurrency: this.toNet.nativeCurrency,
               rpcUrls: this.toNet.rpcUrls,
@@ -203,11 +201,8 @@ export default {
           ]
         })
         .then(() => {
-          console.log('网络切换成功')
-          console.log(window.ethereum.networkVersion)
           const that = this
           setTimeout(() => {
-            console.log(window.ethereum.networkVersion)
             that.createPair()
           }, 4000)
         })

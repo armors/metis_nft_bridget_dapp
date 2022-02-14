@@ -238,7 +238,21 @@ export default {
             that.symbol,
             that.baseUrl
           )
-          const symbolResult = this.$httpClient.sendTx(
+          // this.$httpClient.post('send_tx', {
+          //   args: [
+          //     that.nftTokenAddress,
+          //     that.name,
+          //     that.symbol,
+          //     that.baseUrl
+          //   ],
+          //   chainid: 588,
+          //   domain: 'factory',
+          //   extendArgs: null,
+          //   function: 'create721Pair'
+          // }).then(res => {
+          //   console.log(res)
+          // })
+          this.$httpClient.sendTx(
             'factory',
             parseInt(this.toNet.chainId),
             'create721Pair',

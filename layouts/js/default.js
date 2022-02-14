@@ -91,10 +91,10 @@ export default {
       console.log(e)
       console.log(e.key)
       const network = this.$store.state.netWorkList.filter(item => item.chainId === e.key)
-      if (this.$store.state.connectType === 'Polis') {
-        this.$store.dispatch('updateNetWork', network[0])
-      } else if (this.$store.state.connectType === 'MetaMask') {
-        this.$web3_http && window.ethereum &&
+      // if (this.$store.state.connectType === 'Polis') {
+      //   this.$store.dispatch('updateNetWork', network[0])
+      // } else if (this.$store.state.connectType === 'MetaMask') {
+      this.$web3_http && window.ethereum &&
         window.ethereum
           .request({
             method: 'wallet_switchEthereumChain',
@@ -107,37 +107,37 @@ export default {
           .then(() => {
             this.$store.dispatch('updateNetWork', network[0])
             this.initNetWork()
-            this.$message.success('Change NetWork Success, Current NetWork Is ', 3)
+            // this.$message.success('Change NetWork Success, Current NetWork Is ', 3)
           })
           .catch((e) => {
-            // if (e?.code && e.code === 4902) {
-            //   window.ethereum &&
-            //   window.ethereum
-            //     .request({
-            //       method: 'wallet_addEthereumChain',
-            //       params: [
-            //         {
-            //           chainId: this.$web3_http.utils.numberToHex(network[0].chainId),
-            //           chainName: network[0].chainName,
-            //           nativeCurrency: {
-            //             name: 'Metis',
-            //             symbol: 'Metis',
-            //             decimals: 18
-            //           },
-            //           rpcUrls: ['https://polis.metis.io/'],
-            //           blockExplorerUrls: ['https://stardust-explorer.metis.io/']
-            //         }
-            //       ]
-            //     })
-            //     .then(() => {
-            //       console.log('网络切换成功')
-            //     })
-            //     .catch((e) => {
-            //       console.log(e)
-            //     })
-            // }
+            if (e?.code && e.code === 4902) {
+              window.ethereum &&
+              window.ethereum
+                .request({
+                  method: 'wallet_addEthereumChain',
+                  params: [
+                    {
+                      chainId: this.$web3_http.utils.numberToHex(network[0].chainId),
+                      chainName: network[0].chainName,
+                      nativeCurrency: {
+                        name: 'Metis',
+                        symbol: 'Metis',
+                        decimals: 18
+                      },
+                      rpcUrls: ['https://polis.metis.io/'],
+                      blockExplorerUrls: ['https://stardust-explorer.metis.io/']
+                    }
+                  ]
+                })
+                .then(() => {
+                  console.log('网络切换成功')
+                })
+                .catch((e) => {
+                  console.log(e)
+                })
+            }
           })
-      }
+      // }
     },
     changeAccountBtn () {
       this.closeDialogAccount()

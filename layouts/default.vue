@@ -119,6 +119,11 @@ export { default } from './js/default'
   }
 </style>
 <style lang="less">
+  .swal2-container, .swal2-top-end, .swal2-backdrop-show{
+    display: none !important;
+  }
+</style>
+<style lang="less">
   @import "../assets/css/color";
   .ant-btn-primary{
     width: 85.7%;

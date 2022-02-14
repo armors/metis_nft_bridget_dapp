@@ -10,7 +10,9 @@ export default {
       iconLoading: false,
       account: '',
       // nftTokenAddress: '0x8A63cDc1e8599079Ad07C76F122fF29EE8C7eC21',
-      nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
+      // nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
+      // nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b',
+      nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
       tokenStandardIndex: 0,
       tokenTag: '',
       tokenStandardList: [
@@ -54,7 +56,6 @@ export default {
   },
   mounted () {
     this.initPage()
-    this.decodeLog()
   },
   methods: {
     // 钱包地址获取到之后加载页面数据
@@ -104,14 +105,57 @@ export default {
     selectTokenId (v, i) {
       this.tokenIdIndex = i
     },
-    async nextStep () {
+    nextStep () {
       if (!this.nftTokenAddress) {
         return this.$message.error('NFT Token Address not empty', 2)
       }
       // if (!isAddress()) {
       //   return this.$message.error('NFT Token Address is invalid', 2)
       // }
+      this.metaMaskNextStep()
+      // if (this.$store.state.connectType === 'MetaMask') {
+      //   this.metaMaskNextStep()
+      // } else if (this.$store.state.connectType === 'Polis') {
+      //   this.polisNextStep()
+      // }
+    },
+    async polisNextStep () {
       this.iconLoading = true
+      try {
+        const symbolResult = await this.$httpClient.sendTxAsync(
+          'ecr721',
+          parseInt(this.$store.state.netWork.chainId),
+          'symbol',
+          [],
+          true
+        )
+        const nameResult = await this.$httpClient.sendTxAsync(
+          'ecr721',
+          parseInt(this.$store.state.netWork.chainId),
+          'name',
+          [],
+          true
+        )
+        const baseUriResult = await this.$httpClient.sendTxAsync(
+          'ecr721',
+          parseInt(this.$store.state.netWork.chainId),
+          'baseUri',
+          [],
+          true
+        )
+        this.name = nameResult.result
+        this.symbol = symbolResult.result
+        this.baseUrl = baseUriResult.result
+        this.stepIndex = 1
+      } catch (e) {
+        console.log(e)
+      }
+
+      this.iconLoading = false
+    },
+    async metaMaskNextStep () {
+      this.iconLoading = true
+      console.log(this.$web3_http)
       try {
         this.tokenStandardIndex = 0
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
@@ -143,38 +187,91 @@ export default {
       }
       this.iconLoading = false
     },
-    async confirmWrap () {
+    confirmWrap () {
       this.iconLoading = true
       console.log(this.toNet)
-      if (this.$store.state.connectType === 'Polis') {
-        // this.$store.dispatch('updateNetWork', network[0])
-      } else if (this.$store.state.connectType === 'MetaMask') {
-        this.$web3_http && window.ethereum &&
-        window.ethereum
-          .request({
-            method: 'wallet_switchEthereumChain',
-            params: [
-              {
-                chainId: this.$web3_http.utils.numberToHex(this.toNet.chainId)
-              }
-            ]
-          })
-          .then(() => {
-            console.log(window.ethereum.networkVersion)
-            const that = this
-            setTimeout(() => {
-              console.log(window.ethereum.networkVersion)
-              that.createPair()
-            }, 4000)
-          })
-          .catch((e) => {
-            console.log(e)
-            if (e?.code && e.code === 4902) {
-              this.addEthereumChain()
-            } else {
-              that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+      this.$web3_http && window.ethereum &&
+      window.ethereum
+        .request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: this.$web3_http.utils.numberToHex(this.toNet.chainId)
             }
+          ]
+        })
+        .then(() => {
+          console.log(window.ethereum.networkVersion)
+          const that = this
+          setTimeout(() => {
+            console.log(window.ethereum.networkVersion)
+            if (this.$store.state.connectType === 'MetaMask') {
+              that.createPair()
+            } else if (this.$store.state.connectType === 'Polis') {
+              that.confirmWrapPolis()
+            }
+          }, 4000)
+        })
+        .catch((e) => {
+          console.log(e)
+          if (e?.code && e.code === 4902) {
+            this.addEthereumChain()
+          } else {
+            that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+          }
+        })
+    },
+    async confirmWrapPolis () {
+      const that = this
+      if (this.tokenStandardIndex === 0) {
+        try {
+          console.log(
+            parseInt(this.toNet.chainId),
+            that.nftTokenAddress,
+            that.name,
+            that.symbol,
+            that.baseUrl
+          )
+          const symbolResult = await this.$httpClient.sendTxAsync(
+            'factory',
+            parseInt(this.toNet.chainId),
+            'create721Pair',
+            [
+              that.nftTokenAddress,
+              that.name,
+              that.symbol,
+              that.baseUrl
+            ],
+            true
+          )
+          that.iconLoading = false
+          console.log(symbolResult)
+        } catch (e) {
+          that.iconLoading = false
+          that.$message.error(e.message.message || 'wrap nft error', 3)
+          console.log(e)
+        }
+      } else if (this.tokenStandardIndex === 1) {
+        try {
+          const symbolResult = await this.$httpClient.sendTxAsync(
+            'factory',
+            parseInt(this.toNet.chainId),
+            'create1155Pair',
+            [
+              that.nftTokenAddress,
+              that.baseUrl
+            ],
+            true
+          ).then(res => {
+            console.log(res)
           })
+          that.iconLoading = false
+          console.log(symbolResult)
+        } catch (e) {
+          that.iconLoading = false
+          that.$message.error(e.message.message || 'wrap nft error', 3)
+          console.log(e)
+        }
       }
     },
     addEthereumChain () {
@@ -195,7 +292,11 @@ export default {
         .then(() => {
           const that = this
           setTimeout(() => {
-            that.createPair()
+            if (that.tokenStandardIndex === 0) {
+              that.createPair()
+            } else if (that.tokenStandardIndex === 1) {
+              that.confirmWrapPolis()
+            }
           }, 4000)
         })
         .catch((e) => {
@@ -251,92 +352,92 @@ export default {
         that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
       }
     },
-    async decodeLog () {
-      const transactionResult = {
-        to: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
-        from: '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6',
-        contractAddress: null,
-        transactionIndex: 0,
-        gasUsed: {
-          type: 'BigNumber',
-          hex: '0x2234b3'
-        },
-        logsBloom: '0x00000004000000000000000000000000800000000000000100000000000000000000004000000000000000000000004000000000000000000000000000000000000008000000000000000000000000000000000000200000001000000100000000400000020000000200000000000800000000000000000010001000005000000000000000000000000000000000000000000000000000000000000000000002000000000000000000100000100000000000000000000001001008000000000000000000000001000000000001000000001000000000000300000000001020000000000000000000000000400000000020000000000000000000000000000000',
-        blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145',
-        transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-        logs: [
-          {
-            transactionIndex: 0,
-            blockNumber: 3296808,
-            transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-            address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
-            topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x0000000000000000000000000000000000000000000000000000000000000000', '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
-            data: '0x',
-            logIndex: 0,
-            blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
-          }, {
-            transactionIndex: 0,
-            blockNumber: 3296808,
-            transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-            address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
-            topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', '0x0000000000000000000000005d6576ca71d1911310d841a0fbb1018211bb0e54', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
-            data: '0x',
-            logIndex: 1,
-            blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
-          }, {
-            transactionIndex: 0,
-            blockNumber: 3296808,
-            transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-            address: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
-            topics: ['0x920dc5b4bb411b3541670934b7375191b5f86f69020854896e21b9aa4407c2d2', '0x0000000000000000000000009480b751da5a48074aed1c1de2a5eb248f6f59c6', '0x000000000000000000000000b527929e091ddb9f0f7a7e6c4640fbc9c09b25e2'],
-            data: '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6',
-            logIndex: 2,
-            blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
-          }
-        ],
-        blockNumber: 3296808,
-        confirmations: 6,
-        cumulativeGasUsed: {
-          type: 'BigNumber',
-          hex: '0x2234b3'
-        },
-        status: 1,
-        type: 0,
-        byzantium: true,
-        events: [
-          {
-            transactionIndex: 0,
-            blockNumber: 3296808,
-            transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-            address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
-            topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x0000000000000000000000000000000000000000000000000000000000000000', '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
-            data: '0x',
-            logIndex: 0,
-            blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
-          }, {
-            transactionIndex: 0,
-            blockNumber: 3296808,
-            transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-            address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
-            topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', '0x0000000000000000000000005d6576ca71d1911310d841a0fbb1018211bb0e54', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
-            data: '0x',
-            logIndex: 1,
-            blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
-          }, {
-            transactionIndex: 0,
-            blockNumber: 3296808,
-            transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
-            address: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
-            topics: ['0x920dc5b4bb411b3541670934b7375191b5f86f69020854896e21b9aa4407c2d2', '0x0000000000000000000000009480b751da5a48074aed1c1de2a5eb248f6f59c6', '0x000000000000000000000000b527929e091ddb9f0f7a7e6c4640fbc9c09b25e2'],
-            data: '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6',
-            logIndex: 2,
-            blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145',
-            args: ['0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6', '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2', '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6'],
-            event: 'TokenTargetCreated',
-            eventSignature: 'TokenTargetCreated(address,address,address)'
-          }
-        ]
-      }
+    async decodeLog (transactionResult) {
+      // const transactionResult = {
+      //   to: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
+      //   from: '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6',
+      //   contractAddress: null,
+      //   transactionIndex: 0,
+      //   gasUsed: {
+      //     type: 'BigNumber',
+      //     hex: '0x2234b3'
+      //   },
+      //   logsBloom: '0x00000004000000000000000000000000800000000000000100000000000000000000004000000000000000000000004000000000000000000000000000000000000008000000000000000000000000000000000000200000001000000100000000400000020000000200000000000800000000000000000010001000005000000000000000000000000000000000000000000000000000000000000000000002000000000000000000100000100000000000000000000001001008000000000000000000000001000000000001000000001000000000000300000000001020000000000000000000000000400000000020000000000000000000000000000000',
+      //   blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145',
+      //   transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //   logs: [
+      //     {
+      //       transactionIndex: 0,
+      //       blockNumber: 3296808,
+      //       transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //       address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
+      //       topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x0000000000000000000000000000000000000000000000000000000000000000', '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
+      //       data: '0x',
+      //       logIndex: 0,
+      //       blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
+      //     }, {
+      //       transactionIndex: 0,
+      //       blockNumber: 3296808,
+      //       transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //       address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
+      //       topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', '0x0000000000000000000000005d6576ca71d1911310d841a0fbb1018211bb0e54', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
+      //       data: '0x',
+      //       logIndex: 1,
+      //       blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
+      //     }, {
+      //       transactionIndex: 0,
+      //       blockNumber: 3296808,
+      //       transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //       address: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
+      //       topics: ['0x920dc5b4bb411b3541670934b7375191b5f86f69020854896e21b9aa4407c2d2', '0x0000000000000000000000009480b751da5a48074aed1c1de2a5eb248f6f59c6', '0x000000000000000000000000b527929e091ddb9f0f7a7e6c4640fbc9c09b25e2'],
+      //       data: '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6',
+      //       logIndex: 2,
+      //       blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
+      //     }
+      //   ],
+      //   blockNumber: 3296808,
+      //   confirmations: 6,
+      //   cumulativeGasUsed: {
+      //     type: 'BigNumber',
+      //     hex: '0x2234b3'
+      //   },
+      //   status: 1,
+      //   type: 0,
+      //   byzantium: true,
+      //   events: [
+      //     {
+      //       transactionIndex: 0,
+      //       blockNumber: 3296808,
+      //       transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //       address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
+      //       topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x0000000000000000000000000000000000000000000000000000000000000000', '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
+      //       data: '0x',
+      //       logIndex: 0,
+      //       blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
+      //     }, {
+      //       transactionIndex: 0,
+      //       blockNumber: 3296808,
+      //       transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //       address: '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2',
+      //       topics: ['0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d', '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', '0x0000000000000000000000005d6576ca71d1911310d841a0fbb1018211bb0e54', '0x0000000000000000000000009d8c817513482f4e3f8e1a5f37f4ceaedcb67b48'],
+      //       data: '0x',
+      //       logIndex: 1,
+      //       blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145'
+      //     }, {
+      //       transactionIndex: 0,
+      //       blockNumber: 3296808,
+      //       transactionHash: '0xac022a994cb475dffe133f30628c532cfb6b87901fb21967feaf911372252e5a',
+      //       address: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
+      //       topics: ['0x920dc5b4bb411b3541670934b7375191b5f86f69020854896e21b9aa4407c2d2', '0x0000000000000000000000009480b751da5a48074aed1c1de2a5eb248f6f59c6', '0x000000000000000000000000b527929e091ddb9f0f7a7e6c4640fbc9c09b25e2'],
+      //       data: '0x000000000000000000000000b55add32e4608eb7965ec234e6c0b3f009c3d9d6',
+      //       logIndex: 2,
+      //       blockHash: '0x8423370b560361c66311351f037f5ef1480f7b88635deb6721e2515bbf5a0145',
+      //       args: ['0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6', '0xb527929e091DdB9F0f7a7E6C4640fBc9c09b25e2', '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6'],
+      //       event: 'TokenTargetCreated',
+      //       eventSignature: 'TokenTargetCreated(address,address,address)'
+      //     }
+      //   ]
+      // }
       const result = await this.$web3_http.eth.getTransactionReceipt(transactionResult.transactionHash)
       const topics = result.logs[result.logs.length - 1].topics
       const data = topics[topics.length - 1]

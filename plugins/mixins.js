@@ -48,66 +48,96 @@ export default {
     getChainName (network) {
       return network !== null ? network.chainName : '--'
     },
-    toWei8 (num) {
-      // console.log(num.mul(100000000).toString())
-      // console.log(numMulti(num, 100000000))
-      return numMulti(num, 100000000)
+    async loginMetis () {
+      await this.initEth()
+      if (localStorage.getItem('auth-polis-params') && localStorage.getItem('auth-user-info')) {
+        const authPolisParams = JSON.parse(localStorage.getItem('auth-polis-params'))
+        const authUserInfo = JSON.parse(localStorage.getItem('auth-user-info'))
+        if (new Date().getTime() > authPolisParams.expire_at) {
+          localStorage.removeItem('connectWalletType')
+          localStorage.removeItem('auth-polis-params')
+          localStorage.removeItem('auth-user-info')
+        } else {
+          const httpClient = new HttpClient(
+            process.env.NEXT_PUBLIC_APP_ID || '',
+            authPolisParams.access_token,
+            authPolisParams.refresh_token,
+            authPolisParams.expires_in
+          )
+          console.log(httpClient)
+          Vue.prototype.$httpClient = httpClient
+          this.$store.dispatch('updatePolisInfo', {
+            authPolisParams,
+            authUserInfo
+          })
+          Vue.prototype.$account = authUserInfo.eth_address
+          Vue.prototype.$accounts = [authUserInfo.eth_address]
+          this.account = authUserInfo.eth_address
+          this.$store.dispatch('updateAccounts', [authUserInfo.eth_address])
+        }
+      } else {
+        this.getPolis()
+      }
     },
-    fromWei8 (num) {
-      // console.log(num.div(100000000).toString())
-      console.log(numDiv(num, 100000000))
-      return numDiv(num, 100000000)
-    },
-    loginMetis () {
-      const authPolisParams = { accessToken: '93c6d73260c44cd8aa17c22da4db3bcf', refreshToken: '14a0264776214959adb9fa0845cae3fa', expiresIn: 43200, expireAt: 1644767979332 }
-      const authUserInfo = { balance: '', display_name: 'Test1_nft', email: 'liupeng@yasite.net', eth_address: '0x5d6576ca71D1911310d841a0fBb1018211bb0E54', last_login_time: 1644724776263, username: 'Test1_nft' }
-      this.$store.dispatch('updatePolisInfo', {
-        authPolisParams,
-        authUserInfo
-      })
-      this.$store.dispatch('updateConnectType', 'Polis')
-      this.$store.dispatch('updateAccounts', [authUserInfo.eth_address])
-      return
-      const oauth2Client = new Oauth2Client()
-      oauth2Client.startOauth2(
-        process.env.NEXT_PUBLIC_APP_ID || '',
-        `${process.env.NEXT_PUBLIC_URL}`,
-        true,
-        true
-      )
-      console.log(oauth2Client)
+    getPolis () {
+      if (this.$route.query?.code) {
+        this.fetchData()
+      } else {
+        const oauth2Client = new Oauth2Client()
+        oauth2Client.startOauth2(
+          process.env.NEXT_PUBLIC_APP_ID || '',
+          `${process.env.NEXT_PUBLIC_URL}${this.$route.path}`,
+          false,
+          true
+        )
+        console.log(oauth2Client)
+      }
     },
     async fetchData () {
-      let accessToken
-      let refreshToken
-      let expiresIn
-      const query = {
-        code: 13132131313
-      }
+      const query = this.$route.query
       try {
         if (!query.code) {
           console.log('error code')
           return
         }
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/api/metis?code=${query.code}`
+          `https://polis.metis.io/api/v1/oauth2/access_token?code=${query.code}&app_key=${process.env.APP_SECRET}&app_id=${process.env.NEXT_PUBLIC_APP_ID}`
         )
         console.log(res)
         if (res.status === 200 && res.data && res.data.code === 200) {
-          accessToken = res.data.data.access_token
-          refreshToken = res.data.data.refresh_token
-          expiresIn = res.data.data.expires_in
+          // accessToken = res.data.data.access_token
+          // refreshToken = res.data.data.refresh_token
+          // expiresIn = res.data.data.expires_in
+          const authPolisParams = {
+            ...res.data.data,
+            ...{
+              expire_at: new Date().getTime() + res.data.data.expires_in * 100
+            }
+          }
           const httpClient = new HttpClient(
             process.env.NEXT_PUBLIC_APP_ID || '',
-            accessToken,
-            refreshToken,
-            expiresIn
+            authPolisParams.access_token,
+            authPolisParams.refresh_token,
+            authPolisParams.expires_in
           )
           console.log(httpClient)
+          Vue.prototype.$httpClient = httpClient
           const oauth2Client = new Oauth2Client()
-          console.log(await oauth2Client.getUserInfoAsync(accessToken))
+          const authUserInfo = await oauth2Client.getUserInfoAsync(authPolisParams.access_token)
+          console.log(authUserInfo)
+          this.$store.dispatch('updatePolisInfo', {
+            authPolisParams,
+            authUserInfo
+          })
+          Vue.prototype.$account = authUserInfo.eth_address
+          Vue.prototype.$accounts = [authUserInfo.eth_address]
+          this.account = authUserInfo.eth_address
+          this.$store.dispatch('updateConnectType', 'Polis')
+          this.$store.dispatch('updateAccounts', [authUserInfo.eth_address])
+          this.$router.replace({ path: this.$route.path })
         } else if (res.status === 200 && res.data) {
           console.log(res.data.msg)
+          this.$message.error(res.data.msg, 4)
         } else {
           console.log('code error')
           console.log(res)
@@ -124,13 +154,19 @@ export default {
       this.account = ''
       this.$store.dispatch('updateAccounts', [])
     },
+    async initEth () {
+      const { web3, web3_http, library } = await getWeb3()
+      Vue.prototype.$web3_http = web3_http
+      Vue.prototype.$web3 = web3
+      Vue.prototype.$library = library
+    },
     async initWeb3 () {
       const that = this
       that.promise = new Promise((resolve, reject) => {
         that.reject = reject
         that.resolve = resolve
       })
-      const { web3, web3_http, library } = await getWeb3()
+      await this.initEth()
       const networkVersion = parseInt(window.ethereum.networkVersion)
       console.log(networkVersion)
       console.log(window.ethereum.networkVersion)
@@ -143,9 +179,6 @@ export default {
       //   return that.promise
       // }
       try {
-        Vue.prototype.$web3_http = web3_http
-        Vue.prototype.$web3 = web3
-        Vue.prototype.$library = library
         let accounts = []
         if (typeof window.ethereum !== 'undefined') {
           // 请求账号授权
@@ -156,7 +189,7 @@ export default {
           }
         } else {
           try {
-            accounts = await web3_http.eth.getAccounts()
+            accounts = await this.$web3_http.eth.getAccounts()
           } catch (e) {
           }
         }
@@ -189,8 +222,9 @@ export default {
       }
     },
     async initNetWork () {
+      await this.initEth()
       if (this.$store?.state && this.$store.state.connectType === 'MetaMask') {
-        await this.initWeb3()
+        // await this.initWeb3()
         const networkVersion = window.ethereum.networkVersion
         console.log(networkVersion)
         const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)

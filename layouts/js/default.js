@@ -71,11 +71,11 @@ export default {
     // })
     const connectWalletType = localStorage.getItem('connectWalletType')
     if (connectWalletType) {
+      this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
       if (connectWalletType === 'Polis') {
         this.loginMetis()
-        // console.log(this.$store.state.accounts)
       } else if (connectWalletType === 'MetaMask') {
-        const init_wab3 = await this.initWeb3()
+        await this.initWeb3()
       }
     }
     this.initNetWork()

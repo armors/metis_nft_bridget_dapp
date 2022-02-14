@@ -113,9 +113,9 @@ export default {
       //   return this.$message.error('NFT Token Address is invalid', 2)
       // }
       this.metaMaskNextStep()
-      // if (this.$store.state.connectType === 'MetaMask') {
+      // if (localStorage.getItem('connectWalletType') === 'MetaMask') {
       //   this.metaMaskNextStep()
-      // } else if (this.$store.state.connectType === 'Polis') {
+      // } else if (localStorage.getItem('connectWalletType') === 'Polis') {
       //   this.polisNextStep()
       // }
     },
@@ -189,7 +189,13 @@ export default {
     },
     confirmWrap () {
       this.iconLoading = true
-      console.log(this.toNet)
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.confirmWrapMetaMask()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.confirmWrapPolis()
+      }
+    },
+    confirmWrapMetaMask () {
       this.$web3_http && window.ethereum &&
       window.ethereum
         .request({
@@ -205,11 +211,11 @@ export default {
           const that = this
           setTimeout(() => {
             console.log(window.ethereum.networkVersion)
-            if (this.$store.state.connectType === 'MetaMask') {
-              that.createPair()
-            } else if (this.$store.state.connectType === 'Polis') {
-              that.confirmWrapPolis()
-            }
+            // if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+            that.createPair()
+            // } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+            //   that.confirmWrapPolis()
+            // }
           }, 4000)
         })
         .catch((e) => {
@@ -232,7 +238,7 @@ export default {
             that.symbol,
             that.baseUrl
           )
-          const symbolResult = await this.$httpClient.sendTxAsync(
+          const symbolResult = this.$httpClient.sendTx(
             'factory',
             parseInt(this.toNet.chainId),
             'create721Pair',
@@ -242,10 +248,14 @@ export default {
               that.symbol,
               that.baseUrl
             ],
-            true
+            (res) => {
+              console.log(res)
+            },
+            err => {
+              console.log(err)
+            }
           )
           that.iconLoading = false
-          console.log(symbolResult)
         } catch (e) {
           that.iconLoading = false
           that.$message.error(e.message.message || 'wrap nft error', 3)
@@ -261,7 +271,8 @@ export default {
               that.nftTokenAddress,
               that.baseUrl
             ],
-            true
+            true,
+            null
           ).then(res => {
             console.log(res)
           })
@@ -292,11 +303,7 @@ export default {
         .then(() => {
           const that = this
           setTimeout(() => {
-            if (that.tokenStandardIndex === 0) {
-              that.createPair()
-            } else if (that.tokenStandardIndex === 1) {
-              that.confirmWrapPolis()
-            }
+            that.createPair()
           }, 4000)
         })
         .catch((e) => {

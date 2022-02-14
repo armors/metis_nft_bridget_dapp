@@ -73,6 +73,7 @@ export default {
           Vue.prototype.$account = authUserInfo.eth_address
           Vue.prototype.$accounts = [authUserInfo.eth_address]
           this.account = authUserInfo.eth_address
+          this.$store.dispatch('updateConnectType', 'Polis')
           this.$store.dispatch('updateAccounts', [authUserInfo.eth_address])
         }
       } else {

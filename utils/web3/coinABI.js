@@ -656,484 +656,485 @@ const COIN_ABI = {
       type: 'function'
     }
   ],
-  erc1155: [{
-    inputs: [{
-      internalType: 'string',
-      name: '_baseUri',
-      type: 'string'
+  erc1155: [
+    {
+      inputs: [{
+        internalType: 'string',
+        name: '_baseUri',
+        type: 'string'
+      }, {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address'
+      }, {
+        internalType: 'address',
+        name: 'minter',
+        type: 'address'
+      }],
+      stateMutability: 'nonpayable',
+      type: 'constructor'
     }, {
-      internalType: 'address',
-      name: 'owner',
-      type: 'address'
+      anonymous: false,
+      inputs: [{
+        indexed: true,
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'operator',
+        type: 'address'
+      }, {
+        indexed: false,
+        internalType: 'bool',
+        name: 'approved',
+        type: 'bool'
+      }],
+      name: 'ApprovalForAll',
+      type: 'event'
     }, {
-      internalType: 'address',
-      name: 'minter',
-      type: 'address'
-    }],
-    stateMutability: 'nonpayable',
-    type: 'constructor'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: true,
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
+      anonymous: false,
+      inputs: [{
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'previousAdminRole',
+        type: 'bytes32'
+      }, {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'newAdminRole',
+        type: 'bytes32'
+      }],
+      name: 'RoleAdminChanged',
+      type: 'event'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'operator',
-      type: 'address'
+      anonymous: false,
+      inputs: [{
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'sender',
+        type: 'address'
+      }],
+      name: 'RoleGranted',
+      type: 'event'
     }, {
-      indexed: false,
-      internalType: 'bool',
-      name: 'approved',
-      type: 'bool'
-    }],
-    name: 'ApprovalForAll',
-    type: 'event'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: true,
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
+      anonymous: false,
+      inputs: [{
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'sender',
+        type: 'address'
+      }],
+      name: 'RoleRevoked',
+      type: 'event'
     }, {
-      indexed: true,
-      internalType: 'bytes32',
-      name: 'previousAdminRole',
-      type: 'bytes32'
+      anonymous: false,
+      inputs: [{
+        indexed: true,
+        internalType: 'address',
+        name: 'operator',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'from',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'to',
+        type: 'address'
+      }, {
+        indexed: false,
+        internalType: 'uint256[]',
+        name: 'ids',
+        type: 'uint256[]'
+      }, {
+        indexed: false,
+        internalType: 'uint256[]',
+        name: 'values',
+        type: 'uint256[]'
+      }],
+      name: 'TransferBatch',
+      type: 'event'
     }, {
-      indexed: true,
-      internalType: 'bytes32',
-      name: 'newAdminRole',
-      type: 'bytes32'
-    }],
-    name: 'RoleAdminChanged',
-    type: 'event'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: true,
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
+      anonymous: false,
+      inputs: [{
+        indexed: true,
+        internalType: 'address',
+        name: 'operator',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'from',
+        type: 'address'
+      }, {
+        indexed: true,
+        internalType: 'address',
+        name: 'to',
+        type: 'address'
+      }, {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256'
+      }, {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'value',
+        type: 'uint256'
+      }],
+      name: 'TransferSingle',
+      type: 'event'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
+      anonymous: false,
+      inputs: [{
+        indexed: false,
+        internalType: 'string',
+        name: 'value',
+        type: 'string'
+      }, {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256'
+      }],
+      name: 'URI',
+      type: 'event'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'sender',
-      type: 'address'
-    }],
-    name: 'RoleGranted',
-    type: 'event'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: true,
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
+      inputs: [],
+      name: 'DEFAULT_ADMIN_ROLE',
+      outputs: [{
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
+      inputs: [],
+      name: 'MINTER_ROLE',
+      outputs: [{
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'sender',
-      type: 'address'
-    }],
-    name: 'RoleRevoked',
-    type: 'event'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: true,
-      internalType: 'address',
-      name: 'operator',
-      type: 'address'
+      inputs: [],
+      name: 'URI_SETTER_ROLE',
+      outputs: [{
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'from',
-      type: 'address'
+      inputs: [{
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }, {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256'
+      }],
+      name: 'balanceOf',
+      outputs: [{
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'to',
-      type: 'address'
+      inputs: [{
+        internalType: 'address[]',
+        name: 'accounts',
+        type: 'address[]'
+      }, {
+        internalType: 'uint256[]',
+        name: 'ids',
+        type: 'uint256[]'
+      }],
+      name: 'balanceOfBatch',
+      outputs: [{
+        internalType: 'uint256[]',
+        name: '',
+        type: 'uint256[]'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: false,
-      internalType: 'uint256[]',
-      name: 'ids',
-      type: 'uint256[]'
+      inputs: [{
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }],
+      name: 'getRoleAdmin',
+      outputs: [{
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: false,
-      internalType: 'uint256[]',
-      name: 'values',
-      type: 'uint256[]'
-    }],
-    name: 'TransferBatch',
-    type: 'event'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: true,
-      internalType: 'address',
-      name: 'operator',
-      type: 'address'
+      inputs: [{
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }],
+      name: 'grantRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'from',
-      type: 'address'
+      inputs: [{
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }],
+      name: 'hasRole',
+      outputs: [{
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'address',
-      name: 'to',
-      type: 'address'
+      inputs: [{
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }, {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address'
+      }],
+      name: 'isApprovedForAll',
+      outputs: [{
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'id',
-      type: 'uint256'
+      inputs: [{
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }, {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256'
+      }, {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }, {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes'
+      }],
+      name: 'mint',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'value',
-      type: 'uint256'
-    }],
-    name: 'TransferSingle',
-    type: 'event'
-  }, {
-    anonymous: false,
-    inputs: [{
-      indexed: false,
-      internalType: 'string',
-      name: 'value',
-      type: 'string'
+      inputs: [{
+        internalType: 'address',
+        name: 'to',
+        type: 'address'
+      }, {
+        internalType: 'uint256[]',
+        name: 'ids',
+        type: 'uint256[]'
+      }, {
+        internalType: 'uint256[]',
+        name: 'amounts',
+        type: 'uint256[]'
+      }, {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes'
+      }],
+      name: 'mintBatch',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      indexed: true,
-      internalType: 'uint256',
-      name: 'id',
-      type: 'uint256'
-    }],
-    name: 'URI',
-    type: 'event'
-  }, {
-    inputs: [],
-    name: 'DEFAULT_ADMIN_ROLE',
-    outputs: [{
-      internalType: 'bytes32',
-      name: '',
-      type: 'bytes32'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [],
-    name: 'MINTER_ROLE',
-    outputs: [{
-      internalType: 'bytes32',
-      name: '',
-      type: 'bytes32'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [],
-    name: 'URI_SETTER_ROLE',
-    outputs: [{
-      internalType: 'bytes32',
-      name: '',
-      type: 'bytes32'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
+      inputs: [{
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }],
+      name: 'renounceRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      internalType: 'uint256',
-      name: 'id',
-      type: 'uint256'
-    }],
-    name: 'balanceOf',
-    outputs: [{
-      internalType: 'uint256',
-      name: '',
-      type: 'uint256'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address[]',
-      name: 'accounts',
-      type: 'address[]'
+      inputs: [{
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }, {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }],
+      name: 'revokeRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      internalType: 'uint256[]',
-      name: 'ids',
-      type: 'uint256[]'
-    }],
-    name: 'balanceOfBatch',
-    outputs: [{
-      internalType: 'uint256[]',
-      name: '',
-      type: 'uint256[]'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
-    }],
-    name: 'getRoleAdmin',
-    outputs: [{
-      internalType: 'bytes32',
-      name: '',
-      type: 'bytes32'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
+      inputs: [{
+        internalType: 'address',
+        name: 'from',
+        type: 'address'
+      }, {
+        internalType: 'address',
+        name: 'to',
+        type: 'address'
+      }, {
+        internalType: 'uint256[]',
+        name: 'ids',
+        type: 'uint256[]'
+      }, {
+        internalType: 'uint256[]',
+        name: 'amounts',
+        type: 'uint256[]'
+      }, {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes'
+      }],
+      name: 'safeBatchTransferFrom',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
-    }],
-    name: 'grantRole',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
+      inputs: [{
+        internalType: 'address',
+        name: 'from',
+        type: 'address'
+      }, {
+        internalType: 'address',
+        name: 'to',
+        type: 'address'
+      }, {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256'
+      }, {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }, {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes'
+      }],
+      name: 'safeTransferFrom',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
-    }],
-    name: 'hasRole',
-    outputs: [{
-      internalType: 'bool',
-      name: '',
-      type: 'bool'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
+      inputs: [{
+        internalType: 'address',
+        name: 'operator',
+        type: 'address'
+      }, {
+        internalType: 'bool',
+        name: 'approved',
+        type: 'bool'
+      }],
+      name: 'setApprovalForAll',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      internalType: 'address',
-      name: 'operator',
-      type: 'address'
-    }],
-    name: 'isApprovedForAll',
-    outputs: [{
-      internalType: 'bool',
-      name: '',
-      type: 'bool'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
+      inputs: [{
+        internalType: 'string',
+        name: '_baseUri',
+        type: 'string'
+      }],
+      name: 'setURI',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }, {
-      internalType: 'uint256',
-      name: 'id',
-      type: 'uint256'
+      inputs: [{
+        internalType: 'bytes4',
+        name: 'interfaceId',
+        type: 'bytes4'
+      }],
+      name: 'supportsInterface',
+      outputs: [{
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }],
+      stateMutability: 'view',
+      type: 'function'
     }, {
-      internalType: 'uint256',
-      name: 'amount',
-      type: 'uint256'
-    }, {
-      internalType: 'bytes',
-      name: 'data',
-      type: 'bytes'
-    }],
-    name: 'mint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'to',
-      type: 'address'
-    }, {
-      internalType: 'uint256[]',
-      name: 'ids',
-      type: 'uint256[]'
-    }, {
-      internalType: 'uint256[]',
-      name: 'amounts',
-      type: 'uint256[]'
-    }, {
-      internalType: 'bytes',
-      name: 'data',
-      type: 'bytes'
-    }],
-    name: 'mintBatch',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
-    }, {
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
-    }],
-    name: 'renounceRole',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'bytes32',
-      name: 'role',
-      type: 'bytes32'
-    }, {
-      internalType: 'address',
-      name: 'account',
-      type: 'address'
-    }],
-    name: 'revokeRole',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'from',
-      type: 'address'
-    }, {
-      internalType: 'address',
-      name: 'to',
-      type: 'address'
-    }, {
-      internalType: 'uint256[]',
-      name: 'ids',
-      type: 'uint256[]'
-    }, {
-      internalType: 'uint256[]',
-      name: 'amounts',
-      type: 'uint256[]'
-    }, {
-      internalType: 'bytes',
-      name: 'data',
-      type: 'bytes'
-    }],
-    name: 'safeBatchTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'from',
-      type: 'address'
-    }, {
-      internalType: 'address',
-      name: 'to',
-      type: 'address'
-    }, {
-      internalType: 'uint256',
-      name: 'id',
-      type: 'uint256'
-    }, {
-      internalType: 'uint256',
-      name: 'amount',
-      type: 'uint256'
-    }, {
-      internalType: 'bytes',
-      name: 'data',
-      type: 'bytes'
-    }],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'address',
-      name: 'operator',
-      type: 'address'
-    }, {
-      internalType: 'bool',
-      name: 'approved',
-      type: 'bool'
-    }],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'string',
-      name: '_baseUri',
-      type: 'string'
-    }],
-    name: 'setURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'bytes4',
-      name: 'interfaceId',
-      type: 'bytes4'
-    }],
-    name: 'supportsInterface',
-    outputs: [{
-      internalType: 'bool',
-      name: '',
-      type: 'bool'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }, {
-    inputs: [{
-      internalType: 'uint256',
-      name: '',
-      type: 'uint256'
-    }],
-    name: 'uri',
-    outputs: [{
-      internalType: 'string',
-      name: '',
-      type: 'string'
-    }],
-    stateMutability: 'view',
-    type: 'function'
-  }
+      inputs: [{
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }],
+      name: 'uri',
+      outputs: [{
+        internalType: 'string',
+        name: '',
+        type: 'string'
+      }],
+      stateMutability: 'view',
+      type: 'function'
+    }
   ]
 }
 export default COIN_ABI

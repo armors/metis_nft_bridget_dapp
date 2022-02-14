@@ -62,9 +62,9 @@
     >
       <div class="title-box">Your wrapped NFT Token Address</div>
       <div class="address-box display-flex box-center-Y">
-        <div class="box-flex1">0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6</div>
+        <div class="box-flex1">{{tokenTag}}</div>
         <div class="copy-img"
-             v-clipboard:copy="'0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6'"
+             v-clipboard:copy="tokenTag"
              v-clipboard:success="onCopy"
              v-clipboard:error="onCopyError"
         ><img src="../../assets/image/ic_copy@2x.png" alt=""></div>

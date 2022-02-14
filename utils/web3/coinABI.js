@@ -1,231 +1,180 @@
 const COIN_ABI = {
   bridgeFactory: [
     {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_bridge',
-          type: 'address'
-        }
-      ],
+      type: 'constructor',
       stateMutability: 'nonpayable',
-      type: 'constructor'
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: 'address',
-          name: 'previousOwner',
-          type: 'address'
-        },
-        {
-          indexed: true,
-          internalType: 'address',
-          name: 'newOwner',
-          type: 'address'
-        }
-      ],
+      inputs: [{
+        type: 'address',
+        name: '_bridge',
+        internalType: 'address'
+      }]
+    }, {
+      type: 'event',
       name: 'OwnershipTransferred',
-      type: 'event'
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: 'address',
-          name: 'tokenSrc',
-          type: 'address'
-        },
-        {
-          indexed: true,
-          internalType: 'address',
-          name: 'tokenTag',
-          type: 'address'
-        },
-        {
-          indexed: false,
-          internalType: 'address',
-          name: 'opt',
-          type: 'address'
-        }
-      ],
+      inputs: [{
+        type: 'address',
+        name: 'previousOwner',
+        internalType: 'address',
+        indexed: true
+      }, {
+        type: 'address',
+        name: 'newOwner',
+        internalType: 'address',
+        indexed: true
+      }],
+      anonymous: false
+    }, {
+      type: 'event',
       name: 'TokenTargetCreated',
-      type: 'event'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_tokenSrc',
-          type: 'address'
-        },
-        {
-          internalType: 'address',
-          name: '_tokenTag',
-          type: 'address'
-        }
-      ],
+      inputs: [{
+        type: 'address',
+        name: 'tokenSrc',
+        internalType: 'address',
+        indexed: true
+      }, {
+        type: 'address',
+        name: 'tokenTag',
+        internalType: 'address',
+        indexed: true
+      }, {
+        type: 'address',
+        name: 'opt',
+        internalType: 'address',
+        indexed: false
+      }],
+      anonymous: false
+    }, {
+      type: 'function',
+      stateMutability: 'nonpayable',
+      outputs: [],
       name: 'bindAddress',
-      outputs: [],
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      inputs: [],
+      inputs: [{
+        type: 'address',
+        name: '_tokenSrc',
+        internalType: 'address'
+      }, {
+        type: 'address',
+        name: '_tokenTag',
+        internalType: 'address'
+      }]
+    }, {
+      type: 'function',
+      stateMutability: 'view',
+      outputs: [{
+        type: 'address',
+        name: '',
+        internalType: 'address'
+      }],
       name: 'bridge',
-      outputs: [
-        {
-          internalType: 'address',
-          name: '',
-          type: 'address'
-        }
-      ],
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_tokenSrc',
-          type: 'address'
-        },
-        {
-          internalType: 'string',
-          name: '_baseURI',
-          type: 'string'
-        }
-      ],
+      inputs: []
+    }, {
+      type: 'function',
+      stateMutability: 'nonpayable',
+      outputs: [{
+        type: 'address',
+        name: 'tokenTag',
+        internalType: 'contract ERC1155Mock'
+      }],
       name: 'create1155Pair',
-      outputs: [
-        {
-          internalType: 'contract ERC1155Mock',
-          name: 'tokenTag',
-          type: 'address'
-        }
-      ],
+      inputs: [{
+        type: 'address',
+        name: '_tokenSrc',
+        internalType: 'address'
+      }, {
+        type: 'string',
+        name: '_baseURI',
+        internalType: 'string'
+      }]
+    }, {
+      type: 'function',
       stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_tokenSrc',
-          type: 'address'
-        },
-        {
-          internalType: 'string',
-          name: '_name',
-          type: 'string'
-        },
-        {
-          internalType: 'string',
-          name: '_symbol',
-          type: 'string'
-        },
-        {
-          internalType: 'string',
-          name: '_baseURI',
-          type: 'string'
-        }
-      ],
+      outputs: [{
+        type: 'address',
+        name: 'tokenTag',
+        internalType: 'contract ERC721Mock'
+      }],
       name: 'create721Pair',
-      outputs: [
-        {
-          internalType: 'contract ERC721Mock',
-          name: 'tokenTag',
-          type: 'address'
-        }
-      ],
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '',
-          type: 'address'
-        }
-      ],
+      inputs: [{
+        type: 'address',
+        name: '_tokenSrc',
+        internalType: 'address'
+      }, {
+        type: 'string',
+        name: '_name',
+        internalType: 'string'
+      }, {
+        type: 'string',
+        name: '_symbol',
+        internalType: 'string'
+      }, {
+        type: 'string',
+        name: '_baseURI',
+        internalType: 'string'
+      }]
+    }, {
+      type: 'function',
+      stateMutability: 'view',
+      outputs: [{
+        type: 'address',
+        name: '',
+        internalType: 'address'
+      }],
       name: 'getPair',
-      outputs: [
-        {
-          internalType: 'address',
-          name: '',
-          type: 'address'
-        }
-      ],
+      inputs: [{
+        type: 'address',
+        name: '',
+        internalType: 'address'
+      }]
+    }, {
+      type: 'function',
       stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      inputs: [],
+      outputs: [{
+        type: 'address',
+        name: '',
+        internalType: 'address'
+      }],
       name: 'owner',
-      outputs: [
-        {
-          internalType: 'address',
-          name: '',
-          type: 'address'
-        }
-      ],
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      inputs: [],
+      inputs: []
+    }, {
+      type: 'function',
+      stateMutability: 'nonpayable',
+      outputs: [],
       name: 'renounceOwnership',
-      outputs: [],
+      inputs: []
+    }, {
+      type: 'function',
       stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_tokenSrc',
-          type: 'address'
-        },
-        {
-          internalType: 'address',
-          name: '_tokenTag',
-          type: 'address'
-        }
-      ],
+      outputs: [],
       name: 'setPair',
-      outputs: [],
+      inputs: [{
+        type: 'address',
+        name: '_tokenSrc',
+        internalType: 'address'
+      }, {
+        type: 'address',
+        name: '_tokenTag',
+        internalType: 'address'
+      }]
+    }, {
+      type: 'function',
       stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_bridge',
-          type: 'address'
-        }
-      ],
+      outputs: [],
       name: 'setbridge',
-      outputs: [],
+      inputs: [{
+        type: 'address',
+        name: '_bridge',
+        internalType: 'address'
+      }]
+    }, {
+      type: 'function',
       stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      inputs: [
-        {
-          internalType: 'address',
-          name: 'newOwner',
-          type: 'address'
-        }
-      ],
+      outputs: [],
       name: 'transferOwnership',
-      outputs: [],
-      stateMutability: 'nonpayable',
-      type: 'function'
+      inputs: [{
+        type: 'address',
+        name: 'newOwner',
+        internalType: 'address'
+      }]
     }
   ],
   erc721: [
@@ -705,7 +654,8 @@ const COIN_ABI = {
       outputs: [],
       stateMutability: 'nonpayable',
       type: 'function'
-    }],
+    }
+  ],
   erc1155: [{
     inputs: [{
       internalType: 'string',

@@ -45,6 +45,51 @@ export default {
     }
   },
   methods: {
+    switchNetWork (network, successCallback, errorCallback) {
+      console.log(network.chainId)
+      console.log(this.$web3_http.utils.numberToHex(network.chainId))
+      this.$web3_http && window.ethereum && window.ethereum
+        .request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: this.$web3_http.utils.numberToHex(network.chainId) }]
+        })
+        .then(() => {
+          console.log(window.ethereum.networkVersion)
+          setTimeout(() => {
+            successCallback && successCallback()
+          }, 3000)
+        })
+        .catch((e) => {
+          console.log(e)
+          if (e?.code && e.code === 4902) {
+            this.$web3_http && window.ethereum && window.ethereum
+              .request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: this.$web3_http.utils.numberToHex(network.chainId),
+                    chainName: network.chainNameAdd,
+                    nativeCurrency: network.nativeCurrency,
+                    rpcUrls: network.rpcUrls,
+                    blockExplorerUrls: network.blockExplorerUrls
+                  }
+                ]
+              })
+              .then(() => {
+                setTimeout(() => {
+                  successCallback && successCallback()
+                }, 3000)
+              })
+              .catch((e) => {
+                this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+                errorCallback && errorCallback(e)
+              })
+          } else {
+            this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+            errorCallback && errorCallback(e)
+          }
+        })
+    },
     getChainName (network) {
       return network !== null ? network.chainName : '--'
     },
@@ -224,8 +269,7 @@ export default {
     },
     async initNetWork () {
       await this.initEth()
-      if (this.$store?.state && this.$store.state.connectType === 'MetaMask') {
-        // await this.initWeb3()
+      if (this.$store?.state) {
         const networkVersion = window.ethereum.networkVersion
         console.log(networkVersion)
         const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)

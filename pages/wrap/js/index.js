@@ -11,8 +11,8 @@ export default {
       account: '',
       // nftTokenAddress: '0x8A63cDc1e8599079Ad07C76F122fF29EE8C7eC21',
       // nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
-      // nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b',
-      nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
+      nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b',
+      // nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
       tokenStandardIndex: 0,
       tokenTag: '',
       tokenStandardList: [
@@ -189,184 +189,79 @@ export default {
     },
     confirmWrap () {
       this.iconLoading = true
-      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
-        this.confirmWrapMetaMask()
-      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-        this.confirmWrapPolis()
-      }
-    },
-    confirmWrapMetaMask () {
-      this.$web3_http && window.ethereum &&
-      window.ethereum
-        .request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: this.$web3_http.utils.numberToHex(this.toNet.chainId)
-            }
-          ]
-        })
-        .then(() => {
-          console.log(window.ethereum.networkVersion)
-          const that = this
-          setTimeout(() => {
-            console.log(window.ethereum.networkVersion)
-            // if (localStorage.getItem('connectWalletType') === 'MetaMask') {
-            that.createPair()
-            // } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-            //   that.confirmWrapPolis()
-            // }
-          }, 4000)
-        })
-        .catch((e) => {
-          console.log(e)
-          if (e?.code && e.code === 4902) {
-            this.addEthereumChain()
-          } else {
-            that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
-          }
-        })
-    },
-    async confirmWrapPolis () {
-      const that = this
-      if (this.tokenStandardIndex === 0) {
-        try {
-          console.log(
-            parseInt(this.toNet.chainId),
+      this.switchNetWork(this.toNet, () => {
+        let method = ''
+        let args = []
+        if (this.tokenStandardIndex === 0) {
+          method = 'create721Pair'
+          args = [
             that.nftTokenAddress,
             that.name,
             that.symbol,
             that.baseUrl
-          )
-          // this.$httpClient.post('send_tx', {
-          //   args: [
-          //     that.nftTokenAddress,
-          //     that.name,
-          //     that.symbol,
-          //     that.baseUrl
-          //   ],
-          //   chainid: 588,
-          //   domain: 'factory',
-          //   extendArgs: null,
-          //   function: 'create721Pair'
-          // }).then(res => {
-          //   console.log(res)
-          // })
-          this.$httpClient.sendTx(
-            'factory',
-            parseInt(this.toNet.chainId),
-            'create721Pair',
-            [
-              that.nftTokenAddress,
-              that.name,
-              that.symbol,
-              that.baseUrl
-            ],
-            (res) => {
-              console.log(res)
-            },
-            err => {
-              console.log(err)
-            }
-          )
-          that.iconLoading = false
-        } catch (e) {
-          that.iconLoading = false
-          that.$message.error(e.message.message || 'wrap nft error', 3)
-          console.log(e)
+          ]
+        } else if (this.tokenStandardIndex === 1) {
+          method = 'create1155Pair'
+          args = [
+            that.nftTokenAddress,
+            that.baseUrl
+          ]
+        } else {
+          return
         }
-      } else if (this.tokenStandardIndex === 1) {
-        try {
-          const symbolResult = await this.$httpClient.sendTxAsync(
-            'factory',
-            parseInt(this.toNet.chainId),
-            'create1155Pair',
-            [
-              that.nftTokenAddress,
-              that.baseUrl
-            ],
-            true,
-            null
-          ).then(res => {
-            console.log(res)
-          })
-          that.iconLoading = false
-          console.log(symbolResult)
-        } catch (e) {
-          that.iconLoading = false
-          that.$message.error(e.message.message || 'wrap nft error', 3)
-          console.log(e)
+        if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+          this.createPair(method, args)
+        } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+          this.confirmWrapPolis(method, args)
         }
+      }, () => {
+        this.iconLoading = false
+      })
+    },
+    confirmWrapPolis (method, args) {
+      const that = this
+      try {
+        this.$httpClient.sendTxAsync(
+          'factory',
+          parseInt(this.toNet.chainId),
+          method,
+          args,
+          false,
+          null
+        ).then(res => {
+          console.log('sendTxAsync', res)
+          this.decodeLog(res)
+        }, reject => {
+          // this.$message.error(reject.message, 3)
+          console.log('reject', reject, JSON.stringify(reject))
+        }).catch(err => {
+          this.$message.error(err.message, 3)
+          console.log('err', err, JSON.stringify(err))
+        })
+        that.iconLoading = false
+      } catch (e) {
+        that.iconLoading = false
+        that.$message.error(e.message.message || 'wrap nft error', 3)
       }
     },
-    addEthereumChain () {
-      this.$web3_http && window.ethereum &&
-      window.ethereum
-        .request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: this.$web3_http.utils.numberToHex(this.toNet.chainId),
-              chainName: this.toNet.chainNameAdd,
-              nativeCurrency: this.toNet.nativeCurrency,
-              rpcUrls: this.toNet.rpcUrls,
-              blockExplorerUrls: this.toNet.blockExplorerUrls
-            }
-          ]
-        })
-        .then(() => {
-          const that = this
-          setTimeout(() => {
-            that.createPair()
-          }, 4000)
-        })
-        .catch((e) => {
-          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
-        })
-    },
-    async createPair () {
+    async createPair (method, args) {
+      await this.initNetWork()
+      const tokenContract = useTokenContract(process.env.factory, COIN_ABI.bridgeFactory)
       try {
-        await this.initWeb3()
-        const tokenContract = useTokenContract(process.env.factory, COIN_ABI.bridgeFactory)
-        if (that.tokenStandardIndex === 0) {
-          await useContractMethods({
-            contract: tokenContract,
-            methodName: 'create721Pair',
-            parameters: [
-              that.nftTokenAddress,
-              that.name,
-              that.symbol,
-              that.baseUrl
-            ]
-          }, (res) => {
-            console.log(res)
-            console.log(JSON.stringify(res))
-            that.iconLoading = false
-            that.$message.success('wrap nft success', 3)
-            that.decodeLog(res)
-          }, (err) => {
-            that.iconLoading = false
-            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
-          })
-        } else if (that.tokenStandardIndex === 1) {
-          await useContractMethods({
-            contract: tokenContract,
-            methodName: 'create1155Pair',
-            parameters: [
-              that.nftTokenAddress,
-              that.baseUrl
-            ]
-          }, (res) => {
-            console.log(res)
-            console.log(JSON.stringify(res))
-            that.iconLoading = false
-            that.$message.success('wrap nft success', 3)
-            that.decodeLog(res)
-          }, (err) => {
-            that.iconLoading = false
-            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
-          })
-        }
+        await useContractMethods({
+          contract: tokenContract,
+          methodName: method,
+          parameters: args
+        }, (res) => {
+          console.log(res)
+          console.log(JSON.stringify(res))
+          that.iconLoading = false
+          that.$message.success('wrap nft success', 3)
+          that.decodeLog(res)
+        }, (err) => {
+          that.iconLoading = false
+          that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+        })
       } catch (e) {
         that.iconLoading = false
         console.log(e)
@@ -459,7 +354,15 @@ export default {
       //     }
       //   ]
       // }
-      const result = await this.$web3_http.eth.getTransactionReceipt(transactionResult.transactionHash)
+      // console.log(await this.$httpClient.providerCall({
+      //   method: 'eth_getTransactionReceipt',
+      //   id: 588,
+      //   chainid: 588,
+      //   args: [transactionResult.transactionHash || transactionResult.tx],
+      //   params: [transactionResult.transactionHash || transactionResult.tx]
+      // }))
+      const result = await this.$web3_http.eth.getTransactionReceipt(transactionResult.transactionHash || transactionResult.tx)
+      console.log(result)
       const topics = result.logs[result.logs.length - 1].topics
       const data = topics[topics.length - 1]
       this.tokenTag = '0x' + data.substring(26, data.length)

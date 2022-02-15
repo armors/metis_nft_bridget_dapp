@@ -56,19 +56,6 @@ export default {
     // this.$message.success('This is a success message', 3)
     // this.$message.warning('This is a success message', 2)
     // this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
-    // if (this.$accounts === undefined || (this.$accounts && this.$accounts.length < 1)) {
-    //   const init_wab3 = await this.initWeb3()
-    //   console.log(init_wab3)
-    // }
-    // this.loginMetis()
-    // const oauth2Client = new Oauth2Client()
-    // console.log(oauth2Client)
-    // oauth2Client.startOauth2(process.env.APP_ID, process.env.NEXT_PUBLIC_URL, 'newWindow', 'switchAccount')
-    // this.$get(`https://polis.metis.io/api/v1/oauth2/access_token?app_id=${process.env.APP_ID}&app_key=${process.env.APP_SECRET}&code=`, {}, res => {
-    //   console.log(res)
-    // }, err => {
-    //   console.log(err)
-    // })
     const connectWalletType = localStorage.getItem('connectWalletType')
     if (connectWalletType) {
       this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
@@ -91,53 +78,11 @@ export default {
       console.log(e)
       console.log(e.key)
       const network = this.$store.state.netWorkList.filter(item => item.chainId === e.key)
-      // if (this.$store.state.connectType === 'Polis') {
-      //   this.$store.dispatch('updateNetWork', network[0])
-      // } else if (this.$store.state.connectType === 'MetaMask') {
-      this.$web3_http && window.ethereum &&
-        window.ethereum
-          .request({
-            method: 'wallet_switchEthereumChain',
-            params: [
-              {
-                chainId: this.$web3_http.utils.numberToHex(e.key)
-              }
-            ]
-          })
-          .then(() => {
-            this.$store.dispatch('updateNetWork', network[0])
-            this.initNetWork()
-            // this.$message.success('Change NetWork Success, Current NetWork Is ', 3)
-          })
-          .catch((e) => {
-            if (e?.code && e.code === 4902) {
-              window.ethereum &&
-              window.ethereum
-                .request({
-                  method: 'wallet_addEthereumChain',
-                  params: [
-                    {
-                      chainId: this.$web3_http.utils.numberToHex(network[0].chainId),
-                      chainName: network[0].chainName,
-                      nativeCurrency: {
-                        name: 'Metis',
-                        symbol: 'Metis',
-                        decimals: 18
-                      },
-                      rpcUrls: ['https://polis.metis.io/'],
-                      blockExplorerUrls: ['https://stardust-explorer.metis.io/']
-                    }
-                  ]
-                })
-                .then(() => {
-                  console.log('网络切换成功')
-                })
-                .catch((e) => {
-                  console.log(e)
-                })
-            }
-          })
-      // }
+      console.log(network[0])
+      this.switchNetWork(network[0], () => {
+        this.$store.dispatch('updateNetWork', network[0])
+        this.initNetWork()
+      })
     },
     changeAccountBtn () {
       this.closeDialogAccount()

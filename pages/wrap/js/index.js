@@ -155,11 +155,15 @@ export default {
     },
     async metaMaskNextStep () {
       this.iconLoading = true
+      const that = this
       console.log(this.$web3_http)
       try {
         this.tokenStandardIndex = 0
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
-        console.log(tokenContract)
+        if (tokenContract?.code && tokenContract.code === 500) {
+          this.iconLoading = false
+          return that.$message.error(tokenContract.error.message, 3)
+        }
         const symbol = await tokenContract.symbol()
         const name = await tokenContract.name()
         const baseUrl = await tokenContract.baseUri()
@@ -170,8 +174,12 @@ export default {
       } catch (e) {
         console.log(e.toString())
         if (e.toString().indexOf('-32000') > -1) {
-          const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
           try {
+            const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
+            if (tokenContract?.code && tokenContract.code === 500) {
+              this.iconLoading = false
+              return that.$message.error(tokenContract.error.message, 3)
+            }
             const baseUrl = await tokenContract.uri(this.nftTokenAddress)
             console.log(baseUrl)
             this.baseUrl = baseUrl

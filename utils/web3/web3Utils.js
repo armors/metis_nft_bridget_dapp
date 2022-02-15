@@ -52,7 +52,10 @@ function useContract (address = undefined, ABI, withSignerIfPossible = true) {
       return getContract(address, ABI, $library, withSignerIfPossible && $account ? $account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
-      return null
+      return {
+        code: 500,
+        error
+      }
     }
   }
 }

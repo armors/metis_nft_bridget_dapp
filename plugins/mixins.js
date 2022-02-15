@@ -4,7 +4,7 @@ import { getWeb3 } from '../utils/web3/getWeb3'
 import { Oauth2Client, HttpClient } from '@metis.io/middleware-client'
 import axios from 'axios'
 import { TRANSACTION_ACTIONS } from '../utils/web3/constants'
-import { keepPoint, milliFormat, numDiv, numMulti } from '../utils/function'
+import { keepPoint, milliFormat } from '../utils/function'
 export default {
   computed: {
     'store.state.accounts': function () {

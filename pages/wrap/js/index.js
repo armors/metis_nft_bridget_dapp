@@ -1,4 +1,4 @@
-import { isAddress, useTokenContract } from '../../../utils/web3/web3Utils'
+import { useTokenContract } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
 

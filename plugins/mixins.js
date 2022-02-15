@@ -46,21 +46,17 @@ export default {
   },
   methods: {
     switchNetWork (network, successCallback, errorCallback) {
-      console.log(network.chainId)
-      console.log(this.$web3_http.utils.numberToHex(network.chainId))
       this.$web3_http && window.ethereum && window.ethereum
         .request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: this.$web3_http.utils.numberToHex(network.chainId) }]
         })
         .then(() => {
-          console.log(window.ethereum.networkVersion)
           setTimeout(() => {
             successCallback && successCallback()
           }, 3000)
         })
         .catch((e) => {
-          console.log(e)
           if (e?.code && e.code === 4902) {
             this.$web3_http && window.ethereum && window.ethereum
               .request({

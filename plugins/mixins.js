@@ -77,11 +77,11 @@ export default {
                 }, 3000)
               })
               .catch((e) => {
-                this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+                // this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
                 errorCallback && errorCallback(e)
               })
           } else {
-            this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+            // this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
             errorCallback && errorCallback(e)
           }
         })
@@ -265,10 +265,11 @@ export default {
     },
     async initNetWork () {
       await this.initEth()
-      if (this.$store?.state) {
+      if (this.$store?.state && window.ethereum.networkVersion) {
         const networkVersion = window.ethereum.networkVersion
         console.log(networkVersion)
         const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)
+        console.log(network)
         if (network.length > 0) {
           this.$store.dispatch('updateNetWork', network[0])
         }

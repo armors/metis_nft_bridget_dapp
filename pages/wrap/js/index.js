@@ -11,8 +11,10 @@ export default {
       account: '',
       // nftTokenAddress: '0x8A63cDc1e8599079Ad07C76F122fF29EE8C7eC21',
       // nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
-      nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b',
+      // nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b',
       // nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
+      // nftTokenAddress: '0x3608DDd6150ecF54b0e7AC40DfE720f8cbb1a2c6',
+      nftTokenAddress: '0xD8eEaB40CfA4B2c75e12cC5E2fb7c88142d894fA',
       tokenStandardIndex: 0,
       tokenTag: '',
       tokenStandardList: [
@@ -46,7 +48,7 @@ export default {
     },
     '$store.state.netWork': function (val) {
       console.log(val)
-      if (!val) {
+      if (!val || this.stepIndex === 1) {
         return
       }
       this.initNetData(val)
@@ -58,14 +60,33 @@ export default {
     this.initPage()
   },
   methods: {
+    changeStep (v, i) {
+      if (i === 0 && this.stepIndex === 1) {
+        this.stepIndex = 0
+        this.name = ''
+        this.symbol = ''
+        this.baseUrl = ''
+      }
+    },
+    closeWrapSuccess () {
+      this.visible = false
+      this.stepIndex = 0
+      this.nftTokenAddress = ''
+    },
     // 钱包地址获取到之后加载页面数据
     setAccount () {
       this.initPage()
     },
     exchangeNet () {
-      const toNet = that.toNet
-      that.toNet = that.fromNet
-      that.fromNet = toNet
+      if (this.stepIndex === 1) {
+        return
+      }
+      console.log(that.toNet)
+      this.switchNetWork(that.toNet, () => {
+        // const toNet = that.toNet
+        // that.toNet = that.fromNet
+        // that.fromNet = toNet
+      })
     },
     initPage () {
       that = this
@@ -189,6 +210,8 @@ export default {
             console.log(err)
             that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
           }
+        } else if (e.toString().indexOf('call revert exception (method')) {
+          that.$message.error('contract address and Network mismatch ', 3)
         } else {
           that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         }
@@ -277,7 +300,7 @@ export default {
       }
     },
     async decodeLog (transactionResult) {
-      // const transactionResult = {
+      // transactionResult = {
       //   to: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
       //   from: '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6',
       //   contractAddress: null,
@@ -363,18 +386,16 @@ export default {
       //   ]
       // }
       // console.log(await this.$httpClient.providerCall({
-      //   method: 'eth_getTransactionReceipt',
+      //   method: 'eth_get_transaction_receipt',
       //   id: 588,
       //   chainid: 588,
       //   args: [transactionResult.transactionHash || transactionResult.tx],
       //   params: [transactionResult.transactionHash || transactionResult.tx]
       // }))
       const result = await this.$web3_http.eth.getTransactionReceipt(transactionResult.transactionHash || transactionResult.tx)
-      console.log(result)
       const topics = result.logs[result.logs.length - 1].topics
       const data = topics[topics.length - 1]
       this.tokenTag = '0x' + data.substring(26, data.length)
-      console.log(this.tokenTag)
       this.visible = true
       // const input = await this.$web3_http.eth.abi.decodeLog(
       //   [

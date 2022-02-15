@@ -57,6 +57,7 @@ export default {
     // this.$message.warning('This is a success message', 2)
     // this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
     const connectWalletType = localStorage.getItem('connectWalletType')
+    this.initNetWork()
     if (connectWalletType) {
       this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
       if (connectWalletType === 'Polis') {
@@ -65,7 +66,6 @@ export default {
         await this.initWeb3()
       }
     }
-    this.initNetWork()
     for (let i = 0; i < this.langInfo.tabList.length; i++) {
       if (('/' + this.langInfo.tabList[i].path) === this.$route.path) {
         this.tab = i

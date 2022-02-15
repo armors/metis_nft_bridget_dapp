@@ -39,6 +39,22 @@ export default () => ({
       blockExplorerUrls1: ['https://andromeda-explorer.metis.io']
     },
     {
+      chainName: 'Mainnet',
+      chainId: '1088',
+      chainName1: 'Ethereum',
+      chainId1: '1',
+      chainName0: 'Andromeda',
+      chainId0: '1088',
+      chainNameAdd0: 'Andromeda',
+      nativeCurrency0: {
+        name: 'METIS',
+        symbol: 'METIS',
+        decimals: 18
+      },
+      rpcUrls0: ['https://andromeda.metis.io/?owner=1088'],
+      blockExplorerUrls0: ['https://andromeda-explorer.metis.io']
+    },
+    {
       chainName: 'Testnet',
       chainId: '4',
       chainName0: 'Rinkeby',
@@ -61,15 +77,31 @@ export default () => ({
       },
       rpcUrls1: ['https://stardust.metis.io/?owner=588'],
       blockExplorerUrls1: ['https://stardust-explorer.metis.io']
+    },
+    {
+      chainName: 'Testnet',
+      chainId: '588',
+      chainName1: 'Rinkeby',
+      chainId1: '4',
+      chainNameAdd1: 'Rinkeby',
+      nativeCurrency1: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18
+      },
+      rpcUrls1: ['https://rinkeby.etherscan.io/?owner=4'],
+      blockExplorerUrls1: ['https://rinkeby.etherscan.io/'],
+      chainName0: 'Stardust',
+      chainId0: '588',
+      chainNameAdd0: 'Stardust',
+      nativeCurrency0: {
+        name: 'METIS',
+        symbol: 'METIS',
+        decimals: 18
+      },
+      rpcUrls0: ['https://stardust.metis.io/?owner=588'],
+      blockExplorerUrls0: ['https://stardust-explorer.metis.io']
     }
-    // {
-    //   chainName: 'Stardust',
-    //   chainId: '588'
-    // },
-    // {
-    //   chainName: 'Andromeda',
-    //   chainId: '1088'
-    // }
   ],
   accounts: [],
   transactions: [],

@@ -3,10 +3,10 @@
     <div class="bridge-box wrap display-flex box-column">
       <div class="bridge-title">Wrap NFT</div>
       <div class="step-list display-flex box-center-Y">
-        <div class="box-flex1 step-item display-flex" v-for="(v, i) in step" :key="`step${i}`" :class="{
+        <div class="box-flex1 step-item display-flex no-select" v-for="(v, i) in step" :key="`step${i}`" :class="{
           active: i === stepIndex,
           'box-center': i === 1
-        }">{{v}}</div>
+        }" @click="changeStep(v, i)">{{v}}</div>
       </div>
       <div class="network-box display-flex box-center-Y">
         <div class="box-flex1 from-chain">{{getChainName(fromNet)}}</div>
@@ -69,7 +69,7 @@
              v-clipboard:error="onCopyError"
         ><img src="../../assets/image/ic_copy@2x.png" alt=""></div>
       </div>
-      <div class="confirm-btn no-select" @click="visible = false">I have copied the address</div>
+      <div class="confirm-btn no-select" @click="closeWrapSuccess">I have copied the address</div>
     </a-modal>
   </div>
 </template>

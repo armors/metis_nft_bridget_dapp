@@ -11,10 +11,10 @@ export default {
       account: '',
       // nftTokenAddress: '0x8A63cDc1e8599079Ad07C76F122fF29EE8C7eC21',
       // nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
-      // nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b',
+      nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b', // 1155
       // nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
       // nftTokenAddress: '0x3608DDd6150ecF54b0e7AC40DfE720f8cbb1a2c6',
-      nftTokenAddress: '0xD8eEaB40CfA4B2c75e12cC5E2fb7c88142d894fA',
+      // nftTokenAddress: '0xD8eEaB40CfA4B2c75e12cC5E2fb7c88142d894fA',
       tokenStandardIndex: 0,
       tokenTag: '',
       tokenStandardList: [
@@ -130,9 +130,6 @@ export default {
       if (!this.nftTokenAddress) {
         return this.$message.error('NFT Token Address not empty', 2)
       }
-      // if (!isAddress()) {
-      //   return this.$message.error('NFT Token Address is invalid', 2)
-      // }
       this.metaMaskNextStep()
       // if (localStorage.getItem('connectWalletType') === 'MetaMask') {
       //   this.metaMaskNextStep()
@@ -142,6 +139,7 @@ export default {
     },
     async polisNextStep () {
       this.iconLoading = true
+      console.log('polisNextStep')
       try {
         const symbolResult = await this.$httpClient.sendTxAsync(
           'ecr721',
@@ -168,11 +166,28 @@ export default {
         this.symbol = symbolResult.result
         this.baseUrl = baseUriResult.result
         this.stepIndex = 1
+        this.tokenStandardIndex = 0
+        this.iconLoading = false
       } catch (e) {
         console.log(e)
+        try {
+          const baseUriResult = await this.$httpClient.sendTxAsync(
+            'ecr1155',
+            parseInt(this.$store.state.netWork.chainId),
+            'baseUri',
+            [],
+            true
+          )
+          this.baseUrl = baseUriResult.result
+          this.stepIndex = 1
+          this.tokenStandardIndex = 1
+          this.iconLoading = false
+        } catch (e) {
+          this.iconLoading = false
+          this.$message.error(e.message, 3)
+          console.log(e)
+        }
       }
-
-      this.iconLoading = false
     },
     async metaMaskNextStep () {
       this.iconLoading = true
@@ -220,56 +235,60 @@ export default {
     },
     confirmWrap () {
       this.iconLoading = true
-      this.switchNetWork(this.toNet, () => {
-        let method = ''
-        let args = []
-        if (this.tokenStandardIndex === 0) {
-          method = 'create721Pair'
-          args = [
-            that.nftTokenAddress,
-            that.name,
-            that.symbol,
-            that.baseUrl
-          ]
-        } else if (this.tokenStandardIndex === 1) {
-          method = 'create1155Pair'
-          args = [
-            that.nftTokenAddress,
-            that.baseUrl
-          ]
-        } else {
-          return
-        }
-        if (localStorage.getItem('connectWalletType') === 'MetaMask') {
-          this.createPair(method, args)
-        } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-          this.confirmWrapPolis(method, args)
-        }
-      }, () => {
+      let method = ''
+      let args = []
+      if (this.tokenStandardIndex === 0) {
+        method = 'create721Pair'
+        args = [
+          that.nftTokenAddress,
+          that.name,
+          that.symbol,
+          that.baseUrl
+        ]
+      } else if (this.tokenStandardIndex === 1) {
+        method = 'create1155Pair'
+        args = [
+          that.nftTokenAddress,
+          that.baseUrl
+        ]
+      } else {
         this.iconLoading = false
-      })
+        return
+      }
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.switchNetWork(this.toNet, () => {
+          this.createPair(method, args)
+        }, () => {
+          this.iconLoading = false
+        })
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.confirmWrapPolis(method, args)
+      }
     },
-    confirmWrapPolis (method, args) {
+    async confirmWrapPolis (method, args) {
       const that = this
+      this.iconLoading = true
       try {
         this.$httpClient.sendTxAsync(
           'factory',
           parseInt(this.toNet.chainId),
           method,
           args,
-          false,
+          true,
           null
         ).then(res => {
           console.log('sendTxAsync', res)
-          this.decodeLog(res)
+          that.iconLoading = false
+          this.decodeLog(res.tx)
         }, reject => {
-          // this.$message.error(reject.message, 3)
-          console.log('reject', reject, JSON.stringify(reject))
+          this.$message.error(reject.message.message, 3)
+          that.iconLoading = false
+          // console.log('reject', reject, JSON.stringify(reject))
         }).catch(err => {
           this.$message.error(err.message, 3)
+          that.iconLoading = false
           console.log('err', err, JSON.stringify(err))
         })
-        that.iconLoading = false
       } catch (e) {
         that.iconLoading = false
         that.$message.error(e.message.message || 'wrap nft error', 3)
@@ -288,7 +307,7 @@ export default {
           console.log(JSON.stringify(res))
           that.iconLoading = false
           that.$message.success('wrap nft success', 3)
-          that.decodeLog(res)
+          that.decodeLog(res.transactionHash)
         }, (err) => {
           that.iconLoading = false
           that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
@@ -299,7 +318,7 @@ export default {
         that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
       }
     },
-    async decodeLog (transactionResult) {
+    async decodeLog (transactionHash) {
       // transactionResult = {
       //   to: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
       //   from: '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6',
@@ -385,15 +404,17 @@ export default {
       //     }
       //   ]
       // }
-      // console.log(await this.$httpClient.providerCall({
-      //   method: 'eth_get_transaction_receipt',
-      //   id: 588,
-      //   chainid: 588,
-      //   args: [transactionResult.transactionHash || transactionResult.tx],
-      //   params: [transactionResult.transactionHash || transactionResult.tx]
-      // }))
-      const result = await this.$web3_http.eth.getTransactionReceipt(transactionResult.transactionHash || transactionResult.tx)
-      const topics = result.logs[result.logs.length - 1].topics
+      let topics = []
+      if (localStorage.getItem('connectWalletType') === 'Polis') {
+        const logs = await this.$httpClient.getTxLogsAsync({
+          chainid: parseInt(this.toNet.chainId),
+          txhash: transactionHash
+        })
+        topics = logs[logs.length - 1].topics
+      } else {
+        const result = await this.$web3_http.eth.getTransactionReceipt(transactionHash)
+        topics = result.logs[result.logs.length - 1].topics
+      }
       const data = topics[topics.length - 1]
       this.tokenTag = '0x' + data.substring(26, data.length)
       this.visible = true

@@ -98,6 +98,7 @@ export default {
           localStorage.removeItem('connectWalletType')
           localStorage.removeItem('auth-polis-params')
           localStorage.removeItem('auth-user-info')
+          this.$store.dispatch('updateConnectType', '')
         } else {
           const httpClient = new HttpClient(
             process.env.NEXT_PUBLIC_APP_ID || '',

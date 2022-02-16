@@ -11,10 +11,10 @@ export default {
       account: '',
       // nftTokenAddress: '0x8A63cDc1e8599079Ad07C76F122fF29EE8C7eC21',
       // nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
-      nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b', // 1155
+      // nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b', // 1155
       // nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
       // nftTokenAddress: '0x3608DDd6150ecF54b0e7AC40DfE720f8cbb1a2c6',
-      // nftTokenAddress: '0xD8eEaB40CfA4B2c75e12cC5E2fb7c88142d894fA',
+      nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       tokenStandardIndex: 0,
       tokenTag: '',
       tokenStandardList: [
@@ -68,10 +68,41 @@ export default {
         this.baseUrl = ''
       }
     },
-    closeWrapSuccess () {
-      this.visible = false
-      this.stepIndex = 0
-      this.nftTokenAddress = ''
+    async setNft () {
+      const that = this
+      this.switchNetWork(that.fromNet, async () => {
+        await this.initNetWork()
+        const tokenContract = useTokenContract(process.env.bridgeFactoryL1, COIN_ABI.bridgeFactory)
+        try {
+          await useContractMethods({
+            contract: tokenContract,
+            methodName: 'setNft',
+            parameters: [
+              this.nftTokenAddress,
+              this.tokenTag,
+              parseInt(window.ethereum.networkVersion),
+              1000000
+            ]
+          }, (res) => {
+            that.$message.success('set nft success', 3)
+            // console.log(res)
+            // console.log(JSON.stringify(res))
+            // that.iconLoading = false
+            // that.$message.success('wrap nft success', 3)
+            // that.decodeLog(res.transactionHash)
+            this.visible = false
+            this.stepIndex = 0
+            this.nftTokenAddress = ''
+          }, (err) => {
+            that.iconLoading = false
+            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+          })
+        } catch (e) {
+          that.iconLoading = false
+          console.log(e)
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+        }
+      })
     },
     // 钱包地址获取到之后加载页面数据
     setAccount () {
@@ -103,12 +134,14 @@ export default {
           chainNameAdd: val.chainNameAdd0,
           nativeCurrency: val.nativeCurrency0,
           rpcUrls: val.rpcUrls0,
-          blockExplorerUrls: val.blockExplorerUrls0
+          blockExplorerUrls: val.blockExplorerUrls0,
+          bridgeFactory: val.bridgeFactory0
         }
       } else {
         this.fromNet = {
           chainId: val.chainId0,
-          chainName: val.chainName0
+          chainName: val.chainName0,
+          bridgeFactory: val.bridgeFactory0
         }
       }
       this.toNet = {
@@ -117,7 +150,8 @@ export default {
         chainNameAdd: val.chainNameAdd1,
         nativeCurrency: val.nativeCurrency1,
         rpcUrls: val.rpcUrls1,
-        blockExplorerUrls: val.blockExplorerUrls1
+        blockExplorerUrls: val.blockExplorerUrls1,
+        bridgeFactory: val.bridgeFactory1
       }
     },
     selectTokenStandard (v, i) {
@@ -233,7 +267,7 @@ export default {
       }
       this.iconLoading = false
     },
-    confirmWrap () {
+    async confirmWrap () {
       this.iconLoading = true
       let method = ''
       let args = []
@@ -296,7 +330,12 @@ export default {
     },
     async createPair (method, args) {
       await this.initNetWork()
-      const tokenContract = useTokenContract(process.env.factory, COIN_ABI.bridgeFactory)
+
+      const tokenContract1 = useTokenContract(this.toNet.bridgeFactory, COIN_ABI.bridgeFactory)
+      console.log(this.nftTokenAddress)
+      console.log(await tokenContract1.getPair(this.nftTokenAddress))
+
+      const tokenContract = useTokenContract(this.toNet.bridgeFactory, COIN_ABI.bridgeFactory)
       try {
         await useContractMethods({
           contract: tokenContract,
@@ -309,13 +348,14 @@ export default {
           that.$message.success('wrap nft success', 3)
           that.decodeLog(res.transactionHash)
         }, (err) => {
+          console.log(err)
           that.iconLoading = false
-          that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+          that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'wrap nft error'), 3)
         })
-      } catch (e) {
+      } catch (err) {
         that.iconLoading = false
-        console.log(e)
-        that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+        console.log(err)
+        that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'wrap nft error'), 3)
       }
     },
     async decodeLog (transactionHash) {

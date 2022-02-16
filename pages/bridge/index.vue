@@ -2,16 +2,16 @@
   <div class="bridgeView">
     <div class="bridge-box">
       <div class="network-box display-flex box-center-Y">
-        <div class="box-flex1 from-chain">Ethereum</div>
-        <div class="exchange-img"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
-        <div class="box-flex1 to-chain">Andromeda</div>
+        <div class="box-flex1 from-chain">{{getChainName(fromNet)}}</div>
+        <div class="exchange-img" @click="exchangeNet"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
+        <div class="box-flex1 to-chain">{{getChainName(toNet)}}</div>
       </div>
-      <div class="title-text">NFT Token Address(ETH)</div>
-      <div> <a-input placeholder="Add text" /></div>
-      <div class="title-text">Receiver Address(Andromeda)</div>
-      <div> <a-input placeholder="Add text" /></div>
+      <div class="title-text">NFT Token Address({{getChainName(fromNet)}})</div>
+      <div> <a-input placeholder="Add text" v-model="nftTokenAddress" @blur="nftTokenBlur"/></div>
+      <div class="title-text">Receiver Address({{getChainName(toNet)}})</div>
+      <div> <a-input placeholder="Add text" v-model="receiverAddress"/></div>
       <div class="title-text">Token IDs</div>
-      <div> <a-input placeholder="Add text" /></div>
+      <div> <a-input placeholder="Add text" v-model="tokenId" /></div>
       <!--      <div class="token-id-list display-flex box-nowrap">-->
 <!--        <div class="token-id-item no-select" @click="selectTokenId(v, i)" v-for="(v, i) in tokenIdList" :key="`token-id-${i}`" :class="{active: tokenIdIndex === i}">#{{v.key}}</div>-->
 <!--      </div>-->
@@ -30,7 +30,9 @@
           <div class="">Arrive to Ethereum before UTC 11-12-2021</div>
         </div>
       </div>
-      <y-btn @submitAction="visible = true">Approve</y-btn>
+      <a-button type="primary" :loading="iconLoading" @click="approveFun">
+        Approve
+      </a-button>
     </div>
     <div class="display-flex">
       <a href="javascript:;" class="history-text">View your history ></a>

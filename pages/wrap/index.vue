@@ -69,7 +69,7 @@
              v-clipboard:error="onCopyError"
         ><img src="../../assets/image/ic_copy@2x.png" alt=""></div>
       </div>
-      <div class="confirm-btn no-select" @click="closeWrapSuccess">I have copied the address</div>
+      <div class="confirm-btn no-select" @click="setNft">I have copied the address</div>
     </a-modal>
   </div>
 </template>

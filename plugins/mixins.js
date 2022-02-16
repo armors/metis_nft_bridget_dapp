@@ -45,6 +45,9 @@ export default {
     }
   },
   methods: {
+    async isApprove (args, tokenContract) {
+      return await tokenContract.getApproved(args)
+    },
     switchNetWork (network, successCallback, errorCallback) {
       this.$web3_http && window.ethereum && window.ethereum
         .request({

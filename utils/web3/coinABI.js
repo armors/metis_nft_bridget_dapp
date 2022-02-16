@@ -8,173 +8,250 @@ const COIN_ABI = {
         name: '_bridge',
         internalType: 'address'
       }]
-    }, {
-      type: 'event',
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'previousOwner',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'newOwner',
+          type: 'address'
+        }
+      ],
       name: 'OwnershipTransferred',
-      inputs: [{
-        type: 'address',
-        name: 'previousOwner',
-        internalType: 'address',
-        indexed: true
-      }, {
-        type: 'address',
-        name: 'newOwner',
-        internalType: 'address',
-        indexed: true
-      }],
-      anonymous: false
-    }, {
-      type: 'event',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'tokenSrc',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'tokenTag',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: 'opt',
+          type: 'address'
+        }
+      ],
       name: 'TokenTargetCreated',
-      inputs: [{
-        type: 'address',
-        name: 'tokenSrc',
-        internalType: 'address',
-        indexed: true
-      }, {
-        type: 'address',
-        name: 'tokenTag',
-        internalType: 'address',
-        indexed: true
-      }, {
-        type: 'address',
-        name: 'opt',
-        internalType: 'address',
-        indexed: false
-      }],
-      anonymous: false
-    }, {
-      type: 'function',
-      stateMutability: 'nonpayable',
-      outputs: [],
+      type: 'event'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_tokenSrc',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_tokenTag',
+          type: 'address'
+        }
+      ],
       name: 'bindAddress',
-      inputs: [{
-        type: 'address',
-        name: '_tokenSrc',
-        internalType: 'address'
-      }, {
-        type: 'address',
-        name: '_tokenTag',
-        internalType: 'address'
-      }]
-    }, {
-      type: 'function',
-      stateMutability: 'view',
-      outputs: [{
-        type: 'address',
-        name: '',
-        internalType: 'address'
-      }],
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [],
       name: 'bridge',
-      inputs: []
-    }, {
-      type: 'function',
-      stateMutability: 'nonpayable',
-      outputs: [{
-        type: 'address',
-        name: 'tokenTag',
-        internalType: 'contract ERC1155Mock'
-      }],
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_tokenSrc',
+          type: 'address'
+        },
+        {
+          internalType: 'string',
+          name: '_baseURI',
+          type: 'string'
+        }
+      ],
       name: 'create1155Pair',
-      inputs: [{
-        type: 'address',
-        name: '_tokenSrc',
-        internalType: 'address'
-      }, {
-        type: 'string',
-        name: '_baseURI',
-        internalType: 'string'
-      }]
-    }, {
-      type: 'function',
+      outputs: [
+        {
+          internalType: 'contract ERC1155Mock',
+          name: 'tokenTag',
+          type: 'address'
+        }
+      ],
       stateMutability: 'nonpayable',
-      outputs: [{
-        type: 'address',
-        name: 'tokenTag',
-        internalType: 'contract ERC721Mock'
-      }],
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_tokenSrc',
+          type: 'address'
+        },
+        {
+          internalType: 'string',
+          name: '_name',
+          type: 'string'
+        },
+        {
+          internalType: 'string',
+          name: '_symbol',
+          type: 'string'
+        },
+        {
+          internalType: 'string',
+          name: '_baseURI',
+          type: 'string'
+        }
+      ],
       name: 'create721Pair',
-      inputs: [{
-        type: 'address',
-        name: '_tokenSrc',
-        internalType: 'address'
-      }, {
-        type: 'string',
-        name: '_name',
-        internalType: 'string'
-      }, {
-        type: 'string',
-        name: '_symbol',
-        internalType: 'string'
-      }, {
-        type: 'string',
-        name: '_baseURI',
-        internalType: 'string'
-      }]
-    }, {
-      type: 'function',
-      stateMutability: 'view',
-      outputs: [{
-        type: 'address',
-        name: '',
-        internalType: 'address'
-      }],
+      outputs: [
+        {
+          internalType: 'contract ERC721Mock',
+          name: 'tokenTag',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
       name: 'getPair',
-      inputs: [{
-        type: 'address',
-        name: '',
-        internalType: 'address'
-      }]
-    }, {
-      type: 'function',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
       stateMutability: 'view',
-      outputs: [{
-        type: 'address',
-        name: '',
-        internalType: 'address'
-      }],
+      type: 'function'
+    },
+    {
+      inputs: [],
       name: 'owner',
-      inputs: []
-    }, {
-      type: 'function',
-      stateMutability: 'nonpayable',
-      outputs: [],
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
       name: 'renounceOwnership',
-      inputs: []
-    }, {
-      type: 'function',
-      stateMutability: 'nonpayable',
       outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'destNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'originNFTChainId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint32',
+          name: 'destGasLimit',
+          type: 'uint32'
+        }
+      ],
+      name: 'setNft',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_tokenSrc',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_tokenTag',
+          type: 'address'
+        }
+      ],
       name: 'setPair',
-      inputs: [{
-        type: 'address',
-        name: '_tokenSrc',
-        internalType: 'address'
-      }, {
-        type: 'address',
-        name: '_tokenTag',
-        internalType: 'address'
-      }]
-    }, {
-      type: 'function',
-      stateMutability: 'nonpayable',
       outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_bridge',
+          type: 'address'
+        }
+      ],
       name: 'setbridge',
-      inputs: [{
-        type: 'address',
-        name: '_bridge',
-        internalType: 'address'
-      }]
-    }, {
-      type: 'function',
-      stateMutability: 'nonpayable',
       outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'newOwner',
+          type: 'address'
+        }
+      ],
       name: 'transferOwnership',
-      inputs: [{
-        type: 'address',
-        name: 'newOwner',
-        internalType: 'address'
-      }]
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
     }
   ],
   erc721: [
@@ -1132,6 +1209,1445 @@ const COIN_ABI = {
         name: '',
         type: 'string'
       }],
+      stateMutability: 'view',
+      type: 'function'
+    }
+  ],
+  bridgeFactoryL1: [
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_owner',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_nftFactory',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_rollback',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_addressManager',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_localMessenger',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'constructor'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_localNFT',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_destNFT',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_chainID',
+          type: 'uint256'
+        }
+      ],
+      name: 'CONFIT_NFT',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_nft',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_from',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_to',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_tokenID',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint8',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'DEPOSIT_FAILED',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_nft',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_from',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_to',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_tokenID',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint8',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'DEPOSIT_TO',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_deposit',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_bridge',
+          type: 'address'
+        }
+      ],
+      name: 'EVENT_SET',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_nft',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_from',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_to',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_tokenID',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint8',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'FINALIZE_DEPOSIT',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'previousAdminRole',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'newAdminRole',
+          type: 'bytes32'
+        }
+      ],
+      name: 'RoleAdminChanged',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'sender',
+          type: 'address'
+        }
+      ],
+      name: 'RoleGranted',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'sender',
+          type: 'address'
+        }
+      ],
+      name: 'RoleRevoked',
+      type: 'event'
+    },
+    {
+      inputs: [],
+      name: 'DEFAULT_ADMIN_ROLE',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'DEST_CHAINID',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'NFT_FACTORY_ROLE',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'ROLLBACK_ROLE',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'addressManager',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      name: 'clone',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'destNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'originNFTChainId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint32',
+          name: 'destGasLimit',
+          type: 'uint32'
+        }
+      ],
+      name: 'configNFT',
+      outputs: [],
+      stateMutability: 'payable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'destTo',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256'
+        },
+        {
+          internalType: 'enum L1NFTBridge.nftenum',
+          name: 'nftStandard',
+          type: 'uint8'
+        },
+        {
+          internalType: 'uint32',
+          name: 'destGasLimit',
+          type: 'uint32'
+        }
+      ],
+      name: 'depositTo',
+      outputs: [],
+      stateMutability: 'payable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      name: 'depositUser',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'destNFTBridge',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_destFrom',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_localTo',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          internalType: 'enum L1NFTBridge.nftenum',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'finalizeDeposit',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        }
+      ],
+      name: 'getRoleAdmin',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'grantRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'hasRole',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      name: 'isDeposit',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      name: 'isOrigin',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'localNFTDeposit',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'messenger',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'oracle',
+      outputs: [
+        {
+          internalType: 'contract iMVM_DiscountOracle',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'renounceRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'revokeRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'enum L1NFTBridge.nftenum',
+          name: 'nftStandard',
+          type: 'uint8'
+        },
+        {
+          internalType: 'address',
+          name: '_localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256[]',
+          name: 'ids',
+          type: 'uint256[]'
+        }
+      ],
+      name: 'rollback',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_localNFTDeposit',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_destNFTBridge',
+          type: 'address'
+        }
+      ],
+      name: 'set',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes4',
+          name: 'interfaceId',
+          type: 'bytes4'
+        }
+      ],
+      name: 'supportsInterface',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    }
+  ],
+  bridgeFactoryL2: [
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_owner',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_rollback',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_localMessenger',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'constructor'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_localNFT',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_destNFT',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_chainID',
+          type: 'uint256'
+        }
+      ],
+      name: 'CONFIT_NFT',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_nft',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_from',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_to',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_tokenID',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint8',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'DEPOSIT_FAILED',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_nft',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_from',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_to',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_tokenID',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint8',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'DEPOSIT_TO',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_deposit',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: '_bridge',
+          type: 'address'
+        }
+      ],
+      name: 'EVENT_SET',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_nft',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_from',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'address',
+          name: '_to',
+          type: 'address'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_tokenID',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          indexed: false,
+          internalType: 'uint8',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'FINALIZE_DEPOSIT',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'previousAdminRole',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'newAdminRole',
+          type: 'bytes32'
+        }
+      ],
+      name: 'RoleAdminChanged',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'sender',
+          type: 'address'
+        }
+      ],
+      name: 'RoleGranted',
+      type: 'event'
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'sender',
+          type: 'address'
+        }
+      ],
+      name: 'RoleRevoked',
+      type: 'event'
+    },
+    {
+      inputs: [],
+      name: 'DEFAULT_ADMIN_ROLE',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'ROLLBACK_ROLE',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      name: 'clone',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'destNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'originNFTChainId',
+          type: 'uint256'
+        }
+      ],
+      name: 'configNFT',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'destTo',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256'
+        },
+        {
+          internalType: 'enum L2NFTBridge.nftenum',
+          name: 'nftStandard',
+          type: 'uint8'
+        },
+        {
+          internalType: 'uint32',
+          name: 'destGas',
+          type: 'uint32'
+        }
+      ],
+      name: 'depositTo',
+      outputs: [],
+      stateMutability: 'payable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      name: 'depositUser',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'destNFTBridge',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_destFrom',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_localTo',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'id',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256'
+        },
+        {
+          internalType: 'enum L2NFTBridge.nftenum',
+          name: 'nftStandard',
+          type: 'uint8'
+        }
+      ],
+      name: 'finalizeDeposit',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        }
+      ],
+      name: 'getRoleAdmin',
+      outputs: [
+        {
+          internalType: 'bytes32',
+          name: '',
+          type: 'bytes32'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'grantRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'hasRole',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      name: 'isDeposit',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      name: 'isOrigin',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'localNFTDeposit',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'messenger',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'minL1Gas',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'renounceRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes32',
+          name: 'role',
+          type: 'bytes32'
+        },
+        {
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }
+      ],
+      name: 'revokeRole',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'enum L2NFTBridge.nftenum',
+          name: 'nftStandard',
+          type: 'uint8'
+        },
+        {
+          internalType: 'address',
+          name: '_localNFT',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256[]',
+          name: 'ids',
+          type: 'uint256[]'
+        }
+      ],
+      name: 'rollback',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_localNFTDeposit',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: '_destNFTBridge',
+          type: 'address'
+        }
+      ],
+      name: 'set',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: '_minL1Gas',
+          type: 'uint256'
+        }
+      ],
+      name: 'setMinL1Gas',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bytes4',
+          name: 'interfaceId',
+          type: 'bytes4'
+        }
+      ],
+      name: 'supportsInterface',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
       stateMutability: 'view',
       type: 'function'
     }

@@ -480,7 +480,7 @@ export { default } from './js/default'
     height: 100vh;
     max-width: 1440PX;
     color: @emColor;
-
+    margin: 0 auto;
     .nav-box {
       padding: 16px 42px;
 

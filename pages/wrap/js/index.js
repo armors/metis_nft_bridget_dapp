@@ -9,11 +9,6 @@ export default {
     return {
       iconLoading: false,
       account: '',
-      // nftTokenAddress: '0x8A63cDc1e8599079Ad07C76F122fF29EE8C7eC21',
-      // nftTokenAddress: '0x9480B751Da5a48074aeD1C1dE2a5EB248f6F59c6',
-      // nftTokenAddress: '0xb8DcFdEbd5f78C4c285BcF16De4aBeec6E48F90b', // 1155
-      // nftTokenAddress: '0x5F08758b1c768c9CA2ED2159DCf55ED04F33B1BB',
-      // nftTokenAddress: '0x3608DDd6150ecF54b0e7AC40DfE720f8cbb1a2c6',
       nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       tokenStandardIndex: 0,
       tokenTag: '',
@@ -46,6 +41,7 @@ export default {
     },
     '$store.state.lang': function (val) {
     },
+    // 监听网络变化
     '$store.state.netWork': function (val) {
       console.log(val)
       if (!val || this.stepIndex === 1) {
@@ -60,6 +56,7 @@ export default {
     this.initPage()
   },
   methods: {
+    // 返回第一步清空数据
     changeStep (v, i) {
       if (i === 0 && this.stepIndex === 1) {
         this.stepIndex = 0
@@ -68,12 +65,14 @@ export default {
         this.baseUrl = ''
       }
     },
+    // 调用过setNFT方法建立关系
     async setNft () {
       const that = this
       this.switchNetWork(that.fromNet, async () => {
         await this.initNetWork()
         const tokenContract = useTokenContract(process.env.bridgeFactoryL1, COIN_ABI.bridgeFactory)
         try {
+          console.log(window.ethereum.networkVersion, that.fromNet.chainId)
           await useContractMethods({
             contract: tokenContract,
             methodName: 'setNft',
@@ -108,6 +107,7 @@ export default {
     setAccount () {
       this.initPage()
     },
+    // 交换网络
     exchangeNet () {
       if (this.stepIndex === 1) {
         return
@@ -119,6 +119,7 @@ export default {
         // that.fromNet = toNet
       })
     },
+    // 初始化页面
     initPage () {
       that = this
       that.initNetData(this.$store.state.netWork)
@@ -126,6 +127,7 @@ export default {
       if (that.account) {
       }
     },
+    // network信息获取
     initNetData (val) {
       if (val.chainId0 !== '1') {
         this.fromNet = {
@@ -154,12 +156,15 @@ export default {
         bridgeFactory: val.bridgeFactory1
       }
     },
+    // 无用
     selectTokenStandard (v, i) {
       // this.tokenStandardIndex = i
     },
+    // 无用
     selectTokenId (v, i) {
       this.tokenIdIndex = i
     },
+    // 下一步
     nextStep () {
       if (!this.nftTokenAddress) {
         return this.$message.error('NFT Token Address not empty', 2)
@@ -171,6 +176,7 @@ export default {
       //   this.polisNextStep()
       // }
     },
+    // polis链接方式下一步
     async polisNextStep () {
       this.iconLoading = true
       console.log('polisNextStep')
@@ -223,6 +229,7 @@ export default {
         }
       }
     },
+    // metamask链接方式下一步
     async metaMaskNextStep () {
       this.iconLoading = true
       const that = this
@@ -267,6 +274,7 @@ export default {
       }
       this.iconLoading = false
     },
+    // 确认wrap操作
     async confirmWrap () {
       this.iconLoading = true
       let method = ''
@@ -299,6 +307,7 @@ export default {
         this.confirmWrapPolis(method, args)
       }
     },
+    // polis连接方式wrap操作
     async confirmWrapPolis (method, args) {
       const that = this
       this.iconLoading = true
@@ -328,6 +337,7 @@ export default {
         that.$message.error(e.message.message || 'wrap nft error', 3)
       }
     },
+    // metamask连接方式wrap操作
     async createPair (method, args) {
       await this.initNetWork()
 
@@ -358,6 +368,7 @@ export default {
         that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'wrap nft error'), 3)
       }
     },
+    // 交易成功解析log获取tokenTag
     async decodeLog (transactionHash) {
       // transactionResult = {
       //   to: '0x9D8c817513482F4e3F8E1a5f37f4ceAeDCb67b48',
@@ -489,6 +500,7 @@ export default {
     onCopyError () {
       that.$message.error('copy error', 3)
     },
+    // 复制成功
     onCopy () {
       that.$message.success('copy success', 3)
     }

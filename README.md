@@ -83,4 +83,16 @@ server {
 
 
 
+##polis 配置hosts
+```
+# polis
+127.0.0.1  localhost localhost.localdomain
+::1        localhost localhost.localdomain
+```
+
+执行  npm install 安装依赖
+执行  npm run dev 之后浏览器输入
+http://localhost.localdomain:39312/bridge
+打开页面
+
 

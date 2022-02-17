@@ -1213,7 +1213,7 @@ const COIN_ABI = {
       type: 'function'
     }
   ],
-  bridgeFactoryL1: [
+  bridgeL1: [
     {
       inputs: [
         {
@@ -1953,7 +1953,7 @@ const COIN_ABI = {
       type: 'function'
     }
   ],
-  bridgeFactoryL2: [
+  bridgeL2: [
     {
       inputs: [
         {

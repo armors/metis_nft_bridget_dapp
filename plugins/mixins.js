@@ -45,9 +45,7 @@ export default {
     }
   },
   methods: {
-    async isApprove (args, tokenContract) {
-      return await tokenContract.getApproved(args)
-    },
+    // 切换网络
     switchNetWork (network, successCallback, errorCallback) {
       this.$web3_http && window.ethereum && window.ethereum
         .request({
@@ -89,11 +87,14 @@ export default {
           }
         })
     },
+    // 获取chainName
     getChainName (network) {
       return network !== null ? network.chainName : '--'
     },
+    // polis链接判断
     async loginMetis () {
       await this.initEth()
+      // 记录上一次链接方式并判断是否过期
       if (localStorage.getItem('auth-polis-params') && localStorage.getItem('auth-user-info')) {
         const authPolisParams = JSON.parse(localStorage.getItem('auth-polis-params'))
         const authUserInfo = JSON.parse(localStorage.getItem('auth-user-info'))
@@ -125,6 +126,7 @@ export default {
         this.getPolis()
       }
     },
+    // polis跳转授权登录
     getPolis () {
       if (this.$route.query?.code) {
         this.fetchData()
@@ -139,6 +141,7 @@ export default {
         console.log(oauth2Client)
       }
     },
+    // polis获取用户登录信息
     async fetchData () {
       const query = this.$route.query
       try {
@@ -151,9 +154,6 @@ export default {
         )
         console.log(res)
         if (res.status === 200 && res.data && res.data.code === 200) {
-          // accessToken = res.data.data.access_token
-          // refreshToken = res.data.data.refresh_token
-          // expiresIn = res.data.data.expires_in
           const authPolisParams = {
             ...res.data.data,
             ...{
@@ -200,12 +200,14 @@ export default {
       this.account = ''
       this.$store.dispatch('updateAccounts', [])
     },
+    // 初始化以太坊环境
     async initEth () {
       const { web3, web3_http, library } = await getWeb3()
       Vue.prototype.$web3_http = web3_http
       Vue.prototype.$web3 = web3
       Vue.prototype.$library = library
     },
+    // 初始化获取钱包地址
     async initWeb3 () {
       const that = this
       that.promise = new Promise((resolve, reject) => {
@@ -267,6 +269,7 @@ export default {
         return that.promise
       }
     },
+    // 获取当前的网络chainId
     async initNetWork () {
       await this.initEth()
       if (this.$store?.state && window.ethereum.networkVersion) {
@@ -279,6 +282,7 @@ export default {
         }
       }
     },
+    // 链接钱包 metamask
     async connectAccount () {
       if (!this.$web3_http) {
         return this.initWeb3()

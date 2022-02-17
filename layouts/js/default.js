@@ -74,6 +74,7 @@ export default {
     }
   },
   methods: {
+    // 选择网络
     changeNetWorkFun (e) {
       console.log(e)
       console.log(e.key)
@@ -84,14 +85,17 @@ export default {
         this.initNetWork()
       })
     },
+    // 改变连接方式
     changeAccountBtn () {
       this.closeDialogAccount()
       this.openWalletType()
     },
+    // 关闭选择连接方式弹窗打开连接信息弹窗
     goAccountDialog () {
       this.closeWalletType()
       this.openAccount()
     },
+    // 选择链接方式
     changeConnectType (v) {
       this.$store.dispatch('updateConnectType', v.type)
       this.closeWalletType()
@@ -101,25 +105,27 @@ export default {
         this.loginMetis()
       }
     },
+    // 关闭选择连接方式弹窗
     closeWalletType () {
       this.$store.dispatch('updateDialogConnectType', false)
     },
+    // 打开选择连接方式弹窗
     openWalletType () {
       this.$store.dispatch('updateDialogConnectType', true)
     },
+    // 打开选择连接信息弹窗
     openAccount () {
       this.$store.dispatch('updateDialogAccount', true)
     },
+    // 关闭选择连接信息弹窗
     closeDialogAccount () {
       this.$store.dispatch('updateDialogAccount', false)
-    },
-    connectAccountFunc () {
-      this.connectAccount()
     },
     clickMenu (index, item) {
       console.log(index)
       this.$store.dispatch('onChangeLang', item)
     },
+    // 切换tab
     selectTab (v, i) {
       this.tab = i
       this.$router.push({
@@ -137,6 +143,5 @@ export default {
     clearAll () {
       this.$store.dispatch('clearAllTransactions')
     }
-
   }
 }

@@ -27,7 +27,7 @@ export function useCallback (response, { summary, eventName, approval }, callbac
   }
 }
 
-export function sendTransactionEvent (sendEvent, { summary, approval }, callback) {
+export function sendTransactionEvent (sendEvent, { summary, approval }, callback, errorCallback) {
   if (process.client) {
     const { $store, $toastBox } = window.$nuxt
     $store.dispatch('updateLoading', true)
@@ -49,6 +49,7 @@ export function sendTransactionEvent (sendEvent, { summary, approval }, callback
       callback && callback(receipt.transactionHash)
     }).catch(error => {
       $store.dispatch('updateLoading', false)
+      return errorCallback && errorCallback(error)
       const errInfo = JSON.parse(JSON.stringify(error))
       console.log(errInfo)
       if (errInfo?.receipt && !errInfo.receipt?.status) {
@@ -101,6 +102,7 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   } else if (parameters.length === 4) {
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3])
   } else if (parameters.length === 5) {
+    console.log(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
   }
   const { $store, $toastBox } = window.$nuxt
@@ -119,10 +121,10 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
       errorCallback && errorCallback(error)
       console.error('Failed to request', error)
       if (error?.data?.message) {
-        $toastBox.showToastBox({
-          type: 'none',
-          text: error?.data?.message || error.message
-        })
+        // $toastBox.showToastBox({
+        //   type: 'none',
+        //   text: error?.data?.message || error.message
+        // })
         // alert(error?.data?.message || error.message)
       } else {
         // errorCallback(error)

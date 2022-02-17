@@ -126,6 +126,7 @@ export { default } from './js/default'
 <style lang="less">
   @import "../assets/css/color";
   .ant-btn-primary{
+    display: block !important;
     width: 85.7%;
     border: none !important;
     height: 48px !important;
@@ -323,6 +324,9 @@ export { default } from './js/default'
               padding-top: 24px;
               text-align: center;
               color: #F4B74F;
+            }
+            &.hidden{
+              visibility: hidden;
             }
           }
           .confirm-btn{

@@ -131,13 +131,15 @@ export default {
           nativeCurrency: val.nativeCurrency0,
           rpcUrls: val.rpcUrls0,
           blockExplorerUrls: val.blockExplorerUrls0,
-          bridgeFactory: val.bridgeFactory0
+          bridgeFactory: val.bridgeFactory0,
+          bridge: val.bridge0
         }
       } else {
         this.fromNet = {
           chainId: val.chainId0,
           chainName: val.chainName0,
-          bridgeFactory: val.bridgeFactory0
+          bridgeFactory: val.bridgeFactory0,
+          bridge: val.bridge0
         }
       }
       this.toNet = {
@@ -147,7 +149,8 @@ export default {
         nativeCurrency: val.nativeCurrency1,
         rpcUrls: val.rpcUrls1,
         blockExplorerUrls: val.blockExplorerUrls1,
-        bridgeFactory: val.bridgeFactory1
+        bridgeFactory: val.bridgeFactory1,
+        bridge: val.bridge1
       }
     },
     // 无用
@@ -210,10 +213,10 @@ export default {
           const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
           const spender = await tokenContract.getApproved(this.tokenId)
           console.log(spender)
-          this.isApprove = spender === process.env.bridgeL1
+          this.isApprove = spender === this.fromNet.bridge
         } else if (this.tokenStandardIndex === 1) { // 1155
           const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
-          const isApprovedForAll = await tokenContract.isApprovedForAll(this.tokenId, tokenContract)
+          const isApprovedForAll = await tokenContract.isApprovedForAll(this.receiverAddress, this.fromNet.bridge)
           console.log(isApprovedForAll)
           this.isApprove = isApprovedForAll
         }
@@ -238,20 +241,41 @@ export default {
     async approve721 () {
       const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
       const spender = await tokenContract.getApproved(this.tokenId)
-      if (spender !== process.env.bridgeL1) {
-        console.log(1123123)
-        await approveToken(process.env.bridgeL1, this.tokenId, tokenContract, res => {
+      if (spender !== this.fromNet.bridge) {
+        that.iconLoading = true
+        await approveToken(this.fromNet.bridge, this.tokenId, tokenContract, res => {
           console.log(res)
+          that.iconLoading = false
           this.getApprove()
         }, err => {
           console.log(err)
+          that.iconLoading = false
           this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
         })
       }
     },
     // 1155授权
     async approve1155 () {
-
+      const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
+      const isApprovedForAll = await tokenContract.isApprovedForAll(this.receiverAddress, this.fromNet.bridge)
+      if (!isApprovedForAll) {
+        that.iconLoading = true
+        await useContractMethods({
+          contract: tokenContract,
+          methodName: 'setApprovalForAll',
+          parameters: [
+            this.fromNet.bridge,
+            true
+          ]
+        }, (res) => {
+          that.iconLoading = false
+          this.getApprove()
+        }, (err) => {
+          console.log(err)
+          that.iconLoading = false
+          this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+        })
+      }
     },
     // 打开二次确认弹框
     confirmDialog () {
@@ -262,13 +286,9 @@ export default {
       that.iconLoading = true
       let tokenContract = null
       if (this.isNeedHold) { // L2->L1
-        console.log(process.env.bridgeL2)
-        tokenContract = useTokenContract(process.env.bridgeL2, COIN_ABI.bridgeL2)
-        // tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL2, process.env.bridgeL2)
+        tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL2)
       } else { // L1->L2
-        console.log(process.env.bridgeL1)
-        tokenContract = useTokenContract(process.env.bridgeL1, COIN_ABI.bridgeL1)
-        // tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, process.env.bridgeL1)
+        tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1)
       }
       await useContractMethods({
         contract: tokenContract,

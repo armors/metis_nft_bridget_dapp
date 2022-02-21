@@ -109,6 +109,7 @@ export default () => ({
       chainId0: '31337',
       chainNameAdd0: '9545',
       bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge0: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
       nativeCurrency0: {
         name: 'ETH',
         symbol: 'ETH',
@@ -118,6 +119,7 @@ export default () => ({
       blockExplorerUrls0: ['http://localhost:9545'],
       chainName1: '8545',
       bridgeFactory1: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+      bridge1: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       chainId1: '1088',
       chainNameAdd1: '8545',
       nativeCurrency1: {
@@ -133,6 +135,7 @@ export default () => ({
       chainId: '1088',
       chainName1: '9545',
       bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge1: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
       chainId1: '31337',
       chainNameAdd1: '9545',
       nativeCurrency1: {
@@ -144,6 +147,7 @@ export default () => ({
       blockExplorerUrls1: ['http://localhost:9545'],
       chainName0: '8545',
       bridgeFactory0: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+      bridge0: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       chainId0: '1088',
       chainNameAdd0: '8545',
       nativeCurrency0: {

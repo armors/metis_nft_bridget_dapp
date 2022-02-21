@@ -132,14 +132,16 @@ export default {
           rpcUrls: val.rpcUrls0,
           blockExplorerUrls: val.blockExplorerUrls0,
           bridgeFactory: val.bridgeFactory0,
-          bridge: val.bridge0
+          bridge: val.bridge0,
+          bridgeDomain: val.bridgeDomain0
         }
       } else {
         this.fromNet = {
           chainId: val.chainId0,
           chainName: val.chainName0,
           bridgeFactory: val.bridgeFactory0,
-          bridge: val.bridge0
+          bridge: val.bridge0,
+          bridgeDomain: val.bridgeDomain0
         }
       }
       this.toNet = {
@@ -150,7 +152,8 @@ export default {
         rpcUrls: val.rpcUrls1,
         blockExplorerUrls: val.blockExplorerUrls1,
         bridgeFactory: val.bridgeFactory1,
-        bridge: val.bridge1
+        bridge: val.bridge1,
+        bridgeDomain: val.bridgeDomain1
       }
     },
     // 无用

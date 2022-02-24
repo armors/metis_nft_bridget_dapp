@@ -57,6 +57,7 @@ export default () => ({
     {
       chainName: 'Rinkeby',
       chainId: '4',
+
       chainName0: 'Rinkeby',
       chainId0: '4',
       chainNameAdd0: 'Rinkeby',
@@ -67,6 +68,12 @@ export default () => ({
       },
       rpcUrls0: ['https://rinkeby.etherscan.io/?owner=4'],
       blockExplorerUrls0: ['https://rinkeby.etherscan.io/'],
+      bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge0: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
+      bridgeDomain0: 'bridge9545',
+      oracleContract0: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
+      oracleAbi0: 'iMVM_DiscountOracle',
+
       chainName1: 'Stardust',
       chainId1: '588',
       chainNameAdd1: 'Stardust',
@@ -76,11 +83,17 @@ export default () => ({
         decimals: 18
       },
       rpcUrls1: ['https://stardust.metis.io/?owner=588'],
-      blockExplorerUrls1: ['https://stardust-explorer.metis.io']
+      blockExplorerUrls1: ['https://stardust-explorer.metis.io'],
+      bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge1: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
+      bridgeDomain1: 'bridge9545',
+      oracleContract1: '0x420000000000000000000000000000000000000F',
+      oracleAbi1: 'iOVM_GasPriceOracle'
     },
     {
       chainName: 'Stardust',
       chainId: '588',
+
       chainName1: 'Rinkeby',
       chainId1: '4',
       chainNameAdd1: 'Rinkeby',
@@ -91,6 +104,12 @@ export default () => ({
       },
       rpcUrls1: ['https://rinkeby.etherscan.io/?owner=4'],
       blockExplorerUrls1: ['https://rinkeby.etherscan.io/'],
+      bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge1: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
+      bridgeDomain1: 'bridge9545',
+      oracleContract1: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
+      oracleAbi1: 'iMVM_DiscountOracle',
+
       chainName0: 'Stardust',
       chainId0: '588',
       chainNameAdd0: 'Stardust',
@@ -100,17 +119,20 @@ export default () => ({
         decimals: 18
       },
       rpcUrls0: ['https://stardust.metis.io/?owner=588'],
-      blockExplorerUrls0: ['https://stardust-explorer.metis.io']
+      blockExplorerUrls0: ['https://stardust-explorer.metis.io'],
+      bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge0: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
+      bridgeDomain0: 'bridge9545',
+      oracleContract0: '0x420000000000000000000000000000000000000F',
+      oracleAbi0: 'iOVM_GasPriceOracle'
     },
     {
       chainName: '9545',
       chainId: '31337',
+
       chainName0: '9545',
       chainId0: '31337',
       chainNameAdd0: '9545',
-      bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
-      bridge0: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
-      bridgeDomain0: 'bridge9545',
       nativeCurrency0: {
         name: 'ETH',
         symbol: 'ETH',
@@ -118,10 +140,13 @@ export default () => ({
       },
       rpcUrls0: ['http://localhost:9545?owner=31337'],
       blockExplorerUrls0: ['http://localhost:9545'],
+      bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge0: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
+      bridgeDomain0: 'bridge9545',
+      oracleContract0: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
+      oracleAbi0: 'iMVM_DiscountOracle',
+
       chainName1: '8545',
-      bridgeFactory1: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
-      bridge1: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      bridgeDomain1: 'bridge8545',
       chainId1: '1088',
       chainNameAdd1: '8545',
       nativeCurrency1: {
@@ -130,15 +155,18 @@ export default () => ({
         decimals: 18
       },
       rpcUrls1: ['http://localhost:8545/?owner=1088'],
-      blockExplorerUrls1: ['http://localhost:8545']
+      blockExplorerUrls1: ['http://localhost:8545'],
+      bridgeFactory1: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+      bridge1: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      bridgeDomain1: 'bridge8545',
+      oracleContract1: '0x420000000000000000000000000000000000000F',
+      oracleAbi1: 'iOVM_GasPriceOracle'
     },
     {
       chainName: '8545',
       chainId: '1088',
+
       chainName1: '9545',
-      bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
-      bridge1: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
-      bridgeDomain1: 'bridge9545',
       chainId1: '31337',
       chainNameAdd1: '9545',
       nativeCurrency1: {
@@ -148,10 +176,13 @@ export default () => ({
       },
       rpcUrls1: ['http://localhost:9545?owner=31337'],
       blockExplorerUrls1: ['http://localhost:9545'],
+      bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+      bridge1: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
+      bridgeDomain1: 'bridge9545',
+      oracleContract1: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
+      oracleAbi1: 'iMVM_DiscountOracle',
+
       chainName0: '8545',
-      bridgeFactory0: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
-      bridge0: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      bridgeDomain0: 'bridge8545',
       chainId0: '1088',
       chainNameAdd0: '8545',
       nativeCurrency0: {
@@ -160,7 +191,12 @@ export default () => ({
         decimals: 18
       },
       rpcUrls0: ['http://localhost:8545/?owner=1088'],
-      blockExplorerUrls0: ['http://localhost:8545']
+      blockExplorerUrls0: ['http://localhost:8545'],
+      bridgeFactory0: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+      bridge0: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      bridgeDomain0: 'bridge8545',
+      oracleContract0: '0x420000000000000000000000000000000000000F',
+      oracleAbi0: 'iOVM_GasPriceOracle'
     }
   ],
   accounts: [],
@@ -171,7 +207,6 @@ export default () => ({
     name: 'English',
     cur_lang: 'en'
   },
-  // langInfo: require('../lang/cn.json'),
   langInfo: require('../lang/en.js').langInfoData(),
   langList: [
     {
@@ -182,17 +217,5 @@ export default () => ({
       name: 'English',
       cur_lang: 'en'
     }
-    // {
-    //   name: 'Việt Nam',
-    //   cur_lang: 'vn'
-    // },
-    // {
-    //   name: 'Indo',
-    //   cur_lang: 'indonesia'
-    // },
-    // {
-    //   name: 'Melayu',
-    //   cur_lang: 'malaysia'
-    // }
   ]
 })

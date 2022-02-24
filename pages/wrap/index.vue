@@ -69,7 +69,7 @@
              v-clipboard:error="onCopyError"
         ><img src="../../assets/image/ic_copy@2x.png" alt=""></div>
       </div>
-      <div class="confirm-btn no-select" @click="setNft">SetNFT</div>
+      <div class="confirm-btn no-select" @click="setNftEvent">SetNFT</div>
     </a-modal>
   </div>
 </template>

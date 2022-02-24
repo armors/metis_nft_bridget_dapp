@@ -1,6 +1,7 @@
-import { useTokenContract } from '../../../utils/web3/web3Utils'
+import { useTokenContract, calculateGasMargin, getGasPrice, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
+import { MaxUint256 } from '@ethersproject/constants'
 
 let that
 
@@ -11,7 +12,7 @@ export default {
       account: '',
       nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       tokenStandardIndex: 0,
-      tokenTag: '',
+      tokenTag: '0x13328e4e2f2819cd49a611930364f1513b658ee7',
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -24,7 +25,7 @@ export default {
       ],
       step: ['Step 1 ：Enter Token Address', 'Step 2：Review'],
       stepIndex: 0,
-      visible: false,
+      visible: true,
       fromNet: null,
       toNet: null,
       name: '',
@@ -66,36 +67,51 @@ export default {
       }
     },
     // 调用过setNFT方法建立关系
-    async setNft () {
+    async setNftEvent () {
       const that = this
       this.switchNetWork(that.fromNet, async () => {
         await this.initNetWork()
-        const tokenContract = useTokenContract(process.env.bridgeFactoryL1, COIN_ABI.bridgeFactory)
+        console.log(that.fromNet.bridgeFactory)
+        const tokenContract = useTokenContract(that.fromNet.bridgeFactory, COIN_ABI.bridgeFactory)
+        // const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeFactory, that.fromNet.bridgeFactory)
+        console.log(tokenContract.options)
+        const gasPrice = await getGasPrice()
+        console.log(gasPrice)
         try {
-          console.log(window.ethereum.networkVersion, that.fromNet.chainId)
-          await useContractMethods({
-            contract: tokenContract,
-            methodName: 'setNft',
-            parameters: [
-              this.nftTokenAddress,
-              this.tokenTag,
-              parseInt(window.ethereum.networkVersion),
-              1000000
-            ]
-          }, (res) => {
-            that.$message.success('set nft success', 3)
-            // console.log(res)
-            // console.log(JSON.stringify(res))
-            // that.iconLoading = false
-            // that.$message.success('wrap nft success', 3)
-            // that.decodeLog(res.transactionHash)
-            this.visible = false
-            this.stepIndex = 0
-            this.nftTokenAddress = ''
-          }, (err) => {
-            that.iconLoading = false
-            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
-          })
+          await tokenContract.setNft(
+            this.nftTokenAddress,
+            this.tokenTag,
+            parseInt(that.toNet.chainId),
+            3200000,
+            {
+              value: null,
+              gasLimit: 6400000
+            }
+          )
+          that.$message.success('set nft success', 3)
+          this.visible = false
+          this.stepIndex = 0
+          this.nftTokenAddress = ''
+          // await useContractMethods({
+          //   contract: tokenContract,
+          //   methodName: 'setNft',
+          //   parameters: [
+          //     // '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5',
+          //     // '0x13328e4e2f2819cd49a611930364f1513b658ee7',
+          //     this.nftTokenAddress,
+          //     this.tokenTag,
+          //     parseInt(that.toNet.chainId),
+          //     3200000
+          //   ]
+          // }, (res) => {
+          //   that.$message.success('set nft success', 3)
+          //   this.visible = false
+          //   this.stepIndex = 0
+          //   this.nftTokenAddress = ''
+          // }, (err) => {
+          //   that.iconLoading = false
+          //   that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+          // })
         } catch (e) {
           that.iconLoading = false
           console.log(e)

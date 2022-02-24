@@ -92,6 +92,7 @@ export async function getGasPrice () {
     const { $web3_http } = window.$nuxt
     try {
       const get_gas_price = await $web3_http.eth.getGasPrice()
+      console.log(get_gas_price)
       return {
         gasPrice: '0x' + get_gas_price.toString(16)
       }
@@ -117,7 +118,7 @@ export async function getGasLimit (contract, methodName, parameters) {
     }
   } catch (e) {
     console.error(e.message)
-    return {}
+    return null
   }
 }
 

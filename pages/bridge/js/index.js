@@ -307,35 +307,35 @@ export default {
       } else { // L1->L2
         tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1)
       }
-      // const oracleContract = useContractByRpc(that.toNet.oracleContract, COIN_ABI[that.toNet.oracleAbi], that.toNet.rpcUrls[0])
-      // const methods = that.toNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
-      // console.log(methods)
-      // let calculateGasMarginResult = 0
-      // let gasLimitBig = 0
-      // let gasLimit = 0
-      // try {
-      //   gasLimitBig = await oracleContract.methods[methods]().call()
-      //   gasLimit = parseInt(gasLimitBig.toString())
-      //   const estimatedGas = await tokenContract.estimateGas.depositTo(
-      //     this.nftTokenAddress,
-      //     this.receiverAddress,
-      //     parseInt(this.tokenId),
-      //     this.tokenStandardList[this.tokenStandardIndex].value,
-      //     gasLimit
-      //   ).catch((err) => {
-      //     console.log(err)
-      //     return tokenContract.estimateGas.depositTo(
-      //       this.nftTokenAddress,
-      //       this.receiverAddress,
-      //       parseInt(this.tokenId),
-      //       this.tokenStandardList[this.tokenStandardIndex].value,
-      //       gasLimit
-      //     )
-      //   })
-      //   calculateGasMarginResult = parseInt(calculateGasMargin(estimatedGas).toString())
-      // } catch (e) {
-      // }
-      // console.log('gasLimit--', gasLimit, 'calculateGasMarginResult--', calculateGasMarginResult, 'calculateGasMarginResult+gasLimit--', calculateGasMarginResult + gasLimit)
+      const oracleContract = useContractByRpc(that.toNet.oracleContract, COIN_ABI[that.toNet.oracleAbi], that.toNet.rpcUrls[0])
+      const methods = that.toNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      console.log(methods)
+      let calculateGasMarginResult = 0
+      let gasLimitBig = 0
+      let gasLimit = 0
+      try {
+        gasLimitBig = await oracleContract.methods[methods]().call()
+        gasLimit = parseInt(gasLimitBig.toString())
+        const estimatedGas = await tokenContract.estimateGas.depositTo(
+          this.nftTokenAddress,
+          this.receiverAddress,
+          parseInt(this.tokenId),
+          this.tokenStandardList[this.tokenStandardIndex].value,
+          gasLimit
+        ).catch((err) => {
+          console.log(err)
+          return tokenContract.estimateGas.depositTo(
+            this.nftTokenAddress,
+            this.receiverAddress,
+            parseInt(this.tokenId),
+            this.tokenStandardList[this.tokenStandardIndex].value,
+            gasLimit
+          )
+        })
+        calculateGasMarginResult = parseInt(calculateGasMargin(estimatedGas).toString())
+      } catch (e) {
+      }
+      console.log('gasLimit--', gasLimit, 'calculateGasMarginResult--', calculateGasMarginResult, 'calculateGasMarginResult+gasLimit--', calculateGasMarginResult + gasLimit)
       await useContractMethods({
         contract: tokenContract,
         methodName: 'depositTo',
@@ -344,12 +344,12 @@ export default {
           this.receiverAddress,
           parseInt(this.tokenId),
           this.tokenStandardList[this.tokenStandardIndex].value,
-          3200000,
-          { value: 3200000000000000 }
-          // gasLimit,
-          // {
-          //   gasLimit: calculateGasMarginResult + gasLimit
-          // }
+          // 3200000,
+          // { value: 3200000000000000 }
+          gasLimit,
+          {
+            gasLimit: calculateGasMarginResult + gasLimit
+          }
         ]
       }, res => {
         console.log(res)

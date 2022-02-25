@@ -1,6 +1,10 @@
-import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import {
+  calculateGasMargin,
+  useContractByRpc,
+  useTokenContract
+} from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods, sendTransactionEvent } from '../../../utils/web3/contractEvent'
+import { useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveToken } from '../../../utils/web3/approveToken'
 
 let that
@@ -133,7 +137,9 @@ export default {
           blockExplorerUrls: val.blockExplorerUrls0,
           bridgeFactory: val.bridgeFactory0,
           bridge: val.bridge0,
-          bridgeDomain: val.bridgeDomain0
+          bridgeDomain: val.bridgeDomain0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
         }
       } else {
         this.fromNet = {
@@ -141,7 +147,9 @@ export default {
           chainName: val.chainName0,
           bridgeFactory: val.bridgeFactory0,
           bridge: val.bridge0,
-          bridgeDomain: val.bridgeDomain0
+          bridgeDomain: val.bridgeDomain0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
         }
       }
       this.toNet = {
@@ -153,7 +161,9 @@ export default {
         blockExplorerUrls: val.blockExplorerUrls1,
         bridgeFactory: val.bridgeFactory1,
         bridge: val.bridge1,
-        bridgeDomain: val.bridgeDomain1
+        bridgeDomain: val.bridgeDomain1,
+        oracleContract: val.oracleContract1,
+        oracleAbi: val.oracleAbi1
       }
     },
     // 无用
@@ -207,7 +217,7 @@ export default {
       this.iconLoading = false
     },
     // 判断是否授权
-    async getApprove () {
+    async getApprove (isShow = false) {
       if (!this.nftTokenAddress || !this.tokenId) {
         return
       }
@@ -223,14 +233,14 @@ export default {
           console.log(isApprovedForAll)
           this.isApprove = isApprovedForAll
         }
-      } catch (e) {
-        console.log(e)
+        if (isShow) this.visible = !this.isApprove
+      } catch (err) {
+        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
       }
     },
     // 打开二次确认授权
     async approveDialog () {
-      await this.getApprove()
-      this.visible = !this.isApprove
+      await this.getApprove(true)
     },
     // 授权操作
     approveFun () {
@@ -246,6 +256,7 @@ export default {
       const spender = await tokenContract.getApproved(this.tokenId)
       if (spender !== this.fromNet.bridge) {
         that.iconLoading = true
+        console.log(this.fromNet)
         await approveToken(this.fromNet.bridge, this.tokenId, tokenContract, res => {
           console.log(res)
           that.iconLoading = false
@@ -288,11 +299,43 @@ export default {
     async confirmFun () {
       that.iconLoading = true
       let tokenContract = null
+      // L2->L1   L1->L2
+      // const abi = this.isNeedHold ? COIN_ABI.bridgeL2 : COIN_ABI.bridgeL1
+      // tokenContract = useTokenContract(this.fromNet.bridge, abi)
       if (this.isNeedHold) { // L2->L1
         tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL2)
       } else { // L1->L2
         tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1)
       }
+      // const oracleContract = useContractByRpc(that.toNet.oracleContract, COIN_ABI[that.toNet.oracleAbi], that.toNet.rpcUrls[0])
+      // const methods = that.toNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      // console.log(methods)
+      // let calculateGasMarginResult = 0
+      // let gasLimitBig = 0
+      // let gasLimit = 0
+      // try {
+      //   gasLimitBig = await oracleContract.methods[methods]().call()
+      //   gasLimit = parseInt(gasLimitBig.toString())
+      //   const estimatedGas = await tokenContract.estimateGas.depositTo(
+      //     this.nftTokenAddress,
+      //     this.receiverAddress,
+      //     parseInt(this.tokenId),
+      //     this.tokenStandardList[this.tokenStandardIndex].value,
+      //     gasLimit
+      //   ).catch((err) => {
+      //     console.log(err)
+      //     return tokenContract.estimateGas.depositTo(
+      //       this.nftTokenAddress,
+      //       this.receiverAddress,
+      //       parseInt(this.tokenId),
+      //       this.tokenStandardList[this.tokenStandardIndex].value,
+      //       gasLimit
+      //     )
+      //   })
+      //   calculateGasMarginResult = parseInt(calculateGasMargin(estimatedGas).toString())
+      // } catch (e) {
+      // }
+      // console.log('gasLimit--', gasLimit, 'calculateGasMarginResult--', calculateGasMarginResult, 'calculateGasMarginResult+gasLimit--', calculateGasMarginResult + gasLimit)
       await useContractMethods({
         contract: tokenContract,
         methodName: 'depositTo',
@@ -301,14 +344,19 @@ export default {
           this.receiverAddress,
           parseInt(this.tokenId),
           this.tokenStandardList[this.tokenStandardIndex].value,
-          3200000000
+          3200000,
+          { value: 3200000000000000 }
+          // gasLimit,
+          // {
+          //   gasLimit: calculateGasMarginResult + gasLimit
+          // }
         ]
-      }, (res) => {
+      }, res => {
         console.log(res)
         that.iconLoading = false
         that.$message.success('depositTo nft success', 3)
         this.visible = false
-      }, (err) => {
+      }, err => {
         console.log(err)
         that.iconLoading = false
         that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)

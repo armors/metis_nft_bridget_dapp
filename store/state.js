@@ -66,7 +66,7 @@ export default () => ({
         symbol: 'ETH',
         decimals: 18
       },
-      rpcUrls0: ['https://rinkeby.etherscan.io/?owner=4'],
+      rpcUrls0: ['https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
       blockExplorerUrls0: ['https://rinkeby.etherscan.io/'],
       bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
       bridge0: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',
@@ -102,7 +102,7 @@ export default () => ({
         symbol: 'ETH',
         decimals: 18
       },
-      rpcUrls1: ['https://rinkeby.etherscan.io/?owner=4'],
+      rpcUrls1: ['https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
       blockExplorerUrls1: ['https://rinkeby.etherscan.io/'],
       bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
       bridge1: '0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f',

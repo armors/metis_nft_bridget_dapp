@@ -102,8 +102,11 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   } else if (parameters.length === 4) {
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3])
   } else if (parameters.length === 5) {
-    console.log(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
+  } else if (parameters.length === 6) {
+    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5])
+  } else if (parameters.length === 7) {
+    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6])
   }
   const { $store, $toastBox } = window.$nuxt
   // $store.dispatch('updateLoading', true)

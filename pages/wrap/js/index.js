@@ -1,4 +1,4 @@
-import { useTokenContract, calculateGasMargin, getGasPrice, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import { useTokenContract, useContractByRpc, calculateGasMargin, getGasPrice, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -10,9 +10,10 @@ export default {
     return {
       iconLoading: false,
       account: '',
-      nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      // nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      nftTokenAddress: '',
       tokenStandardIndex: 0,
-      tokenTag: '0x13328e4e2f2819cd49a611930364f1513b658ee7',
+      tokenTag: '',
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -25,7 +26,7 @@ export default {
       ],
       step: ['Step 1 ：Enter Token Address', 'Step 2：Review'],
       stepIndex: 0,
-      visible: true,
+      visible: false,
       fromNet: null,
       toNet: null,
       name: '',
@@ -34,7 +35,12 @@ export default {
     }
   },
   components: {},
-  computed: {},
+  computed: {
+    // 是否需要等待8天
+    isNeedHold: function () {
+      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '558')
+    }
+  },
   watch: {
     // 获取用户信息
     '$store.state.accounts': function (val) {
@@ -71,52 +77,54 @@ export default {
       const that = this
       this.switchNetWork(that.fromNet, async () => {
         await this.initNetWork()
-        console.log(that.fromNet.bridgeFactory)
+        that.iconLoading = true
         const tokenContract = useTokenContract(that.fromNet.bridgeFactory, COIN_ABI.bridgeFactory)
-        // const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeFactory, that.fromNet.bridgeFactory)
-        console.log(tokenContract.options)
-        const gasPrice = await getGasPrice()
-        console.log(gasPrice)
+
+        const oracleContract = useContractByRpc(that.toNet.oracleContract, COIN_ABI[that.toNet.oracleAbi], that.toNet.rpcUrls[0])
+        const methods = that.toNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+        let calculateGasMarginResult = 0
+        let gasLimitBig = 0
+        let gasLimit = 0
         try {
-          await tokenContract.setNft(
+          gasLimitBig = await oracleContract.methods[methods]().call()
+          gasLimit = parseInt(gasLimitBig.toString())
+          const estimatedGas = await tokenContract.estimateGas.setNft(this.nftTokenAddress, this.tokenTag, parseInt(that.toNet.chainId), gasLimit)
+            .catch((err) => {
+              console.log(err)
+              return tokenContract.estimateGas.setNft(
+                this.nftTokenAddress,
+                this.tokenTag,
+                parseInt(that.toNet.chainId),
+                gasLimit
+              )
+            })
+          calculateGasMarginResult = parseInt(calculateGasMargin(estimatedGas).toString())
+        } catch (e) {
+        }
+        console.log('gasLimit--', gasLimit, 'calculateGasMarginResult--', calculateGasMarginResult, 'calculateGasMarginResult+gasLimit--', calculateGasMarginResult + gasLimit)
+        await useContractMethods({
+          contract: tokenContract,
+          methodName: 'setNft',
+          parameters: [
             this.nftTokenAddress,
             this.tokenTag,
             parseInt(that.toNet.chainId),
-            3200000,
+            gasLimit,
             {
-              value: null,
-              gasLimit: 6400000
+              gasLimit: calculateGasMarginResult + gasLimit
             }
-          )
+          ]
+        }, res => {
           that.$message.success('set nft success', 3)
+          that.iconLoading = false
           this.visible = false
           this.stepIndex = 0
           this.nftTokenAddress = ''
-          // await useContractMethods({
-          //   contract: tokenContract,
-          //   methodName: 'setNft',
-          //   parameters: [
-          //     // '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5',
-          //     // '0x13328e4e2f2819cd49a611930364f1513b658ee7',
-          //     this.nftTokenAddress,
-          //     this.tokenTag,
-          //     parseInt(that.toNet.chainId),
-          //     3200000
-          //   ]
-          // }, (res) => {
-          //   that.$message.success('set nft success', 3)
-          //   this.visible = false
-          //   this.stepIndex = 0
-          //   this.nftTokenAddress = ''
-          // }, (err) => {
-          //   that.iconLoading = false
-          //   that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
-          // })
-        } catch (e) {
+        }, e => {
           that.iconLoading = false
           console.log(e)
           that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
-        }
+        })
       })
     },
     // 钱包地址获取到之后加载页面数据
@@ -153,13 +161,17 @@ export default {
           nativeCurrency: val.nativeCurrency0,
           rpcUrls: val.rpcUrls0,
           blockExplorerUrls: val.blockExplorerUrls0,
-          bridgeFactory: val.bridgeFactory0
+          bridgeFactory: val.bridgeFactory0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
         }
       } else {
         this.fromNet = {
           chainId: val.chainId0,
           chainName: val.chainName0,
-          bridgeFactory: val.bridgeFactory0
+          bridgeFactory: val.bridgeFactory0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
         }
       }
       this.toNet = {
@@ -169,7 +181,9 @@ export default {
         nativeCurrency: val.nativeCurrency1,
         rpcUrls: val.rpcUrls1,
         blockExplorerUrls: val.blockExplorerUrls1,
-        bridgeFactory: val.bridgeFactory1
+        bridgeFactory: val.bridgeFactory1,
+        oracleContract: val.oracleContract1,
+        oracleAbi: val.oracleAbi1
       }
     },
     // 无用
@@ -356,12 +370,9 @@ export default {
     // metamask连接方式wrap操作
     async createPair (method, args) {
       await this.initNetWork()
-
-      const tokenContract1 = useTokenContract(this.toNet.bridgeFactory, COIN_ABI.bridgeFactory)
-      console.log(this.nftTokenAddress)
-      console.log(await tokenContract1.getPair(this.nftTokenAddress))
-
       const tokenContract = useTokenContract(this.toNet.bridgeFactory, COIN_ABI.bridgeFactory)
+      console.log(this.nftTokenAddress)
+      console.log(await tokenContract.getPair(this.nftTokenAddress))
       try {
         await useContractMethods({
           contract: tokenContract,

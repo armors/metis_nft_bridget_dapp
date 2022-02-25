@@ -435,13 +435,13 @@ export { default } from './js/default'
         &.ant-message-success{
           background-color: #65DA86;
           &:before{
-            content: 'transferred';
+            content: 'success';
           }
         }
         &.ant-message-warning{
           background-color: #F4B74F;
           &:before{
-            content: 'Pending';
+            content: 'warn';
           }
         }
         &.ant-message-info{

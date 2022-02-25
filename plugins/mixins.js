@@ -89,6 +89,7 @@ export default {
     },
     // 获取chainName
     getChainName (network) {
+      console.log(network)
       return network !== null ? network.chainName : '--'
     },
     // polis链接判断

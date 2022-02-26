@@ -20,9 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/js/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/js/default.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/history/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/history/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/wrap/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/state.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/state.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/web3/contractEvent.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/web3/contractEvent.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +76,7 @@
       <workItem from="1645634257979" duration="3000" />
       <workItem from="1645667371473" duration="6812000" />
       <workItem from="1645754574367" duration="2498000" />
-      <workItem from="1645762887494" duration="7783000" />
+      <workItem from="1645762887494" duration="32763000" />
     </task>
     <servers />
   </component>
@@ -90,14 +96,22 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1540" y="76" width="1720" height="857" key="DiffContextDialog" timestamp="1645798029384">
+      <screen x="1440" y="-24" width="1920" height="1057" />
+    </state>
+    <state x="1540" y="76" width="1720" height="857" key="DiffContextDialog/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1645798029384" />
     <state x="1777" y="32" key="SettingsEditor" timestamp="1645450959194">
       <screen x="1440" y="-24" width="1920" height="1010" />
     </state>
     <state x="1777" y="32" key="SettingsEditor/0.23.1440.877/1440.-24.1920.1010@1440.-24.1920.1010" timestamp="1645450959194" />
-    <state x="1904" y="112" width="992" height="785" key="find.popup" timestamp="1645771720761">
-      <screen x="1440" y="-24" width="1920" height="1057" />
+    <state x="348" y="130" width="744" height="616" key="find.popup" timestamp="1645848774526">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
-    <state x="1904" y="112" width="992" height="785" key="find.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1645771720761" />
-    <state x="348" y="130" width="744" height="616" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1645631933212" />
+    <state x="1904" y="112" width="992" height="785" key="find.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1645803311833" />
+    <state x="348" y="130" width="744" height="616" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1645848774526" />
+    <state x="526" y="188" key="refactoring.ChangeSignatureDialog" timestamp="1645846497684">
+      <screen x="0" y="23" width="1440" height="830" />
+    </state>
+    <state x="526" y="188" key="refactoring.ChangeSignatureDialog/0.23.1440.830@0.23.1440.830" timestamp="1645846497684" />
   </component>
 </project>

@@ -1,19 +1,31 @@
 import { useTokenContract, useContractByRpc, calculateGasMargin, getGasPrice, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods } from '../../../utils/web3/contractEvent'
-import { MaxUint256 } from '@ethersproject/constants'
-
+import { useContractMethods, sendTransactionEvent } from '../../../utils/web3/contractEvent'
+import { BigNumber } from '@ethersproject/bignumber'
+// import { MaxUint256 } from '@ethersproject/constants'
+// const { predeploys, getContractInterface } = require('@metis.io/contracts')
+// const ethers = require('ethers')
+//
+// const l1MVM_DiscountOracleArtifact = require('../node_modules/@metis.io/contracts/artifacts/contracts/MVM/MVM_DiscountOracle.sol/MVM_DiscountOracle.json')
+// const l1MVM_DiscountOracle = new ethers.ContractFactory(l1MVM_DiscountOracleArtifact.abi, l1MVM_DiscountOracleArtifact.bytecode)
+//
+// const OVM_GasPriceOracleArtifact = require('../node_modules/@metis.io/contracts/artifacts/contracts/L2/predeploys/OVM_GasPriceOracle.sol/OVM_GasPriceOracle.json')
+// const OVM_GasPriceOracle = new ethers.ContractFactory(OVM_GasPriceOracleArtifact.abi, OVM_GasPriceOracleArtifact.bytecode)
 let that
-
+// * L1 预言机 oracle = iMVM_DiscountOracle.sol  接口合约
+// L1 验证 传入的 destGasLimit 最小为： oracle.getMinL2Gas();
+// 支付的gas 需要 >= destGasLimit * oracle.getDiscount();
+//
+// * L2 预言机 oracle = iOVM_GasPriceOracle 接口合约 地址：
+// 支付的gas 需要 >= oracle.minErc20BridgeCost();
 export default {
   data () {
     return {
       iconLoading: false,
       account: '',
-      // nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
-      nftTokenAddress: '',
+      nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
       tokenStandardIndex: 0,
-      tokenTag: '',
+      tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -26,7 +38,7 @@ export default {
       ],
       step: ['Step 1 ：Enter Token Address', 'Step 2：Review'],
       stepIndex: 0,
-      visible: false,
+      visible: true,
       fromNet: null,
       toNet: null,
       name: '',
@@ -78,53 +90,45 @@ export default {
       this.switchNetWork(that.fromNet, async () => {
         await this.initNetWork()
         that.iconLoading = true
-        const tokenContract = useTokenContract(that.fromNet.bridgeFactory, COIN_ABI.bridgeFactory)
-
-        const oracleContract = useContractByRpc(that.toNet.oracleContract, COIN_ABI[that.toNet.oracleAbi], that.toNet.rpcUrls[0])
-        const methods = that.toNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
-        let calculateGasMarginResult = 0
+        const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeFactory, that.fromNet.bridgeFactory)
+        const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+        const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
         let gasLimitBig = 0
         let gasLimit = 0
         try {
           gasLimitBig = await oracleContract.methods[methods]().call()
           gasLimit = parseInt(gasLimitBig.toString())
-          const estimatedGas = await tokenContract.estimateGas.setNft(this.nftTokenAddress, this.tokenTag, parseInt(that.toNet.chainId), gasLimit)
-            .catch((err) => {
-              console.log(err)
-              return tokenContract.estimateGas.setNft(
-                this.nftTokenAddress,
-                this.tokenTag,
-                parseInt(that.toNet.chainId),
-                gasLimit
-              )
-            })
-          calculateGasMarginResult = parseInt(calculateGasMargin(estimatedGas).toString())
-        } catch (e) {
-        }
-        console.log('gasLimit--', gasLimit, 'calculateGasMarginResult--', calculateGasMarginResult, 'calculateGasMarginResult+gasLimit--', calculateGasMarginResult + gasLimit)
-        await useContractMethods({
-          contract: tokenContract,
-          methodName: 'setNft',
-          parameters: [
+          const getDiscount = await oracleContract.methods.getDiscount().call()
+          console.log(getDiscount.toString())
+          console.log(gasLimit * getDiscount.toString())
+          console.log(that.account, that.$account)
+          sendTransactionEvent(tokenContract.methods.setNft(
             this.nftTokenAddress,
             this.tokenTag,
-            parseInt(that.toNet.chainId),
-            gasLimit,
-            {
-              gasLimit: calculateGasMarginResult + gasLimit
+            parseInt(that.fromNet.chainId),
+            gasLimit
+          ).send({
+            from: that.account,
+            value: 320000000
+          }), {
+            summary: `setNft ${that.tokenTag}`
+          }, (res) => {
+            console.log(res)
+            that.iconLoading = false
+            if (!res.status) {
+              return that.$message.error('set nft error', 3)
             }
-          ]
-        }, res => {
-          that.$message.success('set nft success', 3)
-          that.iconLoading = false
-          this.visible = false
-          this.stepIndex = 0
-          this.nftTokenAddress = ''
-        }, e => {
-          that.iconLoading = false
-          console.log(e)
-          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
-        })
+            that.$message.success('set nft success', 3)
+            this.visible = false
+            this.stepIndex = 0
+            this.nftTokenAddress = ''
+          }, e => {
+            that.iconLoading = false
+            console.log(e)
+            that.$message.error(e?.data?.message || e?.message ? e.message : 'set nft error', 3)
+          })
+        } catch (e) {
+        }
       })
     },
     // 钱包地址获取到之后加载页面数据

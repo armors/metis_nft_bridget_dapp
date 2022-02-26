@@ -105,6 +105,9 @@ export default {
         this.loginMetis()
       }
     },
+    connectAccountFunc () {
+      this.connectAccount()
+    },
     // 关闭选择连接方式弹窗
     closeWalletType () {
       this.$store.dispatch('updateDialogConnectType', false)

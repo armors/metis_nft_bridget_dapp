@@ -11,7 +11,7 @@
       <div class="title-text">Receiver Address({{getChainName(toNet)}})</div>
       <div> <a-input placeholder="Add text" v-model="receiverAddress"/></div>
       <div class="title-text">Token IDs</div>
-      <div> <a-input placeholder="Add text" v-model="tokenId" @blur="getApprove"/></div>
+      <div> <a-input placeholder="Add text" v-model="tokenId" @blur="tokenIdBlur"/></div>
       <!--      <div class="token-id-list display-flex box-nowrap">-->
 <!--        <div class="token-id-item no-select" @click="selectTokenId(v, i)" v-for="(v, i) in tokenIdList" :key="`token-id-${i}`" :class="{active: tokenIdIndex === i}">#{{v.key}}</div>-->
 <!--      </div>-->

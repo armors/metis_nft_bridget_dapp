@@ -1,10 +1,10 @@
 import {
   calculateGasMargin,
   useContractByRpc,
-  useTokenContract
+  useTokenContract, useTokenContractWeb3
 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods } from '../../../utils/web3/contractEvent'
+import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveToken } from '../../../utils/web3/approveToken'
 
 let that
@@ -15,7 +15,7 @@ export default {
       visible: false,
       isShowTop: false,
       account: '',
-      nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       receiverAddress: '',
       tokenId: '1',
       tokenIdList: [
@@ -181,6 +181,7 @@ export default {
       console.log(this.$web3_http)
       try {
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
+        console.log(tokenContract)
         if (tokenContract?.code && tokenContract.code === 500) {
           this.iconLoading = false
           return that.$message.error(tokenContract.error.message, 3)
@@ -216,8 +217,12 @@ export default {
       }
       this.iconLoading = false
     },
+    tokenIdBlur () {
+      this.getApprove()
+    },
     // 判断是否授权
     async getApprove (isShow = false) {
+      console.log(isShow)
       if (!this.nftTokenAddress || !this.tokenId) {
         return
       }
@@ -298,69 +303,53 @@ export default {
     // deposit 操作
     async confirmFun () {
       that.iconLoading = true
-      let tokenContract = null
       // L2->L1   L1->L2
-      // const abi = this.isNeedHold ? COIN_ABI.bridgeL2 : COIN_ABI.bridgeL1
-      // tokenContract = useTokenContract(this.fromNet.bridge, abi)
-      if (this.isNeedHold) { // L2->L1
-        tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL2)
-      } else { // L1->L2
-        tokenContract = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1)
-      }
-      const oracleContract = useContractByRpc(that.toNet.oracleContract, COIN_ABI[that.toNet.oracleAbi], that.toNet.rpcUrls[0])
-      const methods = that.toNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
-      console.log(methods)
-      let calculateGasMarginResult = 0
+      const abi = this.isNeedHold ? COIN_ABI.bridgeL2 : COIN_ABI.bridgeL1
+      const tokenContract = useTokenContractWeb3(abi, this.fromNet.bridge)
+      // if (this.isNeedHold) { // L2->L1
+      //   tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL2, this.fromNet.bridge)
+      // } else { // L1->L2
+      //   tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, this.fromNet.bridge)
+      // }
+      const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+      console.log(that.fromNet.oracleAbi)
+      const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
       let gasLimitBig = 0
       let gasLimit = 0
       try {
         gasLimitBig = await oracleContract.methods[methods]().call()
         gasLimit = parseInt(gasLimitBig.toString())
-        const estimatedGas = await tokenContract.estimateGas.depositTo(
+        const getDiscount = await oracleContract.methods.getDiscount().call()
+        console.log(getDiscount.toString())
+        console.log(gasLimit * getDiscount.toString())
+        console.log(that.account, that.$account)
+        console.log(this.nftTokenAddress,
+          this.receiverAddress,
+          parseInt(this.tokenId),
+          this.tokenStandardList[this.tokenStandardIndex].value)
+        sendTransactionEvent(tokenContract.methods.depositTo(
           this.nftTokenAddress,
           this.receiverAddress,
           parseInt(this.tokenId),
           this.tokenStandardList[this.tokenStandardIndex].value,
           gasLimit
-        ).catch((err) => {
+        ).send({
+          from: that.account,
+          value: 320000000
+        }), {
+          summary: `deposit ${that.receiverAddress}`
+        }, (res) => {
+          console.log(res)
+          that.iconLoading = false
+          that.$message.success('depositTo nft success', 3)
+          this.visible = false
+        }, err => {
           console.log(err)
-          return tokenContract.estimateGas.depositTo(
-            this.nftTokenAddress,
-            this.receiverAddress,
-            parseInt(this.tokenId),
-            this.tokenStandardList[this.tokenStandardIndex].value,
-            gasLimit
-          )
+          that.iconLoading = false
+          that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
         })
-        calculateGasMarginResult = parseInt(calculateGasMargin(estimatedGas).toString())
       } catch (e) {
       }
-      console.log('gasLimit--', gasLimit, 'calculateGasMarginResult--', calculateGasMarginResult, 'calculateGasMarginResult+gasLimit--', calculateGasMarginResult + gasLimit)
-      await useContractMethods({
-        contract: tokenContract,
-        methodName: 'depositTo',
-        parameters: [
-          this.nftTokenAddress,
-          this.receiverAddress,
-          parseInt(this.tokenId),
-          this.tokenStandardList[this.tokenStandardIndex].value,
-          // 3200000,
-          // { value: 3200000000000000 }
-          gasLimit,
-          {
-            gasLimit: calculateGasMarginResult + gasLimit
-          }
-        ]
-      }, res => {
-        console.log(res)
-        that.iconLoading = false
-        that.$message.success('depositTo nft success', 3)
-        this.visible = false
-      }, err => {
-        console.log(err)
-        that.iconLoading = false
-        that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
-      })
     }
   }
 }

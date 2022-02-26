@@ -1,31 +1,17 @@
-import { useTokenContract, useContractByRpc, calculateGasMargin, getGasPrice, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import { useTokenContract, useContractByRpc, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods, sendTransactionEvent } from '../../../utils/web3/contractEvent'
-import { BigNumber } from '@ethersproject/bignumber'
-// import { MaxUint256 } from '@ethersproject/constants'
-// const { predeploys, getContractInterface } = require('@metis.io/contracts')
-// const ethers = require('ethers')
-//
-// const l1MVM_DiscountOracleArtifact = require('../node_modules/@metis.io/contracts/artifacts/contracts/MVM/MVM_DiscountOracle.sol/MVM_DiscountOracle.json')
-// const l1MVM_DiscountOracle = new ethers.ContractFactory(l1MVM_DiscountOracleArtifact.abi, l1MVM_DiscountOracleArtifact.bytecode)
-//
-// const OVM_GasPriceOracleArtifact = require('../node_modules/@metis.io/contracts/artifacts/contracts/L2/predeploys/OVM_GasPriceOracle.sol/OVM_GasPriceOracle.json')
-// const OVM_GasPriceOracle = new ethers.ContractFactory(OVM_GasPriceOracleArtifact.abi, OVM_GasPriceOracleArtifact.bytecode)
 let that
-// * L1 预言机 oracle = iMVM_DiscountOracle.sol  接口合约
-// L1 验证 传入的 destGasLimit 最小为： oracle.getMinL2Gas();
-// 支付的gas 需要 >= destGasLimit * oracle.getDiscount();
-//
-// * L2 预言机 oracle = iOVM_GasPriceOracle 接口合约 地址：
-// 支付的gas 需要 >= oracle.minErc20BridgeCost();
 export default {
   data () {
     return {
       iconLoading: false,
       account: '',
-      nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
-      tokenStandardIndex: 0,
-      tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
+      // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
+      nftTokenAddress: '',
+      tokenStandardIndex: -1,
+      // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
+      tokenTag: '',
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -38,7 +24,7 @@ export default {
       ],
       step: ['Step 1 ：Enter Token Address', 'Step 2：Review'],
       stepIndex: 0,
-      visible: true,
+      visible: false,
       fromNet: null,
       toNet: null,
       name: '',
@@ -92,6 +78,12 @@ export default {
         that.iconLoading = true
         const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeFactory, that.fromNet.bridgeFactory)
         const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+        /* L1 预言机 oracle = iMVM_DiscountOracle.sol  接口合约
+         * L1 验证 传入的 destGasLimit 最小为： oracle.getMinL2Gas();
+         * 支付的gas 需要 >= destGasLimit * oracle.getDiscount();
+         * L2 预言机 oracle = iOVM_GasPriceOracle 接口合约 地址：
+         * 支付的gas 需要 >= oracle.minErc20BridgeCost();
+         */
         const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
         let gasLimitBig = 0
         let gasLimit = 0

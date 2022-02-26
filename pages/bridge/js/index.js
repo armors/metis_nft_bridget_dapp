@@ -1,5 +1,4 @@
 import {
-  calculateGasMargin,
   useContractByRpc,
   useTokenContract, useTokenContractWeb3
 } from '../../../utils/web3/web3Utils'
@@ -15,7 +14,8 @@ export default {
       visible: false,
       isShowTop: false,
       account: '',
-      nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      nftTokenAddress: '', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       receiverAddress: '',
       tokenId: '1',
       tokenIdList: [
@@ -53,7 +53,7 @@ export default {
         }
       ],
       tokenIdIndex: 0,
-      tokenStandardIndex: 0,
+      tokenStandardIndex: -1,
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -120,9 +120,6 @@ export default {
       }
       console.log(that.toNet)
       this.switchNetWork(that.toNet, () => {
-        // const toNet = that.toNet
-        // that.toNet = that.fromNet
-        // that.fromNet = toNet
       })
     },
     // network信息获取
@@ -176,14 +173,14 @@ export default {
     },
     // nft token address 鼠标移除事件判断是否授权
     async nftTokenBlur () {
-      this.iconLoading = true
+      // this.iconLoading = true
       const that = this
       console.log(this.$web3_http)
       try {
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
         console.log(tokenContract)
         if (tokenContract?.code && tokenContract.code === 500) {
-          this.iconLoading = false
+          // this.iconLoading = false
           return that.$message.error(tokenContract.error.message, 3)
         }
         const symbol = await tokenContract.symbol()
@@ -198,7 +195,7 @@ export default {
           try {
             const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
             if (tokenContract?.code && tokenContract.code === 500) {
-              this.iconLoading = false
+              // this.iconLoading = false
               return that.$message.error(tokenContract.error.message, 3)
             }
             const baseUrl = await tokenContract.uri(this.nftTokenAddress)
@@ -215,7 +212,7 @@ export default {
           that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         }
       }
-      this.iconLoading = false
+      // this.iconLoading = false
     },
     tokenIdBlur () {
       this.getApprove()
@@ -226,6 +223,7 @@ export default {
       if (!this.nftTokenAddress || !this.tokenId) {
         return
       }
+      if (isShow) this.iconLoading = true
       try {
         if (this.tokenStandardIndex === 0) { // 721
           const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
@@ -239,7 +237,9 @@ export default {
           this.isApprove = isApprovedForAll
         }
         if (isShow) this.visible = !this.isApprove
+        if (isShow) this.iconLoading = false
       } catch (err) {
+        if (isShow) this.iconLoading = false
         this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
       }
     },
@@ -306,11 +306,6 @@ export default {
       // L2->L1   L1->L2
       const abi = this.isNeedHold ? COIN_ABI.bridgeL2 : COIN_ABI.bridgeL1
       const tokenContract = useTokenContractWeb3(abi, this.fromNet.bridge)
-      // if (this.isNeedHold) { // L2->L1
-      //   tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL2, this.fromNet.bridge)
-      // } else { // L1->L2
-      //   tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, this.fromNet.bridge)
-      // }
       const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
       console.log(that.fromNet.oracleAbi)
       const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'

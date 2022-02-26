@@ -14,7 +14,7 @@
           <div class="table-td display-flex box-center arrival-time">Arrival Time</div>
           <div class="table-td display-flex box-center">Status</div>
         </div>
-        <div class="table-list">
+        <div class="table-list" :class="{'style-10':tableList.length > 6}">
           <div class="table-item display-flex" v-for="(v, i) in tableList" :key="`table-item-${i}`">
             <div class="table-td display-flex box-center nft-token-address">{{v.nftTokenAddress}}</div>
             <div class="table-td display-flex box-center">{{v.receiverAddress}}</div>
@@ -68,6 +68,7 @@ export { default } from './js/index'
             color: #FFFFFF;
             &.approve-time, &.arrival-time{
               width: 148px;
+              padding: 0 12px;
             }
             &.nft-token-address{
               width: 114px;
@@ -86,7 +87,27 @@ export { default } from './js/index'
             }
           }
         }
+        .style-10::-webkit-scrollbar {
+          width: 10px;
+          background-color: #F5F5F5;
+          border-radius: 10px;
+        }
+        .style-10::-webkit-scrollbar-thumb {
+          background-color: #AAA;
+          border-radius: 10px;
+          background-image: -webkit-linear-gradient(90deg,
+          rgba(0, 0, 0, .2) 25%,
+          rgba(0, 0, 0, .4) 45%,
+          );
+        }
+        .style-10::-webkit-scrollbar-track {
+          -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+          background-color: #F5F5F5;
+          border-radius: 10px;
+        }
         .table-list{
+          height: 440px;
+          overflow-y: scroll;
           .table-item{
             height: 72px;
             .table-td{

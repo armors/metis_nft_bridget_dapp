@@ -46,10 +46,6 @@
         </a-button>
       </template>
     </div>
-    <div class="display-flex">
-      <a href="javascript:;" class="history-text">View your history ></a>
-    </div>
-
     <a-modal
       v-model="visible"
       title=""

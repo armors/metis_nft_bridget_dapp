@@ -141,7 +141,9 @@ export default {
         //   arrivalTime: 'Estimated time of arrival is before Nov 20, 2022',
         //   status: 'Finish'
         // }
-      ]
+      ],
+      fromNet: null,
+      toNet: null
     }
   },
   components: {
@@ -149,7 +151,9 @@ export default {
   computed: {
     // 是否需要等待8天
     isNeedHold: function () {
-      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '588')
+      const isWait = this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '588')
+      console.log(isWait)
+      return isWait
     }
   },
   watch: {
@@ -159,11 +163,11 @@ export default {
     //   this.setAccount(val)
     // },
     '$store.state.lang': function (val) {
-    }
+    },
     // 切换网络
-    // '$store.state.netWork': function (val) {
-    //   this.initPage()
-    // }
+    '$store.state.netWork': function (val) {
+      this.initNetData(val)
+    }
   },
   created () {
   },
@@ -171,6 +175,48 @@ export default {
     this.initPage('mounted')
   },
   methods: {
+    // network信息获取
+    initNetData (val) {
+      if (val.chainId0 !== '1') {
+        this.fromNet = {
+          chainId: val.chainId0,
+          chainName: val.chainName0,
+          chainNameAdd: val.chainNameAdd0,
+          nativeCurrency: val.nativeCurrency0,
+          rpcUrls: val.rpcUrls0,
+          blockExplorerUrls: val.blockExplorerUrls0,
+          bridgeFactory: val.bridgeFactory0,
+          bridge: val.bridge0,
+          bridgeDomain: val.bridgeDomain0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
+        }
+      } else {
+        this.fromNet = {
+          chainId: val.chainId0,
+          chainName: val.chainName0,
+          bridgeFactory: val.bridgeFactory0,
+          bridge: val.bridge0,
+          bridgeDomain: val.bridgeDomain0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
+        }
+      }
+      this.toNet = {
+        chainId: val.chainId1,
+        chainName: val.chainName1,
+        chainNameAdd: val.chainNameAdd1,
+        nativeCurrency: val.nativeCurrency1,
+        rpcUrls: val.rpcUrls1,
+        blockExplorerUrls: val.blockExplorerUrls1,
+        bridgeFactory: val.bridgeFactory1,
+        bridge: val.bridge1,
+        bridgeDomain: val.bridgeDomain1,
+        oracleContract: val.oracleContract1,
+        oracleAbi: val.oracleAbi1
+      }
+      this.initPage()
+    },
     // 钱包地址获取到之后加载页面数据
     setAccount () {
       this.initPage('account')
@@ -183,10 +229,9 @@ export default {
       }
     },
     async getLogs (type) {
-      console.log(type)
-      const abi = this.isNeedHold ? COIN_ABI.bridgeL2 : COIN_ABI.bridgeL1
+      console.log(type, this.isNeedHold)
       const $web3_http = new Web3(new Web3.providers.HttpProvider(this.$store.state.netWork.rpcUrls0[0]))
-      const myContractInstance = new $web3_http.eth.Contract(abi, this.$store.state.netWork.bridge0, {
+      const myContractInstance = new $web3_http.eth.Contract(COIN_ABI.bridgeL1, this.$store.state.netWork.bridge0, {
         from: this.account
       })
       myContractInstance.getPastEvents('DEPOSIT_TO', {
@@ -204,7 +249,8 @@ export default {
             const hashResult = await this.$web3_http.eth.getTransactionReceipt(item.transactionHash)
             console.log(hashResult)
             const blockData = await this.$web3_http.eth.getBlock(item.blockNumber)
-            const time = new Date(blockData.timestamp * 1000)
+            const timetemp = this.isNeedHold ? (blockData.timestamp * 1000 + 8 * 24 * 60 * 60 * 1000) : blockData.timestamp * 1000
+            const time = new Date(timetemp)
             const timeArr = time.toString().split(' ')
             console.log(item.transactionHash)
             const findHash = this.tableList.find(item => item.transactionHash)
@@ -233,9 +279,7 @@ export default {
               console.log(approve)
               if (approve) {
                 const blockData1 = await this.$web3_http.eth.getBlock(item.blockNumber)
-                console.log(blockData1.timestamp)
-                const time = this.isNeedHold ? (blockData1.timestamp * 1000 + 8 * 24 * 60 * 60 * 1000) : blockData1.timestamp * 1000
-                const time1 = new Date(time)
+                const time1 = new Date(blockData1.timestamp * 1000)
                 approvalTime = time1.toGMTString()
               } else {
                 approvalTime = '--'

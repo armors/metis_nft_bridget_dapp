@@ -21,10 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/history/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/history/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/wrap/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report.20220225.174532.87187.0.001.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +72,7 @@
       <workItem from="1645754574367" duration="2498000" />
       <workItem from="1645762887494" duration="41694000" />
       <workItem from="1645897542254" duration="14000" />
-      <workItem from="1645926349252" duration="3401000" />
+      <workItem from="1645926349252" duration="4845000" />
     </task>
     <servers />
   </component>

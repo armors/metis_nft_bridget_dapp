@@ -149,7 +149,7 @@ export default {
   computed: {
     // 是否需要等待8天
     isNeedHold: function () {
-      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '558')
+      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '588')
     }
   },
   watch: {
@@ -234,7 +234,8 @@ export default {
               if (approve) {
                 const blockData1 = await this.$web3_http.eth.getBlock(item.blockNumber)
                 console.log(blockData1.timestamp)
-                const time1 = new Date(blockData1.timestamp * 1000)
+                const time = this.isNeedHold ? (blockData1.timestamp * 1000 + 8 * 24 * 60 * 60 * 1000) : blockData1.timestamp * 1000
+                const time1 = new Date(time)
                 approvalTime = time1.toGMTString()
               } else {
                 approvalTime = '--'

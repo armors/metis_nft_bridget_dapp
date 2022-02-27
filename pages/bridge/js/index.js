@@ -67,7 +67,8 @@ export default {
       fromNet: null,
       iconLoading: false,
       toNet: null,
-      isApprove: false
+      isApprove: false,
+      arrivalDate: ''
     }
   },
   components: {
@@ -75,7 +76,15 @@ export default {
   computed: {
     // 是否需要等待8天
     isNeedHold: function () {
-      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '558')
+      const isWait = this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '588')
+      if (isWait) {
+        const arrivalDate = new Date(new Date().getTime() + 8 * 24 * 60 * 60 * 1000)
+        console.log(arrivalDate)
+        const dateArr = arrivalDate.toGMTString().split(' ')
+        console.log(dateArr)
+        this.arrivalDate = dateArr[1] + ' ' + dateArr[2] + ' ' + dateArr[3]
+      }
+      return isWait
     }
   },
   watch: {
@@ -317,9 +326,11 @@ export default {
       try {
         gasLimitBig = await oracleContract.methods[methods]().call()
         gasLimit = parseInt(gasLimitBig.toString())
-        const getDiscount = await oracleContract.methods.getDiscount().call()
-        console.log(getDiscount.toString())
-        console.log(gasLimit * getDiscount.toString())
+        if (!this.isNeedHold) {
+          const getDiscount = await oracleContract.methods.getDiscount().call()
+          console.log(getDiscount.toString())
+          console.log(gasLimit * getDiscount.toString())
+        }
         console.log(that.account, that.$account)
         console.log(this.nftTokenAddress,
           this.receiverAddress,
@@ -346,7 +357,9 @@ export default {
           that.iconLoading = false
           that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
         })
-      } catch (e) {
+      } catch (err) {
+        that.iconLoading = false
+        that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
       }
     }
   }

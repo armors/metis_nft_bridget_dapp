@@ -36,7 +36,7 @@ export default {
   computed: {
     // 是否需要等待8天
     isNeedHold: function () {
-      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '558')
+      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '588')
     }
   },
   watch: {

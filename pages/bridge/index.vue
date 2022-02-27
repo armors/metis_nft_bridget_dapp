@@ -24,10 +24,10 @@
         <div class="box-flex1">Please note that at this time，the Metis NFT bridge only supports transferring one copy at a time</div>
       </div>
       <div class="ic-box standard" v-show="isNeedHold">
-        <div>it will take 7 days for the NFT token to be arrive to Ethereum network</div>
+        <div>it will take 7 days for the NFT token to be arrive to {{getChainName(toNet)}} network</div>
         <div class="display-flex box-center date-box">
           <div class="ic-img"><img src="../../assets/image/ic_date@2x.png" alt=""></div>
-          <div class="">Arrive to Ethereum before UTC 11-12-2021</div>
+          <div class="">Arrive to {{getChainName(toNet)}} before UTC {{arrivalDate}}</div>
         </div>
       </div>
       <a-button type="primary" :loading="iconLoading" v-if="!isApprove" @click="approveDialog">
@@ -52,7 +52,7 @@
       :footer="null"
       :closable="false"
     >
-      <div class="back-img" @click="visible = false"><img src="../../assets/image/ic_back@2x.png" alt=""></div>
+      <div class="back-img" @click="visible = false; iconLoading = false"><img src="../../assets/image/ic_back@2x.png" alt=""></div>
       <div class="title-box">􏰌􏰇􏱧􏰾􏰿􏰍􏱧􏱧􏰊􏰾􏱐􏰇 􏰌􏰇􏱧􏰾􏰿{{isApprove ? 'Confirm' : 'Approve'}} the Transfer</div>
       <div class="chain-box">
         <div>{{getChainName(fromNet)}}</div>
@@ -70,8 +70,8 @@
         </div>
       </div>
       <div class="tip-box" :class="{'hidden': !isNeedHold}">It will take up to 8 days for the NFT token to arrive to the
-                    Ethereum Network</div>
-      <div class="tip-box tip-box1" :class="{'hidden': !isNeedHold}">Estimate to arrive at Ethereum before UTC 11-12-2021</div>
+                                                            {{getChainName(toNet)}} Network</div>
+      <div class="tip-box tip-box1" :class="{'hidden': !isNeedHold}">Estimate to arrive at {{getChainName(toNet)}} before UTC {{arrivalDate}}</div>
       <a-button type="primary" class="confirm-btn no-select" :loading="iconLoading" v-if="isApprove" @click="confirmFun">
         {{isNeedHold ? 'Confirm i will wait for 8 days' : 'Confirm'}}
       </a-button>

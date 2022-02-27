@@ -53,7 +53,7 @@
       :closable="false"
     >
       <div class="back-img" @click="visible = false; iconLoading = false"><img src="../../assets/image/ic_back@2x.png" alt=""></div>
-      <div class="title-box">􏰌􏰇􏱧􏰾􏰿􏰍􏱧􏱧􏰊􏰾􏱐􏰇 􏰌􏰇􏱧􏰾􏰿{{isApprove ? 'Confirm' : 'Approve'}} the Transfer</div>
+      <div class="title-box">{{isApprove ? 'Confirm' : 'Approve'}} the Transfer</div>
       <div class="chain-box">
         <div>{{getChainName(fromNet)}}</div>
         <div class="next-img"><img src="../../assets/image/ic_next@2x.png" alt=""></div>

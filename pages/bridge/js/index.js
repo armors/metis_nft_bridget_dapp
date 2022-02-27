@@ -17,7 +17,7 @@ export default {
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       nftTokenAddress: '', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
       receiverAddress: '',
-      tokenId: '1',
+      tokenId: '',
       tokenIdList: [
         {
           key: 123,
@@ -110,7 +110,7 @@ export default {
       that.initNetData(this.$store.state.netWork)
       that.account = that.$account
       if (that.account) {
-        that.receiverAddress = that.account
+        // that.receiverAddress = that.account
       }
     },
     // 交换网络
@@ -173,6 +173,9 @@ export default {
     },
     // nft token address 鼠标移除事件判断是否授权
     async nftTokenBlur () {
+      if (!this.nftTokenAddress) {
+        return
+      }
       // this.iconLoading = true
       const that = this
       console.log(this.$web3_http)

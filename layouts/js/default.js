@@ -57,11 +57,12 @@ export default {
     // this.$message.warning('This is a success message', 2)
     // this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
     const connectWalletType = localStorage.getItem('connectWalletType')
+    console.log(connectWalletType)
     this.initNetWork()
     if (connectWalletType) {
       this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
       if (connectWalletType === 'Polis') {
-        this.loginMetis()
+        // this.loginMetis()
       } else if (connectWalletType === 'MetaMask') {
         await this.initWeb3()
       }

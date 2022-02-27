@@ -38,7 +38,7 @@
       </a-button>
     </div>
     <div class="display-flex">
-      <a href="javascript:;" @click="$router.push({path: '/history'})" class="history-text">View your history ></a>
+      <a href="javascript:;" @click="$router.push({path: '/history'})" class="history-text">View history ></a>
     </div>
 
     <a-modal
@@ -66,7 +66,7 @@
         </div>
         <div class="display-flex box-center-Y token-stand">
           <div>Token Standards:</div>
-          <div class="box-flex1">{{tokenStandardList[tokenIdIndex].key}}</div>
+          <div class="box-flex1">{{tokenStandardIndex > -1 ? tokenStandardList[tokenStandardIndex].key : '--'}}</div>
         </div>
       </div>
       <div class="tip-box" :class="{'hidden': !isNeedHold}">It will take up to 8 days for the NFT token to arrive to the

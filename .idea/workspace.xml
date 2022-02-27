@@ -20,9 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/image/wallet_ic_left@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/wallet_ic_right@2x.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/history/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/history/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/history/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/history/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/report.20220225.174532.87187.0.001.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +48,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/image" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -52,6 +58,11 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/image" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -72,7 +83,7 @@
       <workItem from="1645754574367" duration="2498000" />
       <workItem from="1645762887494" duration="41694000" />
       <workItem from="1645897542254" duration="14000" />
-      <workItem from="1645926349252" duration="4845000" />
+      <workItem from="1645926349252" duration="10391000" />
     </task>
     <servers />
   </component>

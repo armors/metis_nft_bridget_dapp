@@ -315,9 +315,7 @@ export default {
     // deposit 操作
     async confirmFun () {
       that.iconLoading = true
-      // L2->L1   L1->L2
-      const abi = this.isNeedHold ? COIN_ABI.bridgeL2 : COIN_ABI.bridgeL1
-      const tokenContract = useTokenContractWeb3(abi, this.fromNet.bridge)
+      const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, this.fromNet.bridge)
       const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
       console.log(that.fromNet.oracleAbi)
       const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
@@ -335,7 +333,9 @@ export default {
         console.log(this.nftTokenAddress,
           this.receiverAddress,
           parseInt(this.tokenId),
-          this.tokenStandardList[this.tokenStandardIndex].value)
+          this.tokenStandardList[this.tokenStandardIndex].value,
+          gasLimit
+        )
         sendTransactionEvent(tokenContract.methods.depositTo(
           this.nftTokenAddress,
           this.receiverAddress,

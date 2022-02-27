@@ -125,6 +125,16 @@ export { default } from './js/default'
 </style>
 <style lang="less">
   @import "../assets/css/color";
+  .ant-spin, .ant-spin-dot{
+    color: @emColor !important;
+    width: 1.5em !important;
+    height: 1.5em !important;
+  }
+  .ant-spin-dot-item{
+    background-color: @emColor !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
   .ant-btn-primary{
     display: block !important;
     width: 85.7%;

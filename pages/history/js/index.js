@@ -143,7 +143,14 @@ export default {
         // }
       ],
       fromNet: null,
-      toNet: null
+      toNet: null,
+      pageNum: 1,
+      pageSize: 6,
+      pageTotal: 1,
+      isShowSelf: false,
+      total: 1,
+      tableData: [],
+      loadingPage: false
     }
   },
   components: {
@@ -228,7 +235,26 @@ export default {
         await that.getLogs(type)
       }
     },
+    prePage () {
+      if (this.pageNum > 1) {
+        this.pageNum--
+        this.changePage()
+      }
+    },
+    nextPage () {
+      if (this.pageNum < this.pageTotal) {
+        this.pageNum++
+        this.changePage()
+      }
+    },
+    changeHistory () {
+      this.isShowSelf = !this.isShowSelf
+      this.getLogs()
+    },
     async getLogs (type) {
+      this.tableList = []
+      this.pageNum = 1
+      this.loadingPage = true
       console.log(type, this.isNeedHold)
       const $web3_http = new Web3(new Web3.providers.HttpProvider(this.$store.state.netWork.rpcUrls0[0]))
       const myContractInstance = new $web3_http.eth.Contract(COIN_ABI.bridgeL1, this.$store.state.netWork.bridge0, {
@@ -242,69 +268,107 @@ export default {
         toBlock: 'latest'
       }).then(async (res) => {
         console.log(res)
-        this.tableList = []
-        for (let i = 0; i < res.length; i++) {
-          const item = res[i]
-          try {
-            const hashResult = await this.$web3_http.eth.getTransactionReceipt(item.transactionHash)
-            console.log(hashResult)
-            const blockData = await this.$web3_http.eth.getBlock(item.blockNumber)
-            const timetemp = this.isNeedHold ? (blockData.timestamp * 1000 + 8 * 24 * 60 * 60 * 1000) : blockData.timestamp * 1000
-            const time = new Date(timetemp)
-            const timeArr = time.toString().split(' ')
-            console.log(item.transactionHash)
-            const findHash = this.tableList.find(item => item.transactionHash)
-            const abi = item.returnValues.nftStandard === '0' ? COIN_ABI.erc721 : COIN_ABI.erc1155
-            const bridgeContract = useContractByRpc(this.$store.state.netWork.bridge1, COIN_ABI.bridgeL1, this.$store.state.netWork.rpcUrls1[0])
+        if (res.length < 1) {
+          this.loadingPage = false
+          return
+        }
+        let result = res
+        if (this.isShowSelf) {
+          console.log(this.account)
+          result = res.filter(item => (item.returnValues._to + '').toLowerCase() === this.account.toLowerCase())
+        }
+        console.log(result)
+        if (result.length < 1) {
+          this.loadingPage = false
+          return
+        }
+        this.total = result.length
+        const newArr = []
+        for (let i = 0; i < result.length; i += this.pageSize) {
+          newArr.push(result.slice(i, i + this.pageSize))
+        }
+        this.tableData = newArr
+        this.pageTotal = newArr.length
+        this.changePage()
+      }).catch(() => {
+        this.loadingPage = false
+      })
+    },
+    changePage () {
+      this.loadingPage = true
+      const res = this.tableData[this.pageNum - 1]
+      this.getPageData(res)
+    },
+    async getPageData (res) {
+      this.tableList = []
+      for (let i = 0; i < res.length; i++) {
+        const item = res[i]
+        try {
+          const hashResult = await this.$web3_http.eth.getTransactionReceipt(item.transactionHash)
+          console.log(hashResult)
+          const blockData = await this.$web3_http.eth.getBlock(item.blockNumber)
+          const timetemp = this.isNeedHold ? (blockData.timestamp * 1000 + 8 * 24 * 60 * 60 * 1000) : blockData.timestamp * 1000
+          const time = new Date(timetemp)
+          const timeArr = time.toString().split(' ')
+          console.log(item.transactionHash)
+          const findHash = this.tableList.find(item => item.transactionHash)
+          const abi = item.returnValues.nftStandard === '0' ? COIN_ABI.erc721 : COIN_ABI.erc1155
+          const bridgeContract = useContractByRpc(this.$store.state.netWork.bridge1, COIN_ABI.bridgeL1, this.$store.state.netWork.rpcUrls1[0])
 
-            const pair = await bridgeContract.methods.clone(item.returnValues._nft).call()
-            console.log(pair)
-            const myContractInstance = useContractByRpc(pair, abi, this.$store.state.netWork.rpcUrls0[0])
-            const resApproval = await myContractInstance.getPastEvents('Approval', {
-              filter: {
-                from: item.returnValues._from
-              },
-              fromBlock: 0,
-              toBlock: 'latest'
-            })
-            console.log(resApproval)
-            const approve = resApproval.find(item1 => {
-              return item1.returnValues.approved.toLowerCase() === this.$store.state.netWork.bridge0.toLowerCase() &&
+          const pair = await bridgeContract.methods.clone(item.returnValues._nft).call()
+          console.log(pair)
+          const myContractInstance = useContractByRpc(pair, abi, this.$store.state.netWork.rpcUrls0[0])
+          const approveEventName = item.returnValues.nftStandard === '0' ? 'Approval' : 'ApprovalForAll'
+          const resApproval = await myContractInstance.getPastEvents(approveEventName, {
+            // filter: {
+            //   from: item.returnValues._from
+            // },
+            fromBlock: 0,
+            toBlock: 'latest'
+          })
+          console.log(resApproval)
+          const approve = resApproval.find(item1 => {
+            if (item.returnValues.nftStandard === '0') {
+              return (item1.returnValues.approved + '').toLowerCase() === this.$store.state.netWork.bridge0.toLowerCase() &&
                 (item1.returnValues.owner + '').toLowerCase() === item.returnValues._from.toLowerCase() &&
                 item1.returnValues.tokenId === item.returnValues._tokenID
-            })
-            console.log(findHash)
-            if (!findHash || findHash.transactionHash !== item.transactionHash) {
-              let approvalTime
-              console.log(approve)
-              if (approve) {
-                const blockData1 = await this.$web3_http.eth.getBlock(item.blockNumber)
-                const time1 = new Date(blockData1.timestamp * 1000)
-                approvalTime = time1.toGMTString()
-              } else {
-                approvalTime = '--'
-              }
-              console.log(1212312, hashResult)
-              this.tableList.push({
-                transactionHash: item.transactionHash,
-                nftTokenAddress: `${item.returnValues._nft.substr(0, 4)}…${item.returnValues._nft.substr(item.returnValues._nft.length - 5, item.returnValues._nft.length)}`,
-                receiverAddress: `${item.returnValues._to.substr(0, 4)}…${item.returnValues._to.substr(item.returnValues._to.length - 5, item.returnValues._to.length)}`,
-                sourceChain: this.$store.state.netWork.chainName0,
-                destinationChain: this.$store.state.netWork.chainName1,
-                tokenId: item.returnValues._tokenID,
-                NFTTokenStandard: item.returnValues.nftStandard === '0' ? 'ERC721' : 'ERC1155',
-                // approvalTime: 'Nov.12,2022 11:55:12 (UTC)',
-                arrivalTime: 'Estimated time of arrival is before ' + timeArr[1] + ' ' + timeArr[2] + ', ' + timeArr[3],
-                approvalTime: approvalTime,
-                // arrivalTime: '--',
-                status: (hashResult && hashResult.status) ? 'Finish' : 'Pending'
-              })
+            } else {
+              return item1.returnValues.operator.toLowerCase() === this.$store.state.netWork.bridge0.toLowerCase() &&
+                (item1.returnValues.account + '').toLowerCase() === item.returnValues._from.toLowerCase()
             }
-          } catch (e) {
-            console.log(e)
+          })
+          console.log(findHash)
+          if (!findHash || findHash.transactionHash !== item.transactionHash) {
+            let approvalTime
+            console.log(approve)
+            if (approve) {
+              const blockData1 = await this.$web3_http.eth.getBlock(item.blockNumber)
+              const time1 = new Date(blockData1.timestamp * 1000)
+              approvalTime = time1.toGMTString()
+            } else {
+              approvalTime = '--'
+            }
+            console.log(1212312, hashResult)
+            this.tableList.push({
+              transactionHash: item.transactionHash,
+              nftTokenAddress: `${item.returnValues._nft.substr(0, 4)}…${item.returnValues._nft.substr(item.returnValues._nft.length - 5, item.returnValues._nft.length)}`,
+              receiverAddress: `${item.returnValues._to.substr(0, 4)}…${item.returnValues._to.substr(item.returnValues._to.length - 5, item.returnValues._to.length)}`,
+              sourceChain: this.$store.state.netWork.chainName0,
+              destinationChain: this.$store.state.netWork.chainName1,
+              tokenId: item.returnValues._tokenID,
+              NFTTokenStandard: item.returnValues.nftStandard === '0' ? 'ERC721' : 'ERC1155',
+              // approvalTime: 'Nov.12,2022 11:55:12 (UTC)',
+              arrivalTime: 'Estimated time of arrival is before ' + timeArr[1] + ' ' + timeArr[2] + ', ' + timeArr[3],
+              approvalTime: approvalTime,
+              // arrivalTime: '--',
+              status: (hashResult && hashResult.status) ? 'Finish' : 'Pending'
+            })
           }
+        } catch (e) {
+          console.log(e)
         }
-      })
+      }
+      this.loadingPage = false
     }
   }
 }

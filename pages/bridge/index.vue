@@ -37,6 +37,11 @@
         Confirm
       </a-button>
     </div>
+    <div class="go-wrap-box display-flex box-center-Y no-select" @click="$router.push({path: '/wrap'})">
+      <div class="img-box-wrap"><img src="../../assets/image/ic_developer@2x.png" alt=""></div>
+      <div class="box-flex1">i’m a developer，take me to deploy wrapped NFT</div>
+      <div class="icon-right"><img src="../../assets/image/ic_right@2x.png" alt=""></div>
+    </div>
     <div class="display-flex">
       <a href="javascript:;" @click="$router.push({path: '/history'})" class="history-text">View history ></a>
     </div>

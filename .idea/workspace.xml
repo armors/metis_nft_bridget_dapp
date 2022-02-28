@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/image/ic_developer@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/ic_right@2x.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/css/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/css/index.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/bridge/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +81,10 @@
       <workItem from="1645754574367" duration="2498000" />
       <workItem from="1645762887494" duration="41694000" />
       <workItem from="1645897542254" duration="14000" />
-      <workItem from="1645926349252" duration="12184000" />
+      <workItem from="1645926349252" duration="12828000" />
+      <workItem from="1645970336407" duration="304000" />
+      <workItem from="1645976005368" duration="456000" />
+      <workItem from="1646054002544" duration="1993000" />
     </task>
     <servers />
   </component>

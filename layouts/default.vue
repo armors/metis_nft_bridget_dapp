@@ -4,7 +4,7 @@
       <div class="display-flex box-center-Y nav-box">
         <div class="logo-img"><img src="../assets/image/logo.png" alt=""></div>
         <div class="project-name">{{langInfo.projectName}}</div>
-        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>
+<!--        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>-->
         <div class="box-flex1"></div>
         <a-dropdown :trigger="['click']">
           <a-menu slot="overlay" @click="changeNetWorkFun">

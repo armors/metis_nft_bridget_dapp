@@ -12,7 +12,26 @@ export default {
     },
     ...mapGetters({
       langInfo: 'getLangInfo'
-    })
+    }),
+    // currentChainId: function () {
+    //   if (process.client) {
+    //     console.log(window.ethereum.networkVersion)
+    //     return window.ethereum.networkVersion
+    //   } else {
+    //     return '1'
+    //   }
+    // },
+    currentChainName: function () {
+      let chainName = 'Mainnet'
+      if (process.client) {
+        if (this.currentChainId === '1' || this.currentChainId === '1088') {
+          chainName = 'Mainnet'
+        } else if (this.currentChainId === '4' || this.currentChainId === '588') {
+          chainName = 'Test Network'
+        }
+      }
+      return chainName
+    }
   },
   watch: {
     // 获取用户信息
@@ -22,6 +41,7 @@ export default {
   },
   data () {
     return {
+      currentChainId: '1',
       resolve: '',
       reject: '',
       account: '',
@@ -275,6 +295,7 @@ export default {
       await this.initEth()
       if (this.$store?.state && window.ethereum.networkVersion) {
         const networkVersion = window.ethereum.networkVersion
+        this.currentChainId = networkVersion
         console.log(networkVersion)
         const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)
         console.log(network)

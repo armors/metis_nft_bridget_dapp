@@ -88,7 +88,7 @@
           <div class="box-flex1" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5, account.length)}}</div>
         </div>
       </div>
-      <div class="tab-info">View transactions on Andromeda Explorer</div>
+      <div class="tab-info" @click="openExplorer">View transactions on {{$store.state.netWork.chainName0}} Explorer</div>
     </a-modal>
   </div>
 </template>
@@ -405,6 +405,7 @@ export { default } from './js/default'
             }
           }
           .tab-info{
+            cursor: pointer;
             margin-top: 16px;
             font-size: 14px;
             font-family: Helvetica;

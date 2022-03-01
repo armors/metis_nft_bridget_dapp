@@ -26,7 +26,7 @@ export const networkStardust = {
     decimals: 18
   },
   rpcUrls: ['https://stardust.metis.io/?owner=588'],
-  blockExplorerUrls: ['https://stardust-explorer.metis.io'],
+  blockExplorerUrls: ['https://stardust-explorer.metis.io/'],
   bridgeFactory: '0x631c6A5f50666f68F4C1A1E8e4c868b04935dD87',
   bridge: '0x831844F04c26241a62eCb074Cc27075bA1686DE9',
   bridgeDomain: 'bridge9545',
@@ -62,7 +62,7 @@ export const networkAndromeda = {
     decimals: 18
   },
   rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
-  blockExplorerUrls: ['https://andromeda-explorer.metis.io'],
+  blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
   bridgeFactory: '0x631c6A5f50666f68F4C1A1E8e4c868b04935dD87',
   bridge: '0x831844F04c26241a62eCb074Cc27075bA1686DE9',
   bridgeDomain: 'bridge9545',

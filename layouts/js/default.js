@@ -75,6 +75,13 @@ export default {
     }
   },
   methods: {
+    openExplorer () {
+      if (this.account) {
+        window.open(this.$store.state.netWork.blockExplorerUrls0[0] + 'address/' + this.account)
+      } else {
+        window.open(this.$store.state.netWork.blockExplorerUrls0[0])
+      }
+    },
     // 选择网络
     changeNetWorkFun (e) {
       console.log(e)

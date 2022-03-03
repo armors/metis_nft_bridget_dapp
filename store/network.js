@@ -41,7 +41,7 @@ export const networkStardust = {
     bridgeDomain: 'bridge2domain',
     bridgeFactory: 'bridgefactory2',
     oracleAbi: 'iovm_gaspriceoracle',
-    token721: 'erc721_1',
+    token721: 'erc721_2',
     token1155: 'erc1155_1'
   }
 }

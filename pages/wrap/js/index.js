@@ -8,10 +8,10 @@ export default {
       iconLoading: false,
       account: '',
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
-      nftTokenAddress: '',
+      nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
       tokenStandardIndex: -1,
       // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
-      tokenTag: '',
+      tokenTag: '0x193f243bd27c84cac320896691e18ea0c1d4fa2d',
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -24,7 +24,7 @@ export default {
       ],
       step: ['Step 1 ：Enter Token Address', 'Step 2：Review'],
       stepIndex: 0,
-      visible: false,
+      visible: true,
       fromNet: null,
       toNet: null,
       name: '',
@@ -71,8 +71,14 @@ export default {
       }
     },
     // 调用过setNFT方法建立关系
-    async setNftEvent () {
-      const that = this
+    setNftEvent () {
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.setNftMetaMask()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.serNftPolis()
+      }
+    },
+    setNftMetaMask () {
       this.switchNetWork(that.fromNet, async () => {
         await this.initNetWork()
         that.iconLoading = true
@@ -123,6 +129,54 @@ export default {
         }
       })
     },
+    async serNftPolis () {
+      const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      console.log(methods, this.fromNet.domainInfo.oracleAbi,
+        parseInt(this.$store.state.netWork.chainId))
+      try {
+        const gasLimitBig = await this.$httpClient.sendTxAsync(
+          this.fromNet.domainInfo.oracleAbi,
+          parseInt(this.$store.state.netWork.chainId),
+          methods,
+          [],
+          false
+        )
+        console.log(gasLimitBig)
+        const gasLimit = parseInt(gasLimitBig.result.toString())
+        this.$httpClient.sendTxAsync(
+          this.fromNet.domainInfo.bridgeFactory,
+          parseInt(this.$store.state.netWork.chainId),
+          'setNft',
+          [
+            this.nftTokenAddress,
+            this.tokenTag,
+            parseInt(that.fromNet.chainId),
+            gasLimit
+          ],
+          false,
+          {
+            from: that.account,
+            value: 320000000
+          }
+        ).then(res => {
+          console.log(res)
+          that.iconLoading = false
+          that.$message.success('set nft success', 3)
+          this.visible = false
+          this.stepIndex = 0
+          this.nftTokenAddress = ''
+        }, reject => {
+          this.$message.error(reject.message.message, 3)
+          that.iconLoading = false
+        }).catch(err => {
+          console.log(err)
+          that.iconLoading = false
+          this.$message.error(err.message.message, 3)
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    },
     // 钱包地址获取到之后加载页面数据
     setAccount () {
       this.initPage()
@@ -159,7 +213,8 @@ export default {
           blockExplorerUrls: val.blockExplorerUrls0,
           bridgeFactory: val.bridgeFactory0,
           oracleContract: val.oracleContract0,
-          oracleAbi: val.oracleAbi0
+          oracleAbi: val.oracleAbi0,
+          domainInfo: val.domainInfo0
         }
       } else {
         this.fromNet = {
@@ -167,7 +222,8 @@ export default {
           chainName: val.chainName0,
           bridgeFactory: val.bridgeFactory0,
           oracleContract: val.oracleContract0,
-          oracleAbi: val.oracleAbi0
+          oracleAbi: val.oracleAbi0,
+          domainInfo: val.domainInfo0
         }
       }
       this.toNet = {
@@ -179,7 +235,8 @@ export default {
         blockExplorerUrls: val.blockExplorerUrls1,
         bridgeFactory: val.bridgeFactory1,
         oracleContract: val.oracleContract1,
-        oracleAbi: val.oracleAbi1
+        oracleAbi: val.oracleAbi1,
+        domainInfo: val.domainInfo1
       }
     },
     // 无用
@@ -195,12 +252,12 @@ export default {
       if (!this.nftTokenAddress) {
         return this.$message.error('NFT Token Address not empty', 2)
       }
-      this.metaMaskNextStep()
-      // if (localStorage.getItem('connectWalletType') === 'MetaMask') {
-      //   this.metaMaskNextStep()
-      // } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-      //   this.polisNextStep()
-      // }
+      // this.metaMaskNextStep()
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.metaMaskNextStep()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.polisNextStep()
+      }
     },
     // polis链接方式下一步
     async polisNextStep () {
@@ -208,26 +265,27 @@ export default {
       console.log('polisNextStep')
       try {
         const symbolResult = await this.$httpClient.sendTxAsync(
-          'ecr721',
+          this.fromNet.domainInfo.token721,
           parseInt(this.$store.state.netWork.chainId),
           'symbol',
           [],
           true
         )
         const nameResult = await this.$httpClient.sendTxAsync(
-          'ecr721',
+          this.fromNet.domainInfo.token721,
           parseInt(this.$store.state.netWork.chainId),
           'name',
           [],
           true
         )
         const baseUriResult = await this.$httpClient.sendTxAsync(
-          'ecr721',
+          this.fromNet.domainInfo.token721,
           parseInt(this.$store.state.netWork.chainId),
           'baseUri',
           [],
           true
         )
+        console.log(nameResult)
         this.name = nameResult.result
         this.symbol = symbolResult.result
         this.baseUrl = baseUriResult.result
@@ -238,7 +296,7 @@ export default {
         console.log(e)
         try {
           const baseUriResult = await this.$httpClient.sendTxAsync(
-            'ecr1155',
+            this.fromNet.domainInfo.token1155,
             parseInt(this.$store.state.netWork.chainId),
             'baseUri',
             [],
@@ -337,9 +395,11 @@ export default {
     async confirmWrapPolis (method, args) {
       const that = this
       this.iconLoading = true
+      console.log(this.fromNet.domainInfo.bridgeFactory, parseInt(this.toNet.chainId))
+      console.log(method, args)
       try {
         this.$httpClient.sendTxAsync(
-          'factory',
+          this.toNet.domainInfo.bridgeFactory,
           parseInt(this.toNet.chainId),
           method,
           args,
@@ -350,10 +410,11 @@ export default {
           that.iconLoading = false
           this.decodeLog(res.tx)
         }, reject => {
+          console.log(reject)
           this.$message.error(reject.message.message, 3)
           that.iconLoading = false
-          // console.log('reject', reject, JSON.stringify(reject))
         }).catch(err => {
+          console.log(err)
           this.$message.error(err.message, 3)
           that.iconLoading = false
           console.log('err', err, JSON.stringify(err))

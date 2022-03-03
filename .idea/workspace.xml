@@ -20,12 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.dev" beforeDir="false" afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/js/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/js/default.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/history/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/history/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/wrap/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/store/network.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/network.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/state.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/state.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +94,7 @@
       <workItem from="1646137662939" duration="5427000" />
       <workItem from="1646187425740" duration="322000" />
       <workItem from="1646274446558" duration="852000" />
-      <workItem from="1646306219969" duration="1795000" />
+      <workItem from="1646306219969" duration="9807000" />
     </task>
     <servers />
   </component>
@@ -132,5 +131,9 @@
       <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state x="526" y="188" key="refactoring.ChangeSignatureDialog/0.23.1440.830@0.23.1440.830" timestamp="1645846497684" />
+    <state x="1981" y="228" key="run.anything.popup" timestamp="1646314710059">
+      <screen x="1440" y="-24" width="1920" height="1057" />
+    </state>
+    <state x="1981" y="228" key="run.anything.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1646314710059" />
   </component>
 </project>

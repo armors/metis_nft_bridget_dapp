@@ -15,8 +15,8 @@ export default {
       isShowTop: false,
       account: '',
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
-      nftTokenAddress: '', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
-      receiverAddress: '',
+      nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      receiverAddress: '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6',
       tokenId: '',
       tokenIdList: [
         {
@@ -53,7 +53,7 @@ export default {
         }
       ],
       tokenIdIndex: 0,
-      tokenStandardIndex: -1,
+      tokenStandardIndex: 0,
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -185,7 +185,16 @@ export default {
       if (!this.nftTokenAddress) {
         return
       }
-      // this.iconLoading = true
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.nftTokenBlurMetaMask()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.getApprovePolis()
+      }
+    },
+    // async nftTokenBlurPolis () {
+    //
+    // },
+    async nftTokenBlurMetaMask () {
       const that = this
       console.log(this.$web3_http)
       try {
@@ -224,10 +233,72 @@ export default {
           that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         }
       }
-      // this.iconLoading = false
     },
     tokenIdBlur () {
-      this.getApprove()
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.getApprove()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.getApprovePolis()
+      }
+    },
+    getApprovePolis (isShow = false) {
+      console.log(this.nftTokenAddress, this.tokenId)
+      if (!this.nftTokenAddress || !this.tokenId) {
+        return
+      }
+      console.log(this.fromNet.domainInfo.token721,
+        parseInt(this.$store.state.netWork.chainId),
+        'getApproved',
+        [this.tokenId])
+      try {
+        if (this.tokenStandardIndex === 0) { // 721
+          this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token721,
+            parseInt(this.$store.state.netWork.chainId),
+            'getApproved',
+            [this.tokenId],
+            false
+          ).then(res => {
+            console.log(res)
+            this.isApprove = res.result === this.fromNet.bridge
+            that.iconLoading = false
+            if (isShow) this.visible = !this.isApprove
+          }, reject => {
+            this.$message.error(reject.message.message, 3)
+            that.iconLoading = false
+          }).catch(err => {
+            console.log(err)
+            that.iconLoading = false
+            this.$message.error(err.message.message, 3)
+          })
+        } else if (this.tokenStandardIndex === 1) { // 1155
+          this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token1155,
+            parseInt(this.$store.state.netWork.chainId),
+            'isApprovedForAll',
+            [
+              this.receiverAddress,
+              this.fromNet.bridge
+            ],
+            false
+          ).then(res => {
+            console.log(res)
+            this.isApprove = res.result
+            that.iconLoading = false
+          }, reject => {
+            this.$message.error(reject.message.message, 3)
+            that.iconLoading = false
+            if (isShow) this.visible = !this.isApprove
+          }).catch(err => {
+            console.log(err)
+            that.iconLoading = false
+            this.$message.error(err.message.message, 3)
+          })
+        }
+      } catch (err) {
+        if (isShow) this.iconLoading = false
+        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+      }
     },
     // 判断是否授权
     async getApprove (isShow = false) {
@@ -257,15 +328,59 @@ export default {
     },
     // 打开二次确认授权
     async approveDialog () {
-      await this.getApprove(true)
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        await this.getApprove(true)
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.getApprovePolis(true)
+      }
     },
     // 授权操作
     approveFun () {
-      if (this.tokenStandardIndex === 0) {
-        this.approve721()
-      } else if (this.tokenStandardIndex === 1) {
-        this.approve1155()
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        if (this.tokenStandardIndex === 0) {
+          this.approve721()
+        } else if (this.tokenStandardIndex === 1) {
+          this.approve1155()
+        }
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        that.iconLoading = true
+        let domain = ''
+        let methods = ''
+        let args = []
+        if (this.tokenStandardIndex === 0) {
+          domain = this.fromNet.domainInfo.token721
+          methods = 'approve'
+          args = [this.fromNet.bridge, this.tokenId]
+        } else if (this.tokenStandardIndex === 1) {
+          domain = this.fromNet.domainInfo.token1155
+          methods = 'setApprovalForAll'
+          args = [this.fromNet.bridge, true]
+        }
+        this.approvePolis(domain, methods, args)
       }
+    },
+    approvePolis (domain, methods, args) {
+      console.log(domain, methods, args, that.account)
+      this.$httpClient.sendTxAsync(
+        domain,
+        parseInt(this.$store.state.netWork.chainId),
+        methods,
+        args,
+        false,
+        null
+      ).then(res => {
+        console.log(res)
+        that.iconLoading = false
+        this.getApprovePolis()
+      }, reject => {
+        console.log(reject)
+        this.$message.error(reject.message.message, 3)
+        that.iconLoading = false
+      }).catch(err => {
+        console.log(err)
+        that.iconLoading = false
+        this.$message.error(err.message.message, 3)
+      })
     },
     // 721授权
     async approve721 () {
@@ -315,6 +430,13 @@ export default {
     // deposit 操作
     async confirmFun () {
       that.iconLoading = true
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.confirmMetaMask()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.confirmPolis()
+      }
+    },
+    async confirmMetaMask () {
       const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, this.fromNet.bridge)
       const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
       console.log(that.fromNet.oracleAbi)
@@ -360,6 +482,51 @@ export default {
       } catch (err) {
         that.iconLoading = false
         that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
+      }
+    },
+    async confirmPolis () {
+      const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      try {
+        const gasLimitBig = await this.$httpClient.sendTxAsync(
+          this.fromNet.domainInfo.oracleAbi,
+          parseInt(this.$store.state.netWork.chainId),
+          methods,
+          [],
+          false
+        )
+        console.log(gasLimitBig)
+        const gasLimit = parseInt(gasLimitBig.result.toString())
+        this.$httpClient.sendTxAsync(
+          this.fromNet.domainInfo.bridgeDomain,
+          parseInt(this.$store.state.netWork.chainId),
+          'depositTo',
+          [
+            this.nftTokenAddress,
+            this.receiverAddress,
+            parseInt(this.tokenId),
+            this.tokenStandardList[this.tokenStandardIndex].value,
+            gasLimit
+          ],
+          false,
+          {
+            from: that.account,
+            value: 320000000
+          }
+        ).then(res => {
+          console.log(res)
+          that.iconLoading = false
+          that.$message.success('depositTo nft success', 3)
+          this.visible = false
+        }, reject => {
+          this.$message.error(reject.message.message, 3)
+          that.iconLoading = false
+        }).catch(err => {
+          console.log(err)
+          that.iconLoading = false
+          this.$message.error(err.message.message, 3)
+        })
+      } catch (e) {
+
       }
     }
   }

@@ -11,9 +11,15 @@ export const networkRinkeby = {
   blockExplorerUrls: ['https://rinkeby.etherscan.io/'],
   bridgeFactory: '0x4076654b188345A61Ad93143F7E64c4427B4531f',
   bridge: '0x5126F650ca04bc6cB0C47ea2654e997ae5670120',
-  bridgeDomain: 'bridge9545',
   oracleContract: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
-  oracleAbi: 'iMVM_DiscountOracle'
+  oracleAbi: 'iMVM_DiscountOracle',
+  domainInfo: {
+    bridgeDomain: 'bridge1domain',
+    bridgeFactory: 'bridgefactory1',
+    oracleAbi: 'imvm_discountoracle',
+    token721: 'erc721_1',
+    token1155: 'erc1155_1'
+  }
 }
 
 export const networkStardust = {
@@ -29,9 +35,15 @@ export const networkStardust = {
   blockExplorerUrls: ['https://stardust-explorer.metis.io/'],
   bridgeFactory: '0x631c6A5f50666f68F4C1A1E8e4c868b04935dD87',
   bridge: '0x831844F04c26241a62eCb074Cc27075bA1686DE9',
-  bridgeDomain: 'bridge9545',
   oracleContract: '0x420000000000000000000000000000000000000F',
-  oracleAbi: 'iOVM_GasPriceOracle'
+  oracleAbi: 'iOVM_GasPriceOracle',
+  domainInfo: {
+    bridgeDomain: 'bridge2domain',
+    bridgeFactory: 'bridgefactory2',
+    oracleAbi: 'iovm_gaspriceoracle',
+    token721: 'erc721_1',
+    token1155: 'erc1155_1'
+  }
 }
 
 export const networkEthereum = {
@@ -47,9 +59,15 @@ export const networkEthereum = {
   blockExplorerUrls: ['https://etherscan.io/'],
   bridgeFactory: '0x4076654b188345A61Ad93143F7E64c4427B4531f',
   bridge: '0x5126F650ca04bc6cB0C47ea2654e997ae5670120',
-  bridgeDomain: 'bridge9545',
   oracleContract: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
-  oracleAbi: 'iMVM_DiscountOracle'
+  oracleAbi: 'iMVM_DiscountOracle',
+  domainInfo: {
+    bridgeDomain: 'bridge1domain',
+    bridgeFactory: 'bridgefactory1',
+    oracleAbi: 'imvm_discountoracle',
+    token721: 'erc721_1',
+    token1155: 'erc1155_1'
+  }
 }
 
 export const networkAndromeda = {
@@ -65,7 +83,13 @@ export const networkAndromeda = {
   blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
   bridgeFactory: '0x631c6A5f50666f68F4C1A1E8e4c868b04935dD87',
   bridge: '0x831844F04c26241a62eCb074Cc27075bA1686DE9',
-  bridgeDomain: 'bridge9545',
   oracleContract: '0x420000000000000000000000000000000000000F',
-  oracleAbi: 'iOVM_GasPriceOracle'
+  oracleAbi: 'iOVM_GasPriceOracle',
+  domainInfo: {
+    bridgeDomain: 'bridge2domain',
+    bridgeFactory: 'bridgefactory2',
+    oracleAbi: 'iovm_gaspriceoracle',
+    token721: 'erc721_1',
+    token1155: 'erc1155_1'
+  }
 }

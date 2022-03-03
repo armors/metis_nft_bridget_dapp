@@ -24,7 +24,7 @@ export default () => ({
     blockExplorerUrls0: networkRinkeby.blockExplorerUrls,
     bridgeFactory0: networkRinkeby.bridgeFactory,
     bridge0: networkRinkeby.bridge,
-    bridgeDomain0: networkRinkeby.bridgeDomain,
+    domainInfo0: networkRinkeby.domainInfo,
     oracleContract0: networkRinkeby.oracleContract,
     oracleAbi0: networkRinkeby.oracleAbi,
 
@@ -36,7 +36,7 @@ export default () => ({
     blockExplorerUrls1: networkStardust.blockExplorerUrls,
     bridgeFactory1: networkStardust.bridgeFactory,
     bridge1: networkStardust.bridge,
-    bridgeDomain1: networkStardust.bridgeDomain,
+    domainInfo1: networkStardust.domainInfo,
     oracleContract1: networkStardust.oracleContract,
     oracleAbi1: networkStardust.oracleAbi
   },
@@ -53,7 +53,7 @@ export default () => ({
       blockExplorerUrls0: networkEthereum.blockExplorerUrls,
       bridgeFactory0: networkEthereum.bridgeFactory,
       bridge0: networkEthereum.bridge,
-      bridgeDomain0: networkEthereum.bridgeDomain,
+      domainInfo0: networkEthereum.domainInfo,
       oracleContract0: networkEthereum.oracleContract,
       oracleAbi0: networkEthereum.oracleAbi,
 
@@ -65,7 +65,7 @@ export default () => ({
       blockExplorerUrls1: networkAndromeda.blockExplorerUrls,
       bridgeFactory1: networkAndromeda.bridgeFactory,
       bridge1: networkAndromeda.bridge,
-      bridgeDomain1: networkAndromeda.bridgeDomain,
+      domainInfo1: networkAndromeda.domainInfo,
       oracleContract1: networkAndromeda.oracleContract,
       oracleAbi1: networkAndromeda.oracleAbi
     },
@@ -81,7 +81,7 @@ export default () => ({
       blockExplorerUrls1: networkEthereum.blockExplorerUrls,
       bridgeFactory1: networkEthereum.bridgeFactory,
       bridge1: networkEthereum.bridge,
-      bridgeDomain1: networkEthereum.bridgeDomain,
+      domainInfo1: networkEthereum.domainInfo,
       oracleContract1: networkEthereum.oracleContract,
       oracleAbi1: networkEthereum.oracleAbi,
 
@@ -93,7 +93,7 @@ export default () => ({
       blockExplorerUrls0: networkAndromeda.blockExplorerUrls,
       bridgeFactory0: networkAndromeda.bridgeFactory,
       bridge0: networkAndromeda.bridge,
-      bridgeDomain0: networkAndromeda.bridgeDomain,
+      domainInfo0: networkAndromeda.domainInfo,
       oracleContract0: networkAndromeda.oracleContract,
       oracleAbi0: networkAndromeda.oracleAbi
     },
@@ -109,7 +109,7 @@ export default () => ({
       blockExplorerUrls0: networkRinkeby.blockExplorerUrls,
       bridgeFactory0: networkRinkeby.bridgeFactory,
       bridge0: networkRinkeby.bridge,
-      bridgeDomain0: networkRinkeby.bridgeDomain,
+      domainInfo0: networkRinkeby.domainInfo,
       oracleContract0: networkRinkeby.oracleContract,
       oracleAbi0: networkRinkeby.oracleAbi,
 
@@ -121,7 +121,7 @@ export default () => ({
       blockExplorerUrls1: networkStardust.blockExplorerUrls,
       bridgeFactory1: networkStardust.bridgeFactory,
       bridge1: networkStardust.bridge,
-      bridgeDomain1: networkStardust.bridgeDomain,
+      domainInfo1: networkStardust.domainInfo,
       oracleContract1: networkStardust.oracleContract,
       oracleAbi1: networkStardust.oracleAbi
     },
@@ -137,7 +137,7 @@ export default () => ({
       blockExplorerUrls1: networkRinkeby.blockExplorerUrls,
       bridgeFactory1: networkRinkeby.bridgeFactory,
       bridge1: networkRinkeby.bridge,
-      bridgeDomain1: networkRinkeby.bridgeDomain,
+      domainInfo1: networkRinkeby.domainInfo,
       oracleContract1: networkRinkeby.oracleContract,
       oracleAbi1: networkRinkeby.oracleAbi,
 
@@ -149,7 +149,7 @@ export default () => ({
       blockExplorerUrls0: networkStardust.blockExplorerUrls,
       bridgeFactory0: networkStardust.bridgeFactory,
       bridge0: networkStardust.bridge,
-      bridgeDomain0: networkStardust.bridgeDomain,
+      domainInfo0: networkStardust.domainInfo,
       oracleContract0: networkStardust.oracleContract,
       oracleAbi0: networkStardust.oracleAbi
     }

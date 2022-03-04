@@ -8,10 +8,11 @@ export default {
       iconLoading: false,
       account: '',
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
-      nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
+      // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
+      nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       tokenStandardIndex: -1,
       // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
-      tokenTag: '0x193f243bd27c84cac320896691e18ea0c1d4fa2d',
+      tokenTag: '',
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -24,7 +25,7 @@ export default {
       ],
       step: ['Step 1 ：Enter Token Address', 'Step 2：Review'],
       stepIndex: 0,
-      visible: true,
+      visible: false,
       fromNet: null,
       toNet: null,
       name: '',
@@ -263,44 +264,48 @@ export default {
     async polisNextStep () {
       this.iconLoading = true
       console.log('polisNextStep')
-      try {
-        const symbolResult = await this.$httpClient.sendTxAsync(
-          this.fromNet.domainInfo.token721,
-          parseInt(this.$store.state.netWork.chainId),
-          'symbol',
-          [],
-          true
-        )
-        const nameResult = await this.$httpClient.sendTxAsync(
-          this.fromNet.domainInfo.token721,
-          parseInt(this.$store.state.netWork.chainId),
-          'name',
-          [],
-          true
-        )
-        const baseUriResult = await this.$httpClient.sendTxAsync(
-          this.fromNet.domainInfo.token721,
-          parseInt(this.$store.state.netWork.chainId),
-          'baseUri',
-          [],
-          true
-        )
-        console.log(nameResult)
-        this.name = nameResult.result
-        this.symbol = symbolResult.result
-        this.baseUrl = baseUriResult.result
-        this.stepIndex = 1
-        this.tokenStandardIndex = 0
-        this.iconLoading = false
-      } catch (e) {
-        console.log(e)
+      this.tokenStandardIndex = 1
+      if (this.tokenStandardIndex === 0) {
         try {
+          const symbolResult = await this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token721,
+            parseInt(this.$store.state.netWork.chainId),
+            'symbol',
+            [],
+            true
+          )
+          const nameResult = await this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token721,
+            parseInt(this.$store.state.netWork.chainId),
+            'name',
+            [],
+            true
+          )
           const baseUriResult = await this.$httpClient.sendTxAsync(
-            this.fromNet.domainInfo.token1155,
+            this.fromNet.domainInfo.token721,
             parseInt(this.$store.state.netWork.chainId),
             'baseUri',
             [],
             true
+          )
+          console.log(nameResult)
+          this.name = nameResult.result
+          this.symbol = symbolResult.result
+          this.baseUrl = baseUriResult.result
+          this.stepIndex = 1
+          this.tokenStandardIndex = 0
+          this.iconLoading = false
+        } catch (e) {
+          that.$message.error(e.message.message, 3)
+        }
+      } else if (this.tokenStandardIndex === 1) {
+        try {
+          const baseUriResult = await this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token1155,
+            parseInt(this.$store.state.netWork.chainId),
+            'uri',
+            [0],
+            false
           )
           this.baseUrl = baseUriResult.result
           this.stepIndex = 1
@@ -341,7 +346,7 @@ export default {
               this.iconLoading = false
               return that.$message.error(tokenContract.error.message, 3)
             }
-            const baseUrl = await tokenContract.uri(this.nftTokenAddress)
+            const baseUrl = await tokenContract.uri(0)
             console.log(baseUrl)
             this.baseUrl = baseUrl
             this.tokenStandardIndex = 1

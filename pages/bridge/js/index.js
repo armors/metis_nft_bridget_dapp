@@ -15,8 +15,9 @@ export default {
       isShowTop: false,
       account: '',
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
-      nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
-      receiverAddress: '0xb55AdD32e4608Eb7965eC234E6C0b3f009c3d9D6',
+      // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      receiverAddress: '0x5d6576ca71D1911310d841a0fBb1018211bb0E54', // 0x5d6576ca71D1911310d841a0fBb1018211bb0E54
       tokenId: '',
       tokenIdList: [
         {
@@ -53,7 +54,7 @@ export default {
         }
       ],
       tokenIdIndex: 0,
-      tokenStandardIndex: 0,
+      tokenStandardIndex: -1,
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -188,6 +189,7 @@ export default {
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.nftTokenBlurMetaMask()
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.tokenStandardIndex = 1
         this.getApprovePolis()
       }
     },
@@ -238,6 +240,7 @@ export default {
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.getApprove()
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.tokenStandardIndex = 1
         this.getApprovePolis()
       }
     },
@@ -285,10 +288,10 @@ export default {
             console.log(res)
             this.isApprove = res.result
             that.iconLoading = false
+            if (isShow) this.visible = !this.isApprove
           }, reject => {
             this.$message.error(reject.message.message, 3)
             that.iconLoading = false
-            if (isShow) this.visible = !this.isApprove
           }).catch(err => {
             console.log(err)
             that.iconLoading = false

@@ -8,10 +8,10 @@
         <div class="box-flex1"></div>
         <a-dropdown :trigger="['click']">
           <a-menu slot="overlay" @click="changeNetWorkFun">
-            <a-menu-item  key="1" :class="{'item-active-select': currentChainId === '1' || currentChainId === '1088'}">
+            <a-menu-item  key="1" :class="{'item-active-select': $store.state.netWork.chainId === '1' || $store.state.netWork.chainId === '1088'}">
               Mainnet
             </a-menu-item>
-            <a-menu-item key="4" :class="{'item-active-select': currentChainId === '4' || currentChainId === '588' }">
+            <a-menu-item key="4" :class="{'item-active-select': $store.state.netWork.chainId === '4' || $store.state.netWork.chainId === '588' }">
               Test Network
             </a-menu-item>
 <!--            <a-menu-item v-for="(v) in $store.state.netWorkList" :key="v.chainId" :chainName="v.chainName" :class="{'item-active-select': v.chainId === $store.state.netWork.chainId}">-->

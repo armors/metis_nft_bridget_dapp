@@ -9,7 +9,8 @@ export default {
       account: '',
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
       // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
-      nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      // nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       tokenStandardIndex: -1,
       // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
       tokenTag: '',
@@ -184,15 +185,15 @@ export default {
     },
     // 交换网络
     exchangeNet () {
-      if (this.stepIndex === 1) {
-        return
-      }
       console.log(that.toNet)
-      this.switchNetWork(that.toNet, () => {
-        // const toNet = that.toNet
-        // that.toNet = that.fromNet
-        // that.fromNet = toNet
-      })
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.switchNetWork(that.toNet, () => {})
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        const network = this.$store.state.netWorkList.filter(item => item.chainId === that.toNet.chainId + '')
+        if (network.length > 0) {
+          this.initNetData(network[0])
+        }
+      }
     },
     // 初始化页面
     initPage () {

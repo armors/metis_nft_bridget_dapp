@@ -86,10 +86,15 @@ export default {
       console.log(this.$store.state.netWorkList)
       const network = this.$store.state.netWorkList.filter(item => item.chainId === e.key + '')
       console.log(network[0])
-      this.switchNetWork(network[0], () => {
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.switchNetWork(network[0], () => {
+          this.$store.dispatch('updateNetWork', network[0])
+          this.initNetWork()
+        })
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        console.log(network[0])
         this.$store.dispatch('updateNetWork', network[0])
-        this.initNetWork()
-      })
+      }
     },
     // 改变连接方式
     changeAccountBtn () {

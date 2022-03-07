@@ -11,8 +11,10 @@ export default {
       // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
       // nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      // nftTokenAddress: '0xF40Bdc6719b9C3A2c123Da86f6f0494051C8b732', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       tokenStandardIndex: -1,
       // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
+      // tokenTag: '0x3faec2ae9e76149343ca5fa3ef42480195a00fb6',
       tokenTag: '',
       tokenStandardList: [
         {
@@ -81,55 +83,67 @@ export default {
       }
     },
     setNftMetaMask () {
-      this.switchNetWork(that.fromNet, async () => {
-        await this.initNetWork()
-        that.iconLoading = true
-        const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeFactory, that.fromNet.bridgeFactory)
-        const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
-        /* L1 预言机 oracle = iMVM_DiscountOracle.sol  接口合约
-         * L1 验证 传入的 destGasLimit 最小为： oracle.getMinL2Gas();
-         * 支付的gas 需要 >= destGasLimit * oracle.getDiscount();
-         * L2 预言机 oracle = iOVM_GasPriceOracle 接口合约 地址：
-         * 支付的gas 需要 >= oracle.minErc20BridgeCost();
-         */
-        const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
-        let gasLimitBig = 0
-        let gasLimit = 0
-        try {
-          gasLimitBig = await oracleContract.methods[methods]().call()
-          gasLimit = parseInt(gasLimitBig.toString())
-          const getDiscount = await oracleContract.methods.getDiscount().call()
-          console.log(getDiscount.toString())
-          console.log(gasLimit * getDiscount.toString())
-          console.log(that.account, that.$account)
-          sendTransactionEvent(tokenContract.methods.setNft(
-            this.nftTokenAddress,
-            this.tokenTag,
-            parseInt(that.fromNet.chainId),
-            gasLimit
-          ).send({
-            from: that.account,
-            value: 320000000
-          }), {
-            summary: `setNft ${that.tokenTag}`
-          }, (res) => {
-            console.log(res)
-            that.iconLoading = false
-            if (!res.status) {
-              return that.$message.error('set nft error', 3)
-            }
-            that.$message.success('set nft success', 3)
-            this.visible = false
-            this.stepIndex = 0
-            this.nftTokenAddress = ''
-          }, e => {
-            that.iconLoading = false
-            console.log(e)
-            that.$message.error(e?.data?.message || e?.message ? e.message : 'set nft error', 3)
-          })
-        } catch (e) {
-        }
-      })
+      console.log(this.isNeedHold)
+      console.log(that.toNet)
+      console.log(that.fromNet)
+      if (!this.isNeedHold) {
+        this.switchNetWork(that.fromNet, () => {
+          this.setNftMetaMaskFun()
+        })
+      } else {
+        this.initNetData(this.$store.state.netWork)
+        this.setNftMetaMaskFun()
+      }
+    },
+    async setNftMetaMaskFun () {
+      await this.initNetWork()
+      console.log(that.fromNet, that.toNet, this.currentChainId)
+      that.iconLoading = true
+      const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeFactory, that.fromNet.bridgeFactory)
+      const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+      /* L1 预言机 oracle = iMVM_DiscountOracle.sol  接口合约
+       * L1 验证 传入的 destGasLimit 最小为： oracle.getMinL2Gas();
+       * 支付的gas 需要 >= destGasLimit * oracle.getDiscount();
+       * L2 预言机 oracle = iOVM_GasPriceOracle 接口合约 地址：
+       * 支付的gas 需要 >= oracle.minErc20BridgeCost();
+       */
+      const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      let gasLimitBig = 0
+      let gasLimit = 0
+      try {
+        gasLimitBig = await oracleContract.methods[methods]().call()
+        gasLimit = parseInt(gasLimitBig.toString())
+        const getDiscount = await oracleContract.methods.getDiscount().call()
+        console.log(getDiscount.toString())
+        console.log(gasLimit * getDiscount.toString())
+        console.log(that.account, that.$account)
+        sendTransactionEvent(tokenContract.methods.setNft(
+          this.nftTokenAddress,
+          this.tokenTag,
+          parseInt(that.fromNet.chainId),
+          gasLimit
+        ).send({
+          from: that.account,
+          value: 320000000
+        }), {
+          summary: `setNft ${that.tokenTag}`
+        }, (res) => {
+          console.log(res)
+          that.iconLoading = false
+          if (!res.status) {
+            return that.$message.error('set nft error', 3)
+          }
+          that.$message.success('set nft success', 3)
+          this.visible = false
+          this.stepIndex = 0
+          this.nftTokenAddress = ''
+        }, e => {
+          that.iconLoading = false
+          console.log(e)
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'set nft error', 3)
+        })
+      } catch (e) {
+      }
     },
     async serNftPolis () {
       const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
@@ -185,7 +199,7 @@ export default {
     },
     // 交换网络
     exchangeNet () {
-      console.log(that.toNet)
+      if (this.stepIndex === 1) return
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.switchNetWork(that.toNet, () => {})
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
@@ -339,8 +353,10 @@ export default {
         this.baseUrl = baseUrl
         this.stepIndex = 1
       } catch (e) {
+        console.log(e)
+        console.log(JSON.stringify(e))
         console.log(e.toString())
-        if (e.toString().indexOf('-32000') > -1) {
+        if (e.toString().indexOf('-32000') > -1 || JSON.stringify(e).indexOf('32603') > -1) {
           try {
             const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
             if (tokenContract?.code && tokenContract.code === 500) {

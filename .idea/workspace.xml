@@ -20,7 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.dev" beforeDir="false" afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/js/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/js/default.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/wrap/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/js/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +99,9 @@
       <workItem from="1646306219969" duration="10064000" />
       <workItem from="1646376389174" duration="3960000" />
       <workItem from="1646531216967" duration="1366000" />
+      <workItem from="1646621904514" duration="3495000" />
+      <workItem from="1646633705696" duration="139000" />
+      <workItem from="1646662930287" duration="4823000" />
     </task>
     <servers />
   </component>
@@ -112,18 +121,19 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1540" y="76" width="1720" height="857" key="DiffContextDialog" timestamp="1645798029384">
-      <screen x="1440" y="-24" width="1920" height="1057" />
+    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog" timestamp="1646666514368">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state x="1540" y="76" width="1720" height="857" key="DiffContextDialog/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1645798029384" />
+    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog/0.23.1440.830@0.23.1440.830" timestamp="1646666514368" />
     <state x="1777" y="32" key="SettingsEditor" timestamp="1645450959194">
       <screen x="1440" y="-24" width="1920" height="1010" />
     </state>
     <state x="1777" y="32" key="SettingsEditor/0.23.1440.877/1440.-24.1920.1010@1440.-24.1920.1010" timestamp="1645450959194" />
-    <state x="1904" y="112" width="992" height="785" key="find.popup" timestamp="1646376444319">
+    <state x="1904" y="112" width="992" height="785" key="find.popup" timestamp="1646623742306">
       <screen x="1440" y="-24" width="1920" height="1057" />
     </state>
-    <state x="1904" y="112" width="992" height="785" key="find.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1646376444319" />
+    <state x="1904" y="112" width="992" height="785" key="find.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1646623742306" />
     <state x="348" y="130" width="744" height="616" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1645968779670" />
     <state x="526" y="188" key="refactoring.ChangeSignatureDialog" timestamp="1645846497684">
       <screen x="0" y="23" width="1440" height="830" />

@@ -219,7 +219,7 @@ export default {
         await this.getApprove()
       } catch (e) {
         console.log(e.toString())
-        if (e.toString().indexOf('-32000') > -1) {
+        if (e.toString().indexOf('-32000') > -1 || JSON.stringify(e).indexOf('32603') > -1) {
           try {
             const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
             if (tokenContract?.code && tokenContract.code === 500) {

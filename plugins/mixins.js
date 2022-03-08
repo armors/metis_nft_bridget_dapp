@@ -24,9 +24,9 @@ export default {
     currentChainName: function () {
       let chainName = 'Mainnet'
       if (process.client) {
-        if (this.currentChainId === '1' || this.currentChainId === '1088') {
+        if (this.$store.state.netWork.chainId === '1' || this.$store.state.netWork.chainId === '1088') {
           chainName = 'Mainnet'
-        } else if (this.currentChainId === '4' || this.currentChainId === '588') {
+        } else if (this.$store.state.netWork.chainId === '4' || this.$store.state.netWork.chainId === '588') {
           chainName = 'Test Network'
         }
       }
@@ -238,6 +238,7 @@ export default {
       await this.initEth()
       const networkVersion = parseInt(window.ethereum.networkVersion)
       console.log(networkVersion)
+      this.initNetWork()
       console.log(window.ethereum.networkVersion)
       // if (networkVersion !== 4) {
       //   that.resolve({
@@ -268,7 +269,7 @@ export default {
         that.account = accounts[0]
         await that.$store.dispatch('updateAccounts', accounts)
         this.$store.dispatch('updateConnectType', 'MetaMask')
-        that.initTransactions()
+        // that.initTransactions()
         if (!accounts) {
           setTimeout(function () {
             that.initWeb3()

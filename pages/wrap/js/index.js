@@ -33,7 +33,8 @@ export default {
       toNet: null,
       name: '',
       symbol: '',
-      baseUrl: ''
+      baseUrl: '',
+      originChainId: '',
     }
   },
   components: {},
@@ -88,14 +89,14 @@ export default {
       console.log(that.fromNet)
       if (!this.isNeedHold) {
         this.switchNetWork(that.fromNet, () => {
-          this.setNftMetaMaskFun()
+          this.setNftMetaMaskFun(this.nftTokenAddress, this.tokenTag)
         })
       } else {
         this.initNetData(this.$store.state.netWork)
-        this.setNftMetaMaskFun()
+        this.setNftMetaMaskFun(this.tokenTag, this.nftTokenAddress)
       }
     },
-    async setNftMetaMaskFun () {
+    async setNftMetaMaskFun (nftTokenAddress, tokenTag) {
       await this.initNetWork()
       console.log(that.fromNet, that.toNet, this.currentChainId)
       that.iconLoading = true
@@ -117,10 +118,16 @@ export default {
         console.log(getDiscount.toString())
         console.log(gasLimit * getDiscount.toString())
         console.log(that.account, that.$account)
+        console.log(
+          nftTokenAddress,
+          tokenTag,
+          parseInt(this.originChainId),
+          gasLimit
+        )
         sendTransactionEvent(tokenContract.methods.setNft(
-          this.nftTokenAddress,
-          this.tokenTag,
-          parseInt(that.fromNet.chainId),
+          nftTokenAddress,
+          tokenTag,
+          parseInt(this.originChainId),
           gasLimit
         ).send({
           from: that.account,
@@ -337,6 +344,7 @@ export default {
     async metaMaskNextStep () {
       this.iconLoading = true
       const that = this
+      this.originChainId = this.$store.state.netWork.chainId
       console.log(this.$web3_http)
       try {
         this.tokenStandardIndex = 0

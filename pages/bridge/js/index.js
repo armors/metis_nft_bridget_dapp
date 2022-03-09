@@ -180,7 +180,7 @@ export default {
     },
     // 无用
     selectTokenStandard (v, i) {
-      // this.tokenStandardIndex = i
+      this.tokenStandardIndex = i
     },
     // 无用
     selectTokenId (v, i) {
@@ -213,7 +213,11 @@ export default {
         }
         const symbol = await tokenContract.symbol()
         const name = await tokenContract.name()
-        const baseUrl = await tokenContract.baseUri()
+        let baseUrl = ''
+        try {
+          baseUrl = await tokenContract.baseUri()
+        } catch (e) {
+        }
         console.log(symbol, name, baseUrl)
         this.tokenStandardIndex = 0
         await this.getApprove()
@@ -231,8 +235,8 @@ export default {
             this.tokenStandardIndex = 1
             await this.getApprove()
           } catch (err) {
-            console.log(err)
-            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+            // console.log(err)
+            // that.$message.error(err?.data?.message || err?.message ? err.message : 'get nft info error', 3)
           }
         } else if (e.toString().indexOf('call revert exception (method')) {
           that.$message.error('contract address and Network mismatch ', 3)

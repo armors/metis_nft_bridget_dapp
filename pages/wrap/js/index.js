@@ -1,6 +1,7 @@
-import { useTokenContract, useContractByRpc, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import { useContractByRpc, useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods, sendTransactionEvent } from '../../../utils/web3/contractEvent'
+import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
+
 let that
 export default {
   data () {
@@ -264,7 +265,7 @@ export default {
     },
     // 无用
     selectTokenStandard (v, i) {
-      // this.tokenStandardIndex = i
+      this.tokenStandardIndex = i
     },
     // 无用
     selectTokenId (v, i) {
@@ -353,12 +354,13 @@ export default {
           this.iconLoading = false
           return that.$message.error(tokenContract.error.message, 3)
         }
-        const symbol = await tokenContract.symbol()
-        const name = await tokenContract.name()
-        const baseUrl = await tokenContract.baseUri()
-        this.name = name
-        this.symbol = symbol
-        this.baseUrl = baseUrl
+        this.symbol = await tokenContract.symbol()
+        this.name = await tokenContract.name()
+        try {
+          this.baseUrl = await tokenContract.baseUri()
+        } catch (e) {
+          this.baseUrl = ''
+        }
         this.stepIndex = 1
       } catch (e) {
         console.log(e)
@@ -377,13 +379,16 @@ export default {
             this.tokenStandardIndex = 1
             this.stepIndex = 1
           } catch (err) {
-            console.log(err)
-            that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+            this.baseUrl = ''
+            this.tokenStandardIndex = -1
+            this.stepIndex = 1
+            // console.log(err)
+            // that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
           }
         } else if (e.toString().indexOf('call revert exception (method')) {
           that.$message.error('contract address and Network mismatch ', 3)
         } else {
-          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'get nft info error', 3)
         }
       }
       this.iconLoading = false

@@ -7,11 +7,11 @@
         <div class="box-flex1 to-chain">{{getChainName(toNet)}}</div>
       </div>
       <div class="title-text">NFT Token Address({{getChainName(fromNet)}})</div>
-      <div> <a-input placeholder="Add text" v-model="nftTokenAddress" @blur="nftTokenBlur"/></div>
+      <div> <a-input placeholder="Please Input NFT Token Address" v-model="nftTokenAddress" @blur="nftTokenBlur"/></div>
       <div class="title-text">Receiver Address({{getChainName(toNet)}})</div>
-      <div> <a-input placeholder="Add text" v-model="receiverAddress"/></div>
-      <div class="title-text">Token IDs</div>
-      <div> <a-input placeholder="Add text" v-model="tokenId" @blur="getApprove"/></div>
+      <div> <a-input placeholder="Please Input Receiver Address" v-model="receiverAddress"/></div>
+      <div class="title-text">Token ID</div>
+      <div> <a-input placeholder="Please Input Token ID" v-model="tokenId" @blur="tokenIdBlur"/></div>
       <!--      <div class="token-id-list display-flex box-nowrap">-->
 <!--        <div class="token-id-item no-select" @click="selectTokenId(v, i)" v-for="(v, i) in tokenIdList" :key="`token-id-${i}`" :class="{active: tokenIdIndex === i}">#{{v.key}}</div>-->
 <!--      </div>-->
@@ -24,10 +24,10 @@
         <div class="box-flex1">Please note that at this time，the Metis NFT bridge only supports transferring one copy at a time</div>
       </div>
       <div class="ic-box standard" v-show="isNeedHold">
-        <div>it will take 7 days for the NFT token to be arrive to Ethereum network</div>
+        <div>it will take 8 days for the NFT token to be arrive to {{getChainName(toNet)}} network</div>
         <div class="display-flex box-center date-box">
           <div class="ic-img"><img src="../../assets/image/ic_date@2x.png" alt=""></div>
-          <div class="">Arrive to Ethereum before UTC 11-12-2021</div>
+          <div class="">Arrive to {{getChainName(toNet)}} before UTC {{arrivalDate}}</div>
         </div>
       </div>
       <a-button type="primary" :loading="iconLoading" v-if="!isApprove" @click="approveDialog">
@@ -37,8 +37,13 @@
         Confirm
       </a-button>
     </div>
+    <div class="go-wrap-box display-flex box-center-Y no-select" @click="$router.push({path: '/wrap'})">
+      <div class="img-box-wrap"><img src="../../assets/image/ic_developer@2x.png" alt=""></div>
+      <div class="box-flex1">i’m a developer，take me to deploy wrapped NFT</div>
+      <div class="icon-right"><img src="../../assets/image/ic_right@2x.png" alt=""></div>
+    </div>
     <div class="display-flex">
-      <a href="javascript:;" class="history-text">View your history ></a>
+      <a href="javascript:;" @click="$router.push({path: '/history'})" class="history-text">View history ></a>
     </div>
 
     <a-modal
@@ -52,8 +57,8 @@
       :footer="null"
       :closable="false"
     >
-      <div class="back-img" @click="visible = false"><img src="../../assets/image/ic_back@2x.png" alt=""></div>
-      <div class="title-box">􏰌􏰇􏱧􏰾􏰿􏰍􏱧􏱧􏰊􏰾􏱐􏰇 􏰌􏰇􏱧􏰾􏰿{{isApprove ? 'Confirm' : 'Approve'}} the Transfer</div>
+      <div class="back-img" @click="visible = false; iconLoading = false"><img src="../../assets/image/ic_back@2x.png" alt=""></div>
+      <div class="title-box">{{isApprove ? 'Confirm' : 'Approve'}} the Transfer</div>
       <div class="chain-box">
         <div>{{getChainName(fromNet)}}</div>
         <div class="next-img"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
@@ -66,12 +71,12 @@
         </div>
         <div class="display-flex box-center-Y token-stand">
           <div>Token Standards:</div>
-          <div class="box-flex1">{{tokenStandardList[tokenIdIndex].key}}</div>
+          <div class="box-flex1">{{tokenStandardIndex > -1 ? tokenStandardList[tokenStandardIndex].key : '--'}}</div>
         </div>
       </div>
       <div class="tip-box" :class="{'hidden': !isNeedHold}">It will take up to 8 days for the NFT token to arrive to the
-                    Ethereum Network</div>
-      <div class="tip-box tip-box1" :class="{'hidden': !isNeedHold}">Estimate to arrive at Ethereum before UTC 11-12-2021</div>
+                                                            {{getChainName(toNet)}} Network</div>
+      <div class="tip-box tip-box1" :class="{'hidden': !isNeedHold}">Estimate to arrive at {{getChainName(toNet)}} before UTC {{arrivalDate}}</div>
       <a-button type="primary" class="confirm-btn no-select" :loading="iconLoading" v-if="isApprove" @click="confirmFun">
         {{isNeedHold ? 'Confirm i will wait for 8 days' : 'Confirm'}}
       </a-button>

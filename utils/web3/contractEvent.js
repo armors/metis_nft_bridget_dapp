@@ -30,25 +30,25 @@ export function useCallback (response, { summary, eventName, approval }, callbac
 export function sendTransactionEvent (sendEvent, { summary, approval }, callback, errorCallback) {
   if (process.client) {
     const { $store, $toastBox } = window.$nuxt
-    $store.dispatch('updateLoading', true)
+    // $store.dispatch('updateLoading', true)
     sendEvent.on('transactionHash', function (hash) {
-      console.log('transactionHash')
-      $store.dispatch('updateTransactions', {
-        hash,
-        type: TRANSACTION_ACTIONS.ADDED,
-        summary,
-        approval
-      })
+      console.log('transactionHash', hash)
+      // $store.dispatch('updateTransactions', {
+      //   hash,
+      //   type: TRANSACTION_ACTIONS.ADDED,
+      //   summary,
+      //   approval
+      // })
     }).on('receipt', function (receipt) {
       console.log('receipt')
-      $store.dispatch('updateTransactions', {
-        hash: receipt.transactionHash,
-        type: TRANSACTION_ACTIONS.CONFIRMED
-      })
-      $store.dispatch('updateLoading', false)
-      callback && callback(receipt.transactionHash)
+      // $store.dispatch('updateTransactions', {
+      //   hash: receipt.transactionHash,
+      //   type: TRANSACTION_ACTIONS.CONFIRMED
+      // })
+      // $store.dispatch('updateLoading', false)
+      callback && callback(receipt)
     }).catch(error => {
-      $store.dispatch('updateLoading', false)
+      // $store.dispatch('updateLoading', false)
       return errorCallback && errorCallback(error)
       const errInfo = JSON.parse(JSON.stringify(error))
       console.log(errInfo)
@@ -69,12 +69,12 @@ export function sendTransactionEvent (sendEvent, { summary, approval }, callback
         const errInfo = JSON.parse(JSON.stringify(error))
         console.log(errInfo)
         console.log(`actions is failed: ${error.message}`)
-        if (errInfo.receipt.transactionHash) {
-          $store.dispatch('updateTransactions', {
-            hash: errInfo.receipt.transactionHash,
-            type: TRANSACTION_ACTIONS.CONFIRMED
-          })
-        }
+        // if (errInfo.receipt.transactionHash) {
+        //   $store.dispatch('updateTransactions', {
+        //     hash: errInfo.receipt.transactionHash,
+        //     type: TRANSACTION_ACTIONS.CONFIRMED
+        //   })
+        // }
       }
     })
   }
@@ -102,20 +102,23 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   } else if (parameters.length === 4) {
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3])
   } else if (parameters.length === 5) {
-    console.log(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
     method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
+  } else if (parameters.length === 6) {
+    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5])
+  } else if (parameters.length === 7) {
+    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6])
   }
   const { $store, $toastBox } = window.$nuxt
   // $store.dispatch('updateLoading', true)
   method.then((response) => {
-    $store.dispatch('updateLoading', false)
+    // $store.dispatch('updateLoading', false)
     useCallback(response, {
       summary: summary,
       eventName: eventName
     }, callback)
   })
     .catch((error) => {
-      $store.dispatch('updateLoading', false)
+      // $store.dispatch('updateLoading', false)
       const networkVersion = window.ethereum.networkVersion
       console.log(networkVersion)
       errorCallback && errorCallback(error)

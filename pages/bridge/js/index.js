@@ -1,6 +1,9 @@
-import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import {
+  useContractByRpc,
+  useTokenContract, useTokenContractWeb3
+} from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods, sendTransactionEvent } from '../../../utils/web3/contractEvent'
+import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveToken } from '../../../utils/web3/approveToken'
 
 let that
@@ -11,9 +14,13 @@ export default {
       visible: false,
       isShowTop: false,
       account: '',
-      nftTokenAddress: '0x6Cb8d3575258f9b729d5D9F8585F4fa71cB32AB5', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
-      receiverAddress: '',
-      tokenId: '1',
+      // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0xd8058efe0198ae9dd7d563e1b4938dcbc86a1f81
+      // nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      // receiverAddress: '0x5d6576ca71D1911310d841a0fBb1018211bb0E54', // 0x5d6576ca71D1911310d841a0fBb1018211bb0E54
+      nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      receiverAddress: '', // 0x5d6576ca71D1911310d841a0fBb1018211bb0E54
+      tokenId: '',
       tokenIdList: [
         {
           key: 123,
@@ -49,7 +56,7 @@ export default {
         }
       ],
       tokenIdIndex: 0,
-      tokenStandardIndex: 0,
+      tokenStandardIndex: -1,
       tokenStandardList: [
         {
           key: 'ERC721',
@@ -63,7 +70,8 @@ export default {
       fromNet: null,
       iconLoading: false,
       toNet: null,
-      isApprove: false
+      isApprove: false,
+      arrivalDate: ''
     }
   },
   components: {
@@ -71,7 +79,15 @@ export default {
   computed: {
     // 是否需要等待8天
     isNeedHold: function () {
-      return this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '558')
+      const isWait = this.fromNet && (this.fromNet.chainId === '1088' || this.fromNet.chainId === '588')
+      if (isWait) {
+        const arrivalDate = new Date(new Date().getTime() + 8 * 24 * 60 * 60 * 1000)
+        console.log(arrivalDate)
+        const dateArr = arrivalDate.toGMTString().split(' ')
+        console.log(dateArr)
+        this.arrivalDate = dateArr[1] + ' ' + dateArr[2] + ' ' + dateArr[3]
+      }
+      return isWait
     }
   },
   watch: {
@@ -84,7 +100,7 @@ export default {
     // 切换网络
     '$store.state.netWork': function (val) {
       console.log(val)
-      if (!val || this.stepIndex === 1) {
+      if (!val) {
         return
       }
       this.initNetData(val)
@@ -106,20 +122,20 @@ export default {
       that.initNetData(this.$store.state.netWork)
       that.account = that.$account
       if (that.account) {
-        that.receiverAddress = that.account
+        // that.receiverAddress = that.account
       }
     },
     // 交换网络
     exchangeNet () {
-      if (this.stepIndex === 1) {
-        return
-      }
       console.log(that.toNet)
-      this.switchNetWork(that.toNet, () => {
-        // const toNet = that.toNet
-        // that.toNet = that.fromNet
-        // that.fromNet = toNet
-      })
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.switchNetWork(that.toNet, () => {})
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        const network = this.$store.state.netWorkList.filter(item => item.chainId === that.toNet.chainId + '')
+        if (network.length > 0) {
+          this.initNetData(network[0])
+        }
+      }
     },
     // network信息获取
     initNetData (val) {
@@ -131,13 +147,21 @@ export default {
           nativeCurrency: val.nativeCurrency0,
           rpcUrls: val.rpcUrls0,
           blockExplorerUrls: val.blockExplorerUrls0,
-          bridgeFactory: val.bridgeFactory0
+          bridgeFactory: val.bridgeFactory0,
+          bridge: val.bridge0,
+          domainInfo: val.domainInfo0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
         }
       } else {
         this.fromNet = {
           chainId: val.chainId0,
           chainName: val.chainName0,
-          bridgeFactory: val.bridgeFactory0
+          bridgeFactory: val.bridgeFactory0,
+          bridge: val.bridge0,
+          domainInfo: val.domainInfo0,
+          oracleContract: val.oracleContract0,
+          oracleAbi: val.oracleAbi0
         }
       }
       this.toNet = {
@@ -147,7 +171,11 @@ export default {
         nativeCurrency: val.nativeCurrency1,
         rpcUrls: val.rpcUrls1,
         blockExplorerUrls: val.blockExplorerUrls1,
-        bridgeFactory: val.bridgeFactory1
+        bridgeFactory: val.bridgeFactory1,
+        bridge: val.bridge1,
+        domainInfo: val.domainInfo1,
+        oracleContract: val.oracleContract1,
+        oracleAbi: val.oracleAbi1
       }
     },
     // 无用
@@ -160,13 +188,27 @@ export default {
     },
     // nft token address 鼠标移除事件判断是否授权
     async nftTokenBlur () {
-      this.iconLoading = true
+      if (!this.nftTokenAddress) {
+        return
+      }
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.nftTokenBlurMetaMask()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.tokenStandardIndex = 1
+        this.getApprovePolis()
+      }
+    },
+    // async nftTokenBlurPolis () {
+    //
+    // },
+    async nftTokenBlurMetaMask () {
       const that = this
       console.log(this.$web3_http)
       try {
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
+        console.log(tokenContract)
         if (tokenContract?.code && tokenContract.code === 500) {
-          this.iconLoading = false
+          // this.iconLoading = false
           return that.$message.error(tokenContract.error.message, 3)
         }
         const symbol = await tokenContract.symbol()
@@ -177,11 +219,11 @@ export default {
         await this.getApprove()
       } catch (e) {
         console.log(e.toString())
-        if (e.toString().indexOf('-32000') > -1) {
+        if (e.toString().indexOf('-32000') > -1 || JSON.stringify(e).indexOf('32603') > -1) {
           try {
             const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
             if (tokenContract?.code && tokenContract.code === 500) {
-              this.iconLoading = false
+              // this.iconLoading = false
               return that.$message.error(tokenContract.error.message, 3)
             }
             const baseUrl = await tokenContract.uri(this.nftTokenAddress)
@@ -198,60 +240,196 @@ export default {
           that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         }
       }
-      this.iconLoading = false
     },
-    // 判断是否授权
-    async getApprove () {
+    tokenIdBlur () {
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.getApprove()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.tokenStandardIndex = 1
+        this.getApprovePolis()
+      }
+    },
+    getApprovePolis (isShow = false) {
+      console.log(this.nftTokenAddress, this.tokenId)
       if (!this.nftTokenAddress || !this.tokenId) {
         return
       }
+      console.log(this.fromNet.domainInfo.token721,
+        parseInt(this.$store.state.netWork.chainId),
+        'getApproved',
+        [this.tokenId])
+      try {
+        if (this.tokenStandardIndex === 0) { // 721
+          this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token721,
+            parseInt(this.$store.state.netWork.chainId),
+            'getApproved',
+            [this.tokenId],
+            false
+          ).then(res => {
+            console.log(res)
+            this.isApprove = res.result === this.fromNet.bridge
+            that.iconLoading = false
+            if (isShow) this.visible = !this.isApprove
+          }, reject => {
+            this.$message.error(reject.message.message, 3)
+            that.iconLoading = false
+          }).catch(err => {
+            console.log(err)
+            that.iconLoading = false
+            this.$message.error(err.message.message, 3)
+          })
+        } else if (this.tokenStandardIndex === 1) { // 1155
+          this.$httpClient.sendTxAsync(
+            this.fromNet.domainInfo.token1155,
+            parseInt(this.$store.state.netWork.chainId),
+            'isApprovedForAll',
+            [
+              this.receiverAddress,
+              this.fromNet.bridge
+            ],
+            false
+          ).then(res => {
+            console.log(res)
+            this.isApprove = res.result
+            that.iconLoading = false
+            if (isShow) this.visible = !this.isApprove
+          }, reject => {
+            this.$message.error(reject.message.message, 3)
+            that.iconLoading = false
+          }).catch(err => {
+            console.log(err)
+            that.iconLoading = false
+            this.$message.error(err.message.message, 3)
+          })
+        }
+      } catch (err) {
+        if (isShow) this.iconLoading = false
+        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+      }
+    },
+    // 判断是否授权
+    async getApprove (isShow = false) {
+      console.log(isShow)
+      if (!this.nftTokenAddress || !this.tokenId) {
+        return
+      }
+      if (isShow) this.iconLoading = true
       try {
         if (this.tokenStandardIndex === 0) { // 721
           const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
           const spender = await tokenContract.getApproved(this.tokenId)
           console.log(spender)
-          this.isApprove = spender === process.env.bridgeL1
+          this.isApprove = spender === this.fromNet.bridge
         } else if (this.tokenStandardIndex === 1) { // 1155
           const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
-          const isApprovedForAll = await tokenContract.isApprovedForAll(this.tokenId, tokenContract)
+          const isApprovedForAll = await tokenContract.isApprovedForAll(this.receiverAddress, this.fromNet.bridge)
           console.log(isApprovedForAll)
           this.isApprove = isApprovedForAll
         }
-      } catch (e) {
-        console.log(e)
+        if (isShow) this.visible = !this.isApprove
+        if (isShow) this.iconLoading = false
+      } catch (err) {
+        if (isShow) this.iconLoading = false
+        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
       }
     },
     // 打开二次确认授权
     async approveDialog () {
-      await this.getApprove()
-      this.visible = !this.isApprove
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        await this.getApprove(true)
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.getApprovePolis(true)
+      }
     },
     // 授权操作
     approveFun () {
-      if (this.tokenStandardIndex === 0) {
-        this.approve721()
-      } else if (this.tokenStandardIndex === 1) {
-        this.approve1155()
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        if (this.tokenStandardIndex === 0) {
+          this.approve721()
+        } else if (this.tokenStandardIndex === 1) {
+          this.approve1155()
+        }
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        that.iconLoading = true
+        let domain = ''
+        let methods = ''
+        let args = []
+        if (this.tokenStandardIndex === 0) {
+          domain = this.fromNet.domainInfo.token721
+          methods = 'approve'
+          args = [this.fromNet.bridge, this.tokenId]
+        } else if (this.tokenStandardIndex === 1) {
+          domain = this.fromNet.domainInfo.token1155
+          methods = 'setApprovalForAll'
+          args = [this.fromNet.bridge, true]
+        }
+        this.approvePolis(domain, methods, args)
       }
+    },
+    approvePolis (domain, methods, args) {
+      console.log(domain, methods, args, that.account)
+      this.$httpClient.sendTxAsync(
+        domain,
+        parseInt(this.$store.state.netWork.chainId),
+        methods,
+        args,
+        false,
+        null
+      ).then(res => {
+        console.log(res)
+        that.iconLoading = false
+        this.getApprovePolis()
+      }, reject => {
+        console.log(reject)
+        this.$message.error(reject.message.message, 3)
+        that.iconLoading = false
+      }).catch(err => {
+        console.log(err)
+        that.iconLoading = false
+        this.$message.error(err.message.message, 3)
+      })
     },
     // 721授权
     async approve721 () {
       const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
       const spender = await tokenContract.getApproved(this.tokenId)
-      if (spender !== process.env.bridgeL1) {
-        console.log(1123123)
-        await approveToken(process.env.bridgeL1, this.tokenId, tokenContract, res => {
+      if (spender !== this.fromNet.bridge) {
+        that.iconLoading = true
+        console.log(this.fromNet)
+        await approveToken(this.fromNet.bridge, this.tokenId, tokenContract, res => {
           console.log(res)
+          that.iconLoading = false
           this.getApprove()
         }, err => {
           console.log(err)
+          that.iconLoading = false
           this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
         })
       }
     },
     // 1155授权
     async approve1155 () {
-
+      const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
+      const isApprovedForAll = await tokenContract.isApprovedForAll(this.receiverAddress, this.fromNet.bridge)
+      if (!isApprovedForAll) {
+        that.iconLoading = true
+        await useContractMethods({
+          contract: tokenContract,
+          methodName: 'setApprovalForAll',
+          parameters: [
+            this.fromNet.bridge,
+            true
+          ]
+        }, (res) => {
+          that.iconLoading = false
+          this.getApprove()
+        }, (err) => {
+          console.log(err)
+          that.iconLoading = false
+          this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+        })
+      }
     },
     // 打开二次确认弹框
     confirmDialog () {
@@ -260,36 +438,104 @@ export default {
     // deposit 操作
     async confirmFun () {
       that.iconLoading = true
-      let tokenContract = null
-      if (this.isNeedHold) { // L2->L1
-        console.log(process.env.bridgeL2)
-        tokenContract = useTokenContract(process.env.bridgeL2, COIN_ABI.bridgeL2)
-        // tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL2, process.env.bridgeL2)
-      } else { // L1->L2
-        console.log(process.env.bridgeL1)
-        tokenContract = useTokenContract(process.env.bridgeL1, COIN_ABI.bridgeL1)
-        // tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, process.env.bridgeL1)
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.confirmMetaMask()
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        this.confirmPolis()
       }
-      await useContractMethods({
-        contract: tokenContract,
-        methodName: 'depositTo',
-        parameters: [
+    },
+    async confirmMetaMask () {
+      const tokenContract = useTokenContractWeb3(COIN_ABI.bridgeL1, this.fromNet.bridge)
+      const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+      console.log(that.fromNet.oracleAbi)
+      const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      let gasLimitBig = 0
+      let gasLimit = 0
+      try {
+        gasLimitBig = await oracleContract.methods[methods]().call()
+        gasLimit = parseInt(gasLimitBig.toString())
+        if (!this.isNeedHold) {
+          const getDiscount = await oracleContract.methods.getDiscount().call()
+          console.log(getDiscount.toString())
+          console.log(gasLimit * getDiscount.toString())
+        }
+        console.log(that.account, that.$account)
+        console.log(this.nftTokenAddress,
+          this.receiverAddress,
+          parseInt(this.tokenId),
+          this.tokenStandardList[this.tokenStandardIndex].value,
+          gasLimit
+        )
+        sendTransactionEvent(tokenContract.methods.depositTo(
           this.nftTokenAddress,
           this.receiverAddress,
           parseInt(this.tokenId),
           this.tokenStandardList[this.tokenStandardIndex].value,
-          3200000000
-        ]
-      }, (res) => {
-        console.log(res)
-        that.iconLoading = false
-        that.$message.success('depositTo nft success', 3)
-        this.visible = false
-      }, (err) => {
-        console.log(err)
+          gasLimit
+        ).send({
+          from: that.account,
+          value: 320000000
+        }), {
+          summary: `deposit ${that.receiverAddress}`
+        }, (res) => {
+          console.log(res)
+          that.iconLoading = false
+          that.$message.success('depositTo nft success', 3)
+          this.visible = false
+        }, err => {
+          console.log(err)
+          that.iconLoading = false
+          that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
+        })
+      } catch (err) {
         that.iconLoading = false
         that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
-      })
+      }
+    },
+    async confirmPolis () {
+      const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      try {
+        const gasLimitBig = await this.$httpClient.sendTxAsync(
+          this.fromNet.domainInfo.oracleAbi,
+          parseInt(this.$store.state.netWork.chainId),
+          methods,
+          [],
+          false
+        )
+        console.log(gasLimitBig)
+        const gasLimit = parseInt(gasLimitBig.result.toString())
+        this.$httpClient.sendTxAsync(
+          this.fromNet.domainInfo.bridgeDomain,
+          parseInt(this.$store.state.netWork.chainId),
+          'depositTo',
+          [
+            this.nftTokenAddress,
+            this.receiverAddress,
+            parseInt(this.tokenId),
+            this.tokenStandardList[this.tokenStandardIndex].value,
+            gasLimit
+          ],
+          false,
+          {
+            from: that.account,
+            value: 320000000
+          }
+        ).then(res => {
+          console.log(res)
+          that.iconLoading = false
+          that.$message.success('depositTo nft success', 3)
+          this.visible = false
+        }, reject => {
+          this.$message.error(reject.message.message, 3)
+          that.iconLoading = false
+        }).catch(err => {
+          console.log(err)
+          that.iconLoading = false
+          this.$message.error(err.message.message, 3)
+        })
+      } catch (e) {
+
+      }
     }
   }
 }

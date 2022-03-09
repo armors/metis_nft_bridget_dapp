@@ -1,3 +1,10 @@
+import {
+  networkRinkeby,
+  networkStardust,
+  networkEthereum,
+  networkAndromeda
+} from './network'
+
 export default () => ({
   isLoading: false,
   dialogConnectType: false,
@@ -6,153 +13,145 @@ export default () => ({
   authPolisParams: null,
   authUserInfo: null,
   netWork: {
-    chainName: 'Mainnet',
-    chainId: '1',
-    chainName0: 'Ethereum',
-    chainId0: '1',
-    chainName1: 'Andromeda',
-    chainId1: '1088',
-    chainNameAdd1: 'Andromeda',
-    nativeCurrency1: {
-      name: 'METIS',
-      symbol: 'METIS',
-      decimals: 18
-    },
-    rpcUrls1: ['https://andromeda.metis.io/?owner=1088'],
-    blockExplorerUrls1: ['https://andromeda-explorer.metis.io']
+    chainName: networkRinkeby.chainName,
+    chainId: networkRinkeby.chainId,
+
+    chainName0: networkRinkeby.chainName,
+    chainId0: networkRinkeby.chainId,
+    chainNameAdd0: networkRinkeby.chainNameAdd,
+    nativeCurrency0: networkRinkeby.nativeCurrency,
+    rpcUrls0: networkRinkeby.rpcUrls,
+    blockExplorerUrls0: networkRinkeby.blockExplorerUrls,
+    bridgeFactory0: networkRinkeby.bridgeFactory,
+    bridge0: networkRinkeby.bridge,
+    domainInfo0: networkRinkeby.domainInfo,
+    oracleContract0: networkRinkeby.oracleContract,
+    oracleAbi0: networkRinkeby.oracleAbi,
+
+    chainName1: networkStardust.chainName,
+    chainId1: networkStardust.chainId,
+    chainNameAdd1: networkStardust.chainName,
+    nativeCurrency1: networkStardust.nativeCurrency,
+    rpcUrls1: networkStardust.rpcUrls,
+    blockExplorerUrls1: networkStardust.blockExplorerUrls,
+    bridgeFactory1: networkStardust.bridgeFactory,
+    bridge1: networkStardust.bridge,
+    domainInfo1: networkStardust.domainInfo,
+    oracleContract1: networkStardust.oracleContract,
+    oracleAbi1: networkStardust.oracleAbi
   },
   netWorkList: [
-    // {
-    //   chainName: 'Mainnet',
-    //   chainId: '1',
-    //   chainName0: 'Ethereum',
-    //   chainId0: '1',
-    //   chainName1: 'Andromeda',
-    //   chainId1: '1088',
-    //   chainNameAdd1: 'Andromeda',
-    //   nativeCurrency1: {
-    //     name: 'METIS',
-    //     symbol: 'METIS',
-    //     decimals: 18
-    //   },
-    //   rpcUrls1: ['https://andromeda.metis.io/?owner=1088'],
-    //   blockExplorerUrls1: ['https://andromeda-explorer.metis.io']
-    // },
-    // {
-    //   chainName: 'Andromeda',
-    //   chainId: '1088',
-    //   chainName1: 'Ethereum',
-    //   chainId1: '1',
-    //   chainName0: 'Andromeda',
-    //   chainId0: '1088',
-    //   chainNameAdd0: 'Andromeda',
-    //   nativeCurrency0: {
-    //     name: 'METIS',
-    //     symbol: 'METIS',
-    //     decimals: 18
-    //   },
-    //   rpcUrls0: ['https://andromeda.metis.io/?owner=1088'],
-    //   blockExplorerUrls0: ['https://andromeda-explorer.metis.io']
-    // },
     {
-      chainName: 'Rinkeby',
-      chainId: '4',
-      chainName0: 'Rinkeby',
-      chainId0: '4',
-      chainNameAdd0: 'Rinkeby',
-      nativeCurrency0: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18
-      },
-      rpcUrls0: ['https://rinkeby.etherscan.io/?owner=4'],
-      blockExplorerUrls0: ['https://rinkeby.etherscan.io/'],
-      chainName1: 'Stardust',
-      chainId1: '588',
-      chainNameAdd1: 'Stardust',
-      nativeCurrency1: {
-        name: 'METIS',
-        symbol: 'METIS',
-        decimals: 18
-      },
-      rpcUrls1: ['https://stardust.metis.io/?owner=588'],
-      blockExplorerUrls1: ['https://stardust-explorer.metis.io']
+      chainName: networkEthereum.chainName,
+      chainId: networkEthereum.chainId,
+
+      chainName0: networkEthereum.chainName,
+      chainId0: networkEthereum.chainId,
+      chainNameAdd0: networkEthereum.chainNameAdd,
+      nativeCurrency0: networkEthereum.nativeCurrency,
+      rpcUrls0: networkEthereum.rpcUrls,
+      blockExplorerUrls0: networkEthereum.blockExplorerUrls,
+      bridgeFactory0: networkEthereum.bridgeFactory,
+      bridge0: networkEthereum.bridge,
+      domainInfo0: networkEthereum.domainInfo,
+      oracleContract0: networkEthereum.oracleContract,
+      oracleAbi0: networkEthereum.oracleAbi,
+
+      chainName1: networkAndromeda.chainName,
+      chainId1: networkAndromeda.chainId,
+      chainNameAdd1: networkAndromeda.chainName,
+      nativeCurrency1: networkAndromeda.nativeCurrency,
+      rpcUrls1: networkAndromeda.rpcUrls,
+      blockExplorerUrls1: networkAndromeda.blockExplorerUrls,
+      bridgeFactory1: networkAndromeda.bridgeFactory,
+      bridge1: networkAndromeda.bridge,
+      domainInfo1: networkAndromeda.domainInfo,
+      oracleContract1: networkAndromeda.oracleContract,
+      oracleAbi1: networkAndromeda.oracleAbi
     },
     {
-      chainName: 'Stardust',
-      chainId: '588',
-      chainName1: 'Rinkeby',
-      chainId1: '4',
-      chainNameAdd1: 'Rinkeby',
-      nativeCurrency1: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18
-      },
-      rpcUrls1: ['https://rinkeby.etherscan.io/?owner=4'],
-      blockExplorerUrls1: ['https://rinkeby.etherscan.io/'],
-      chainName0: 'Stardust',
-      chainId0: '588',
-      chainNameAdd0: 'Stardust',
-      nativeCurrency0: {
-        name: 'METIS',
-        symbol: 'METIS',
-        decimals: 18
-      },
-      rpcUrls0: ['https://stardust.metis.io/?owner=588'],
-      blockExplorerUrls0: ['https://stardust-explorer.metis.io']
+      chainName: networkAndromeda.chainName,
+      chainId: networkAndromeda.chainId,
+
+      chainName1: networkEthereum.chainName,
+      chainId1: networkEthereum.chainId,
+      chainNameAdd1: networkEthereum.chainName,
+      nativeCurrency1: networkEthereum.nativeCurrency,
+      rpcUrls1: networkEthereum.rpcUrls,
+      blockExplorerUrls1: networkEthereum.blockExplorerUrls,
+      bridgeFactory1: networkEthereum.bridgeFactory,
+      bridge1: networkEthereum.bridge,
+      domainInfo1: networkEthereum.domainInfo,
+      oracleContract1: networkEthereum.oracleContract,
+      oracleAbi1: networkEthereum.oracleAbi,
+
+      chainName0: networkAndromeda.chainName,
+      chainId0: networkAndromeda.chainId,
+      chainNameAdd0: networkAndromeda.chainName,
+      nativeCurrency0: networkAndromeda.nativeCurrency,
+      rpcUrls0: networkAndromeda.rpcUrls,
+      blockExplorerUrls0: networkAndromeda.blockExplorerUrls,
+      bridgeFactory0: networkAndromeda.bridgeFactory,
+      bridge0: networkAndromeda.bridge,
+      domainInfo0: networkAndromeda.domainInfo,
+      oracleContract0: networkAndromeda.oracleContract,
+      oracleAbi0: networkAndromeda.oracleAbi
     },
     {
-      chainName: '9545',
-      chainId: '31337',
-      chainName0: '9545',
-      chainId0: '31337',
-      chainNameAdd0: '9545',
-      bridgeFactory0: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
-      nativeCurrency0: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18
-      },
-      rpcUrls0: ['http://localhost:9545?owner=31337'],
-      blockExplorerUrls0: ['http://localhost:9545'],
-      chainName1: '8545',
-      bridgeFactory1: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
-      chainId1: '1088',
-      chainNameAdd1: '8545',
-      nativeCurrency1: {
-        name: 'METIS',
-        symbol: 'METIS',
-        decimals: 18
-      },
-      rpcUrls1: ['http://localhost:8545/?owner=1088'],
-      blockExplorerUrls1: ['http://localhost:8545']
+      chainName: networkRinkeby.chainName,
+      chainId: networkRinkeby.chainId,
+
+      chainName0: networkRinkeby.chainName,
+      chainId0: networkRinkeby.chainId,
+      chainNameAdd0: networkRinkeby.chainNameAdd,
+      nativeCurrency0: networkRinkeby.nativeCurrency,
+      rpcUrls0: networkRinkeby.rpcUrls,
+      blockExplorerUrls0: networkRinkeby.blockExplorerUrls,
+      bridgeFactory0: networkRinkeby.bridgeFactory,
+      bridge0: networkRinkeby.bridge,
+      domainInfo0: networkRinkeby.domainInfo,
+      oracleContract0: networkRinkeby.oracleContract,
+      oracleAbi0: networkRinkeby.oracleAbi,
+
+      chainName1: networkStardust.chainName,
+      chainId1: networkStardust.chainId,
+      chainNameAdd1: networkStardust.chainName,
+      nativeCurrency1: networkStardust.nativeCurrency,
+      rpcUrls1: networkStardust.rpcUrls,
+      blockExplorerUrls1: networkStardust.blockExplorerUrls,
+      bridgeFactory1: networkStardust.bridgeFactory,
+      bridge1: networkStardust.bridge,
+      domainInfo1: networkStardust.domainInfo,
+      oracleContract1: networkStardust.oracleContract,
+      oracleAbi1: networkStardust.oracleAbi
     },
     {
-      chainName: '8545',
-      chainId: '1088',
-      chainName1: '9545',
-      bridgeFactory1: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
-      chainId1: '31337',
-      chainNameAdd1: '9545',
-      nativeCurrency1: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18
-      },
-      rpcUrls1: ['http://localhost:9545?owner=31337'],
-      blockExplorerUrls1: ['http://localhost:9545'],
-      chainName0: '8545',
-      bridgeFactory0: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
-      chainId0: '1088',
-      chainNameAdd0: '8545',
-      nativeCurrency0: {
-        name: 'METIS',
-        symbol: 'METIS',
-        decimals: 18
-      },
-      rpcUrls0: ['http://localhost:8545/?owner=1088'],
-      blockExplorerUrls0: ['http://localhost:8545']
+      chainName: networkStardust.chainName,
+      chainId: networkStardust.chainId,
+
+      chainName1: networkRinkeby.chainName,
+      chainId1: networkRinkeby.chainId,
+      chainNameAdd1: networkRinkeby.chainName,
+      nativeCurrency1: networkRinkeby.nativeCurrency,
+      rpcUrls1: networkRinkeby.rpcUrls,
+      blockExplorerUrls1: networkRinkeby.blockExplorerUrls,
+      bridgeFactory1: networkRinkeby.bridgeFactory,
+      bridge1: networkRinkeby.bridge,
+      domainInfo1: networkRinkeby.domainInfo,
+      oracleContract1: networkRinkeby.oracleContract,
+      oracleAbi1: networkRinkeby.oracleAbi,
+
+      chainName0: networkStardust.chainName,
+      chainId0: networkStardust.chainId,
+      chainNameAdd0: networkStardust.chainName,
+      nativeCurrency0: networkStardust.nativeCurrency,
+      rpcUrls0: networkStardust.rpcUrls,
+      blockExplorerUrls0: networkStardust.blockExplorerUrls,
+      bridgeFactory0: networkStardust.bridgeFactory,
+      bridge0: networkStardust.bridge,
+      domainInfo0: networkStardust.domainInfo,
+      oracleContract0: networkStardust.oracleContract,
+      oracleAbi0: networkStardust.oracleAbi
     }
   ],
   accounts: [],
@@ -163,7 +162,6 @@ export default () => ({
     name: 'English',
     cur_lang: 'en'
   },
-  // langInfo: require('../lang/cn.json'),
   langInfo: require('../lang/en.js').langInfoData(),
   langList: [
     {
@@ -174,17 +172,5 @@ export default () => ({
       name: 'English',
       cur_lang: 'en'
     }
-    // {
-    //   name: 'Việt Nam',
-    //   cur_lang: 'vn'
-    // },
-    // {
-    //   name: 'Indo',
-    //   cur_lang: 'indonesia'
-    // },
-    // {
-    //   name: 'Melayu',
-    //   cur_lang: 'malaysia'
-    // }
   ]
 })

@@ -15,7 +15,7 @@
       </div>
       <template v-if="stepIndex === 0">
         <div class="title-text">NFT Token Address(Native)</div>
-        <div> <a-input placeholder="Add text" v-model="nftTokenAddress" /></div>
+        <div> <a-input placeholder="Please Input NFT Token Address" v-model="nftTokenAddress" /></div>
         <div class="box-flex1"></div>
         <a-button type="primary" :loading="iconLoading" @click="nextStep">
           next
@@ -46,10 +46,6 @@
         </a-button>
       </template>
     </div>
-    <div class="display-flex">
-      <a href="javascript:;" class="history-text">View your history ></a>
-    </div>
-
     <a-modal
       v-model="visible"
       title=""
@@ -69,7 +65,10 @@
              v-clipboard:error="onCopyError"
         ><img src="../../assets/image/ic_copy@2x.png" alt=""></div>
       </div>
-      <div class="confirm-btn no-select" @click="setNft">SetNFT</div>
+      <a-button type="primary" :loading="iconLoading" @click="setNftEvent">
+        SetNFT
+      </a-button>
+<!--      <div class="confirm-btn no-select" @click="setNftEvent"></div>-->
     </a-modal>
   </div>
 </template>

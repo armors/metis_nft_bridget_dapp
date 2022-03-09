@@ -15,11 +15,11 @@ export default {
       all_transaction: [],
       tab: 0,
       connectList: [
-        {
-          name: 'Connect by Polis',
-          type: 'Polis',
-          icon_img: require('../../assets/image/logo.png')
-        },
+        // {
+        //   name: 'Connect by Polis',
+        //   type: 'Polis',
+        //   icon_img: require('../../assets/image/logo.png')
+        // },
         {
           name: 'Connect by MetaMask',
           type: 'MetaMask',
@@ -52,20 +52,17 @@ export default {
   created () {
   },
   async mounted () {
-    // this.$message.error('This is a success message', 4)
-    // this.$message.success('This is a success message', 3)
-    // this.$message.warning('This is a success message', 2)
-    // this.$message.info('We are processing the transfer.please wait for confirmation!', 5)
     const connectWalletType = localStorage.getItem('connectWalletType')
-    this.initNetWork()
-    if (connectWalletType) {
-      this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
-      if (connectWalletType === 'Polis') {
-        this.loginMetis()
-      } else if (connectWalletType === 'MetaMask') {
-        await this.initWeb3()
-      }
-    }
+    console.log(connectWalletType)
+    // this.initNetWork()
+    // if (connectWalletType) {
+    //   this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
+    //   if (connectWalletType === 'Polis') {
+    //     this.loginMetis()
+    //   } else if (connectWalletType === 'MetaMask') {
+    await this.initWeb3()
+    // }
+    // }
     for (let i = 0; i < this.langInfo.tabList.length; i++) {
       if (('/' + this.langInfo.tabList[i].path) === this.$route.path) {
         this.tab = i
@@ -74,16 +71,30 @@ export default {
     }
   },
   methods: {
+    openExplorer () {
+      if (this.account) {
+        window.open(this.$store.state.netWork.blockExplorerUrls0[0] + 'address/' + this.account)
+      } else {
+        window.open(this.$store.state.netWork.blockExplorerUrls0[0])
+      }
+    },
     // 选择网络
     changeNetWorkFun (e) {
       console.log(e)
       console.log(e.key)
-      const network = this.$store.state.netWorkList.filter(item => item.chainId === e.key)
+      console.log(typeof e.key)
+      console.log(this.$store.state.netWorkList)
+      const network = this.$store.state.netWorkList.filter(item => item.chainId === e.key + '')
       console.log(network[0])
-      this.switchNetWork(network[0], () => {
+      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+        this.switchNetWork(network[0], () => {
+          this.$store.dispatch('updateNetWork', network[0])
+          this.initNetWork()
+        })
+      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+        console.log(network[0])
         this.$store.dispatch('updateNetWork', network[0])
-        this.initNetWork()
-      })
+      }
     },
     // 改变连接方式
     changeAccountBtn () {
@@ -104,6 +115,9 @@ export default {
       } else if (v.type === 'Polis') {
         this.loginMetis()
       }
+    },
+    connectAccountFunc () {
+      this.connectAccount()
     },
     // 关闭选择连接方式弹窗
     closeWalletType () {

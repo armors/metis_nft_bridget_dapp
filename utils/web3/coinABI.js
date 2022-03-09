@@ -2651,6 +2651,143 @@ const COIN_ABI = {
       stateMutability: 'view',
       type: 'function'
     }
+  ],
+  iMVM_DiscountOracle: [
+    {
+      inputs: [],
+      name: 'getDiscount',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'getMinL2Gas',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_sender',
+          type: 'address'
+        }
+      ],
+      name: 'isXDomainSenderAllowed',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'sender',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: '_chainId',
+          type: 'uint256'
+        }
+      ],
+      name: 'processL2SeqGas',
+      outputs: [],
+      stateMutability: 'payable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'bool',
+          name: '_allowAllXDomainSenders',
+          type: 'bool'
+        }
+      ],
+      name: 'setAllowAllXDomainSenders',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: '_discount',
+          type: 'uint256'
+        }
+      ],
+      name: 'setDiscount',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: '_minL2Gas',
+          type: 'uint256'
+        }
+      ],
+      name: 'setMinL2Gas',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_sender',
+          type: 'address'
+        },
+        {
+          internalType: 'bool',
+          name: '_isWhitelisted',
+          type: 'bool'
+        }
+      ],
+      name: 'setWhitelistedXDomainSender',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    }
+  ],
+  iOVM_GasPriceOracle: [
+    {
+      inputs: [],
+      name: 'minErc20BridgeCost',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    }
   ]
 }
 export default COIN_ABI

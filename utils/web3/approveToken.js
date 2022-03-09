@@ -2,6 +2,7 @@
 import { useCallback } from './contractEvent'
 
 export async function approveToken (spender, tokenId, tokenContract, callback, errorCallback) {
+  console.log(spender, tokenId)
   if (!tokenContract) {
     console.error('tokenContract is null')
     return

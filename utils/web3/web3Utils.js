@@ -5,6 +5,18 @@ import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { keepPoint } from '../function'
 import COIN_ABI from './coinABI'
+import Web3 from 'web3'
+
+export function useContractByRpc (address, ABI, rpc, withSignerIfPossible = true) {
+  console.log(address, rpc)
+  const $web3_http = new Web3(new Web3.providers.HttpProvider(rpc))
+  // const l1RpcProvider = new ethers.providers.JsonRpcProvider(config.rpc.L1)
+  console.log($web3_http)
+  return new $web3_http.eth.Contract(
+    ABI,
+    address
+  )
+}
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress (value) {
@@ -92,6 +104,7 @@ export async function getGasPrice () {
     const { $web3_http } = window.$nuxt
     try {
       const get_gas_price = await $web3_http.eth.getGasPrice()
+      console.log(get_gas_price)
       return {
         gasPrice: '0x' + get_gas_price.toString(16)
       }
@@ -117,7 +130,7 @@ export async function getGasLimit (contract, methodName, parameters) {
     }
   } catch (e) {
     console.error(e.message)
-    return {}
+    return null
   }
 }
 

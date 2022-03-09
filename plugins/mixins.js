@@ -12,7 +12,26 @@ export default {
     },
     ...mapGetters({
       langInfo: 'getLangInfo'
-    })
+    }),
+    // currentChainId: function () {
+    //   if (process.client) {
+    //     console.log(window.ethereum.networkVersion)
+    //     return window.ethereum.networkVersion
+    //   } else {
+    //     return '1'
+    //   }
+    // },
+    currentChainName: function () {
+      let chainName = 'Mainnet'
+      if (process.client) {
+        if (this.$store.state.netWork.chainId === '1' || this.$store.state.netWork.chainId === '1088') {
+          chainName = 'Mainnet'
+        } else if (this.$store.state.netWork.chainId === '4' || this.$store.state.netWork.chainId === '588') {
+          chainName = 'Test Network'
+        }
+      }
+      return chainName
+    }
   },
   watch: {
     // 获取用户信息
@@ -22,6 +41,7 @@ export default {
   },
   data () {
     return {
+      currentChainId: '1',
       resolve: '',
       reject: '',
       account: '',
@@ -89,6 +109,7 @@ export default {
     },
     // 获取chainName
     getChainName (network) {
+      console.log(network)
       return network !== null ? network.chainName : '--'
     },
     // polis链接判断
@@ -217,6 +238,7 @@ export default {
       await this.initEth()
       const networkVersion = parseInt(window.ethereum.networkVersion)
       console.log(networkVersion)
+      this.initNetWork()
       console.log(window.ethereum.networkVersion)
       // if (networkVersion !== 4) {
       //   that.resolve({
@@ -247,7 +269,7 @@ export default {
         that.account = accounts[0]
         await that.$store.dispatch('updateAccounts', accounts)
         this.$store.dispatch('updateConnectType', 'MetaMask')
-        that.initTransactions()
+        // that.initTransactions()
         if (!accounts) {
           setTimeout(function () {
             that.initWeb3()
@@ -274,6 +296,7 @@ export default {
       await this.initEth()
       if (this.$store?.state && window.ethereum.networkVersion) {
         const networkVersion = window.ethereum.networkVersion
+        this.currentChainId = networkVersion
         console.log(networkVersion)
         const network = this.$store.state.netWorkList.filter(item => item.chainId === networkVersion)
         console.log(network)

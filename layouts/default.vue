@@ -2,15 +2,23 @@
   <div id="app">
     <div class="main display-flex box-column" id="main" ref="main">
       <div class="display-flex box-center-Y nav-box">
-        <div class="logo-img"><img src="../assets/image/logo.png" alt=""></div>
-        <div class="project-name">{{langInfo.projectName}}</div>
-        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>
+        <div class="logo-img" @click="$router.push({path: '/bridge'})"><img src="../assets/image/logo.png" alt=""></div>
+        <div class="project-name" @click="$router.push({path: '/bridge'})">{{langInfo.projectName}}</div>
+<!--        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>-->
         <div class="box-flex1"></div>
         <a-dropdown :trigger="['click']">
           <a-menu slot="overlay" @click="changeNetWorkFun">
-            <a-menu-item v-for="(v) in $store.state.netWorkList" :key="v.chainId" :chainName="v.chainName" :class="{'item-active-select': v.chainId === $store.state.netWork.chainId}">{{v.chainName}}</a-menu-item>
+            <a-menu-item  key="1" :class="{'item-active-select': $store.state.netWork.chainId === '1' || $store.state.netWork.chainId === '1088'}">
+              Mainnet
+            </a-menu-item>
+            <a-menu-item key="4" :class="{'item-active-select': $store.state.netWork.chainId === '4' || $store.state.netWork.chainId === '588' }">
+              Test Network
+            </a-menu-item>
+<!--            <a-menu-item v-for="(v) in $store.state.netWorkList" :key="v.chainId" :chainName="v.chainName" :class="{'item-active-select': v.chainId === $store.state.netWork.chainId}">-->
+<!--              {{v.chainName}}-->
+<!--            </a-menu-item>-->
           </a-menu>
-          <div class="net-btn no-select">{{$store.state.netWork.chainName}}</div>
+          <div class="net-btn no-select">{{currentChainName}}</div>
         </a-dropdown>
         <div class="account-btn no-select" @click="openAccount" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
                                                          account.length)}}</div>
@@ -80,7 +88,7 @@
           <div class="box-flex1" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5, account.length)}}</div>
         </div>
       </div>
-      <div class="tab-info">View transactions on Andromeda Explorer</div>
+      <div class="tab-info" @click="openExplorer">View transactions on {{$store.state.netWork.chainName0}} Explorer</div>
     </a-modal>
   </div>
 </template>
@@ -125,6 +133,16 @@ export { default } from './js/default'
 </style>
 <style lang="less">
   @import "../assets/css/color";
+  .ant-spin, .ant-spin-dot{
+    color: @emColor !important;
+    width: 1.5em !important;
+    height: 1.5em !important;
+  }
+  .ant-spin-dot-item{
+    background-color: @emColor !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
   .ant-btn-primary{
     display: block !important;
     width: 85.7%;
@@ -387,6 +405,7 @@ export { default } from './js/default'
             }
           }
           .tab-info{
+            cursor: pointer;
             margin-top: 16px;
             font-size: 14px;
             font-family: Helvetica;
@@ -435,13 +454,13 @@ export { default } from './js/default'
         &.ant-message-success{
           background-color: #65DA86;
           &:before{
-            content: 'transferred';
+            content: 'success';
           }
         }
         &.ant-message-warning{
           background-color: #F4B74F;
           &:before{
-            content: 'Pending';
+            content: 'warn';
           }
         }
         &.ant-message-info{
@@ -487,7 +506,7 @@ export { default } from './js/default'
     margin: 0 auto;
     .nav-box {
       padding: 16px 42px;
-
+      cursor: pointer;
       .logo-img {
         width: 64px;
         height: 64px;
@@ -522,7 +541,7 @@ export { default } from './js/default'
         color: @emColor;
       }
       .net-btn{
-        padding: 0 32px 0 16px ;
+        padding: 0 36px 0 16px ;
         min-width: 120px;
         height: 48px;
         line-height: 48px;

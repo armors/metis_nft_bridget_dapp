@@ -238,7 +238,6 @@ export default {
       await this.initEth()
       const networkVersion = parseInt(window.ethereum.networkVersion)
       console.log(networkVersion)
-      this.initNetWork()
       console.log(window.ethereum.networkVersion)
       // if (networkVersion !== 4) {
       //   that.resolve({
@@ -267,6 +266,9 @@ export default {
         Vue.prototype.$account = accounts[0]
         Vue.prototype.$accounts = accounts
         that.account = accounts[0]
+        // const networkVersion = parseInt(window.ethereum.networkVersion)
+        // console.log('networkVersion', networkVersion)
+        this.initNetWork()
         await that.$store.dispatch('updateAccounts', accounts)
         this.$store.dispatch('updateConnectType', 'MetaMask')
         // that.initTransactions()

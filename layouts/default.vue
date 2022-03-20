@@ -31,9 +31,9 @@
 <!--            <a href="javascript:;" class="history-text">View your history ></a>-->
 <!--          </div>-->
           <div class="display-flex box-center tag">
-            <a target="_blank" href="https://docs.google.com/document/d/1rxvw45mTeinA2T_dFhC0R42-B1S0oJY0/edit?usp=sharing&ouid=100792652384418651726&rtpof=true&sd=true ">Terms of Service</a>
-            <a target="_blank" href="https://docs.google.com/document/d/1eCwsWWY3ZbD9ls4iOLqblOG_H0ekxXZ0/edit?usp=sharing&ouid=100792652384418651726&rtpof=true&sd=true" class="policy">Privacy policy</a>
-            <a target="_blank" href="https://docs.metis.io/metis-nft-bridge" class="policy">User Guide</a>
+            <div @click="openNewWindow('service');" class="policy no-select">Terms of Service</div>
+            <div @click="openNewWindow('policy')" class="policy no-select">Privacy policy</div>
+            <a target="_blank" href="https://docs.metis.io/metis-nft-bridge" class="policy no-select">User Guide</a>
           </div>
           <div>© Copyright 2021 by MetisLab Foundation Ltd.</div>
         </div>

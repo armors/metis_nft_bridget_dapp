@@ -71,6 +71,9 @@ export default {
     }
   },
   methods: {
+    openNewWindow (path) {
+      window.open(window.location.origin + '/' + path)
+    },
     openExplorer () {
       if (this.account) {
         window.open(this.$store.state.netWork.blockExplorerUrls0[0] + 'address/' + this.account)

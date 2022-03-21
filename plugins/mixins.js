@@ -98,11 +98,11 @@ export default {
                 }, 3000)
               })
               .catch((e) => {
-                // this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+                // this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 8)
                 errorCallback && errorCallback(e)
               })
           } else {
-            // this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+            // this.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 8)
             errorCallback && errorCallback(e)
           }
         })
@@ -204,7 +204,7 @@ export default {
           this.$router.replace({ path: this.$route.path })
         } else if (res.status === 200 && res.data) {
           console.log(res.data.msg)
-          this.$message.error(res.data.msg, 4)
+          this.$message.error(res.data.msg, 8)
         } else {
           console.log('code error')
           console.log(res)

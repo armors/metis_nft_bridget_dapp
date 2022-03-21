@@ -276,12 +276,12 @@ export default {
             that.iconLoading = false
             if (isShow) this.visible = !this.isApprove
           }, reject => {
-            this.$message.error(reject.message.message, 3)
+            this.$message.error(reject.message.message, 8)
             that.iconLoading = false
           }).catch(err => {
             console.log(err)
             that.iconLoading = false
-            this.$message.error(err.message.message, 3)
+            this.$message.error(err.message.message, 8)
           })
         } else if (this.tokenStandardIndex === 1) { // 1155
           this.$httpClient.sendTxAsync(
@@ -299,17 +299,17 @@ export default {
             that.iconLoading = false
             if (isShow) this.visible = !this.isApprove
           }, reject => {
-            this.$message.error(reject.message.message, 3)
+            this.$message.error(reject.message.message, 8)
             that.iconLoading = false
           }).catch(err => {
             console.log(err)
             that.iconLoading = false
-            this.$message.error(err.message.message, 3)
+            this.$message.error(err.message.message, 8)
           })
         }
       } catch (err) {
         if (isShow) this.iconLoading = false
-        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 8)
       }
     },
     // 判断是否授权
@@ -335,7 +335,7 @@ export default {
         if (isShow) this.iconLoading = false
       } catch (err) {
         if (isShow) this.iconLoading = false
-        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+        this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 8)
       }
     },
     // 打开二次确认授权
@@ -386,12 +386,12 @@ export default {
         this.getApprovePolis()
       }, reject => {
         console.log(reject)
-        this.$message.error(reject.message.message, 3)
+        this.$message.error(reject.message.message, 8)
         that.iconLoading = false
       }).catch(err => {
         console.log(err)
         that.iconLoading = false
-        this.$message.error(err.message.message, 3)
+        this.$message.error(err.message.message, 8)
       })
     },
     // 721授权
@@ -408,7 +408,7 @@ export default {
         }, err => {
           console.log(err)
           that.iconLoading = false
-          this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+          this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 8)
         })
       }
     },
@@ -431,7 +431,7 @@ export default {
         }, (err) => {
           console.log(err)
           that.iconLoading = false
-          this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 3)
+          this.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'approve nft error'), 8)
         })
       }
     },
@@ -530,12 +530,12 @@ export default {
           that.$message.success('depositTo nft success', 3)
           this.visible = false
         }, reject => {
-          this.$message.error(reject.message.message, 3)
+          this.$message.error(reject.message.message, 8)
           that.iconLoading = false
         }).catch(err => {
           console.log(err)
           that.iconLoading = false
-          this.$message.error(err.message.message, 3)
+          this.$message.error(err.message.message, 8)
         })
       } catch (e) {
 

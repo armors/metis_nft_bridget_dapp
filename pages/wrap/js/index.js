@@ -35,7 +35,7 @@ export default {
       name: '',
       symbol: '',
       baseUrl: '',
-      originChainId: '',
+      originChainId: ''
     }
   },
   components: {},
@@ -190,12 +190,12 @@ export default {
           this.stepIndex = 0
           this.nftTokenAddress = ''
         }, reject => {
-          this.$message.error(reject.message.message, 3)
+          this.$message.error(reject.message.message, 8)
           that.iconLoading = false
         }).catch(err => {
           console.log(err)
           that.iconLoading = false
-          this.$message.error(err.message.message, 3)
+          this.$message.error(err.message.message, 8)
         })
       } catch (e) {
         console.log(e)
@@ -274,7 +274,7 @@ export default {
     // 下一步
     nextStep () {
       if (!this.nftTokenAddress) {
-        return this.$message.error('NFT Token Address not empty', 2)
+        return this.$message.error('NFT Token Address not empty', 8)
       }
       // this.metaMaskNextStep()
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
@@ -336,7 +336,7 @@ export default {
           this.iconLoading = false
         } catch (e) {
           this.iconLoading = false
-          this.$message.error(e.message, 3)
+          this.$message.error(e.message, 8)
           console.log(e)
         }
       }
@@ -446,11 +446,11 @@ export default {
           this.decodeLog(res.tx)
         }, reject => {
           console.log(reject)
-          this.$message.error(reject.message.message, 3)
+          this.$message.error(reject.message.message, 8)
           that.iconLoading = false
         }).catch(err => {
           console.log(err)
-          this.$message.error(err.message, 3)
+          this.$message.error(err.message, 8)
           that.iconLoading = false
           console.log('err', err, JSON.stringify(err))
         })

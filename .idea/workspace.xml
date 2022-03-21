@@ -27,9 +27,7 @@
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/wrap/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/mixins.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/mixins.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/network.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/network.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +125,8 @@
       <workItem from="1647691200972" duration="1235000" />
       <workItem from="1647701967665" duration="781000" />
       <workItem from="1647750281519" duration="4012000" />
-      <workItem from="1647836500033" duration="170000" />
+      <workItem from="1647836500033" duration="273000" />
+      <workItem from="1647845549597" duration="1005000" />
     </task>
     <servers />
   </component>

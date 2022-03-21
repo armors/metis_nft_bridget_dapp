@@ -59,7 +59,7 @@ export const networkEthereum = {
   blockExplorerUrls: ['https://etherscan.io/'],
   bridgeFactory: '0xc6c9efe77E8De46452DDfFcE8718a8186c661380',
   bridge: '0x5EA23Cb3D609F4522a21ADcC9Ca366e76C23c40f',
-  oracleContract: '0xa9BdA5A0881e59587B119685027a601Cae1Cc83d',
+  oracleContract: '0xC8953ca384b4AdC8B1b11B030Afe2F05471664b0',
   oracleAbi: 'iMVM_DiscountOracle',
   domainInfo: {
     bridgeDomain: 'bridge1domain',

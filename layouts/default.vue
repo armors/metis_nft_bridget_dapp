@@ -193,6 +193,10 @@ export { default } from './js/default'
           font-size: 28px;
           font-family: AppleSymbols;
           color: #64D9CD;
+          &.sub{
+            margin-top: 12px;
+            font-size: 20px;
+          }
         }
         .address-box{
           width: 100%;

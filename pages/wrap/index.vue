@@ -30,15 +30,15 @@
         </div>
         <div class="display-flex box-center-Y input-item" v-show="tokenStandardIndex === 0">
           <div class="label">Name</div>
-          <a-input class="box-flex1" v-model="name" placeholder="Add text" />
+          <a-input disabled class="box-flex1" v-model="name" placeholder="Add text" />
         </div>
         <div class="display-flex box-center-Y input-item" v-show="tokenStandardIndex === 0">
           <div class="label">Symbol</div>
-          <a-input class="box-flex1" v-model="symbol" placeholder="Add text" />
+          <a-input disabled class="box-flex1" v-model="symbol" placeholder="Add text" />
         </div>
         <div class="display-flex box-center-Y input-item">
           <div class="label">BaseURL</div>
-          <a-input class="box-flex1" v-model="baseUrl" placeholder="Add text" />
+          <a-input disabled class="box-flex1" v-model="baseUrl" placeholder="Add text" />
         </div>
         <div class="box-flex1"></div>
         <a-button type="primary" :loading="iconLoading" @click="confirmWrap">
@@ -65,8 +65,12 @@
              v-clipboard:error="onCopyError"
         ><img src="../../assets/image/ic_copy@2x.png" alt=""></div>
       </div>
-      <a-button type="primary" :loading="iconLoading" @click="setNftEvent">
-        SetNFT
+      <div class="title-box sub">Please submit your deployed wrap contract address to github</div>
+<!--      <a-button type="primary" :loading="iconLoading" @click="setNftEvent">-->
+<!--        SetNFT-->
+<!--      </a-button>-->
+      <a-button type="primary" :loading="iconLoading" @click="wrapRequest">
+        Wrap request
       </a-button>
 <!--      <div class="confirm-btn no-select" @click="setNftEvent"></div>-->
     </a-modal>

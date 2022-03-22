@@ -84,6 +84,9 @@ export default {
         this.serNftPolis()
       }
     },
+    wrapRequest () {
+      window.open('https://github.com/MetisProtocol/nftbridge/issues/new?assignees=&labels=&template=wrap-request.md&title=Wrap+NFT+request')
+    },
     setNftMetaMask () {
       console.log(this.isNeedHold)
       console.log(that.toNet)
@@ -313,7 +316,7 @@ export default {
           )
           console.log(nameResult)
           this.name = nameResult.result
-          this.symbol = symbolResult.result
+          this.symbol = 'm.' + symbolResult.result
           this.baseUrl = baseUriResult.result
           this.stepIndex = 1
           this.tokenStandardIndex = 0
@@ -354,7 +357,7 @@ export default {
           this.iconLoading = false
           return that.$message.error(tokenContract.error.message, 3)
         }
-        this.symbol = await tokenContract.symbol()
+        this.symbol = 'm.' + await tokenContract.symbol()
         this.name = await tokenContract.name()
         try {
           this.baseUrl = await tokenContract.baseUri()

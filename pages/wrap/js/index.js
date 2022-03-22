@@ -362,7 +362,11 @@ export default {
         try {
           this.baseUrl = await tokenContract.baseUri()
         } catch (e) {
-          this.baseUrl = ''
+          try {
+            this.baseUrl = await tokenContract.baseURI()
+          } catch (e) {
+            this.baseUrl = ''
+          }
         }
         this.stepIndex = 1
       } catch (e) {
@@ -376,7 +380,7 @@ export default {
               this.iconLoading = false
               return that.$message.error(tokenContract.error.message, 3)
             }
-            const baseUrl = await tokenContract.uri(0)
+            const baseUrl = await tokenContract.uri(1)
             console.log(baseUrl)
             this.baseUrl = baseUrl
             this.tokenStandardIndex = 1

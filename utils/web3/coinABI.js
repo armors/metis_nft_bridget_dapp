@@ -255,6 +255,7 @@ const COIN_ABI = {
     }
   ],
   erc721: [
+    { inputs: [], name: 'baseURI', outputs: [{ internalType: 'string', name: '', type: 'string' }], stateMutability: 'view', type: 'function' },
     {
       inputs: [{
         internalType: 'string',

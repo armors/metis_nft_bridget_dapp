@@ -70,7 +70,7 @@
 <!--        SetNFT-->
 <!--      </a-button>-->
       <a-button type="primary" :loading="iconLoading" @click="wrapRequest">
-        Wrap request
+        Take me there!
       </a-button>
 <!--      <div class="confirm-btn no-select" @click="setNftEvent"></div>-->
     </a-modal>

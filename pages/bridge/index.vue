@@ -7,11 +7,11 @@
         <div class="box-flex1 to-chain">{{getChainName(toNet)}}</div>
       </div>
       <div class="title-text">NFT Token Address({{getChainName(fromNet)}})</div>
-      <div> <a-input placeholder="Please Input NFT Token Address" v-model="nftTokenAddress" @blur="nftTokenBlur"/></div>
+      <div> <a-input placeholder="Please Input NFT Token Address" v-model.trim="nftTokenAddress" @blur="nftTokenBlur"/></div>
       <div class="title-text">Receiver Address({{getChainName(toNet)}})</div>
-      <div> <a-input placeholder="Please Input Receiver Address" v-model="receiverAddress"/></div>
+      <div> <a-input placeholder="Please Input Receiver Address" v-model.trim="receiverAddress"/></div>
       <div class="title-text">Token ID</div>
-      <div> <a-input placeholder="Please Input Token ID" v-model="tokenId" @blur="tokenIdBlur"/></div>
+      <div> <a-input placeholder="Please Input Token ID" v-model.trim="tokenId" @blur="tokenIdBlur"/></div>
       <!--      <div class="token-id-list display-flex box-nowrap">-->
 <!--        <div class="token-id-item no-select" @click="selectTokenId(v, i)" v-for="(v, i) in tokenIdList" :key="`token-id-${i}`" :class="{active: tokenIdIndex === i}">#{{v.key}}</div>-->
 <!--      </div>-->

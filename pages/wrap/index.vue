@@ -15,7 +15,7 @@
       </div>
       <template v-if="stepIndex === 0">
         <div class="title-text">NFT Token Address(Native)</div>
-        <div> <a-input placeholder="Please Input NFT Token Address" v-model="nftTokenAddress" /></div>
+        <div> <a-input placeholder="Please Input NFT Token Address" v-model.trim="nftTokenAddress" /></div>
         <div class="box-flex1"></div>
         <a-button type="primary" :loading="iconLoading" @click="nextStep">
           next

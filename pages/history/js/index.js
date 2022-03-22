@@ -275,7 +275,10 @@ export default {
         let result = res
         if (this.isShowSelf) {
           console.log(this.account)
-          result = res.filter(item => (item.returnValues._to + '').toLowerCase() === this.account.toLowerCase())
+          result = res.filter(item =>
+            (item.returnValues._to + '').toLowerCase() === this.account.toLowerCase() ||
+            (item.returnValues._from + '').toLowerCase() === this.account.toLowerCase()
+          )
         }
         console.log(result)
         if (result.length < 1) {

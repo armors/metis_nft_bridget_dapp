@@ -262,7 +262,7 @@ export default {
       })
       myContractInstance.getPastEvents('DEPOSIT_TO', {
         filter: {
-          from: this.account
+          // from: this.account
         },
         fromBlock: 0,
         toBlock: 'latest'

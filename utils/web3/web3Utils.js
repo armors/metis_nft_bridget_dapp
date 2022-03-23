@@ -7,6 +7,10 @@ import { keepPoint } from '../function'
 import COIN_ABI from './coinABI'
 import Web3 from 'web3'
 
+export function initRpc (rpc) {
+  return new Web3(new Web3.providers.HttpProvider(rpc))
+}
+
 export function useContractByRpc (address, ABI, rpc, withSignerIfPossible = true) {
   console.log(address, rpc)
   const $web3_http = new Web3(new Web3.providers.HttpProvider(rpc))

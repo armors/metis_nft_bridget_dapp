@@ -70,10 +70,10 @@
 <!--        SetNFT-->
 <!--      </a-button>-->
       <div class="display-flex box-center-Y">
-        <a-button type="primary" :loading="iconLoading" @click="$router.push({path: '/bridge'})">
+        <a-button type="primary" class="out-btn" :loading="iconLoading" @click="$router.push({path: '/bridge'})">
           Go back
         </a-button>
-        <div style="width: 100px"></div>
+        <div style="width: 32px"></div>
         <a-button type="primary" :loading="iconLoading" @click="wrapRequest">
           Take me there!
         </a-button>
@@ -90,4 +90,11 @@ export { default } from './js/index'
 
 <style scoped lang="less">
 @import "../bridge/css/index";
+</style>
+<style lang="less">
+  .out-btn.ant-btn-primary{
+    background-color: transparent !important;
+    border: 1px solid #65DBCF !important;
+    color: #65DBCF !important;
+  }
 </style>

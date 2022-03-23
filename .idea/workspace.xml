@@ -27,7 +27,9 @@
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/wrap/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/web3/web3Utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/web3/web3Utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +132,8 @@
       <workItem from="1647936879407" duration="3590000" />
       <workItem from="1647954889071" duration="214000" />
       <workItem from="1647956506212" duration="522000" />
-      <workItem from="1648031961109" duration="1301000" />
+      <workItem from="1648031961109" duration="1570000" />
+      <workItem from="1648046526472" duration="3530000" />
     </task>
     <servers />
   </component>

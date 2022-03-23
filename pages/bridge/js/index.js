@@ -1,5 +1,6 @@
 import {
   useContractByRpc,
+  initRpc,
   useTokenContract, useTokenContractWeb3
 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
@@ -453,17 +454,28 @@ export default {
       const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
       console.log(that.fromNet.oracleAbi)
       const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
-      let gasLimitBig = 0
+      let gasCost = 0
       let gasLimit = 0
+      let getDiscount = 0
+      let value = 0
       try {
-        gasLimitBig = await oracleContract.methods[methods]().call()
-        gasLimit = parseInt(gasLimitBig.toString())
-        if (!this.isNeedHold) {
-          const getDiscount = await oracleContract.methods.getDiscount().call()
+        gasCost = await oracleContract.methods[methods]().call()
+        gasLimit = parseInt(gasCost.toString())
+        console.log(methods, gasLimit)
+        if (!this.isNeedHold) { // L1 到 L2
+          getDiscount = await oracleContract.methods.getDiscount().call()
           console.log(getDiscount.toString())
           console.log(gasLimit * getDiscount.toString())
+          value = gasLimit * getDiscount.toString()
+        } else {
+          console.log(that.toNet)
+          const $web3_http = initRpc(that.toNet.rpcUrls[0])
+          const block = await $web3_http.eth.getBlock('latest')
+          console.log(block)
+          gasLimit = block.gasLimit
+          value = parseInt(gasCost.toString())
         }
-        console.log(that.account, that.$account)
+        console.log(gasLimit, value)
         console.log(this.nftTokenAddress,
           this.receiverAddress,
           parseInt(this.tokenId),
@@ -478,7 +490,8 @@ export default {
           gasLimit
         ).send({
           from: that.account,
-          value: 320000000
+          // value: 320000000
+          value: value
         }), {
           summary: `deposit ${that.receiverAddress}`
         }, (res) => {

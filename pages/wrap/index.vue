@@ -51,8 +51,8 @@
       title=""
       width="600px"
       centered
-      :keyboard="false"
-      :maskClosable="false"
+      :keyboard="true"
+      :maskClosable="true"
       :footer="null"
       :closable="false"
     >
@@ -69,9 +69,16 @@
 <!--      <a-button type="primary" :loading="iconLoading" @click="setNftEvent">-->
 <!--        SetNFT-->
 <!--      </a-button>-->
-      <a-button type="primary" :loading="iconLoading" @click="wrapRequest">
-        Take me there!
-      </a-button>
+      <div class="display-flex box-center-Y">
+        <a-button type="primary" :loading="iconLoading" @click="$router.push({path: '/bridge'})">
+          Go back
+        </a-button>
+        <div style="width: 100px"></div>
+        <a-button type="primary" :loading="iconLoading" @click="wrapRequest">
+          Take me there!
+        </a-button>
+      </div>
+
 <!--      <div class="confirm-btn no-select" @click="setNftEvent"></div>-->
     </a-modal>
   </div>

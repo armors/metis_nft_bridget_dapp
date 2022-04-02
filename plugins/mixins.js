@@ -49,17 +49,24 @@ export default {
     }
   },
   mounted () {
+    const connectWalletType = localStorage.getItem('connectWalletType')
     if (process.client) {
       const that = this
       window.ethereum.on('accountsChanged', function (accounts) {
-        window.location.reload()
+        if (connectWalletType && connectWalletType === 'MetaMask') {
+          window.location.reload()
+        }
       })
       window.ethereum.on('networkChanged', function (accounts) {
-        that.initNetWork()
+        if (connectWalletType && connectWalletType === 'MetaMask') {
+          that.initNetWork()
+        }
         // window.location.reload()
       })
       window.ethereum.on('chainIdChanged', function (accounts) {
-        that.initNetWork()
+        if (connectWalletType && connectWalletType === 'MetaMask') {
+          that.initNetWork()
+        }
         // window.location.reload()
       })
     }

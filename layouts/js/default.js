@@ -15,11 +15,11 @@ export default {
       all_transaction: [],
       tab: 0,
       connectList: [
-        // {
-        //   name: 'Connect by Polis',
-        //   type: 'Polis',
-        //   icon_img: require('../../assets/image/logo.png')
-        // },
+        {
+          name: 'Connect by Polis',
+          type: 'Polis',
+          icon_img: require('../../assets/image/logo.png')
+        },
         {
           name: 'Connect by MetaMask',
           type: 'MetaMask',
@@ -54,15 +54,15 @@ export default {
   async mounted () {
     const connectWalletType = localStorage.getItem('connectWalletType')
     console.log(connectWalletType)
-    // this.initNetWork()
-    // if (connectWalletType) {
-    //   this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
-    //   if (connectWalletType === 'Polis') {
-    //     this.loginMetis()
-    //   } else if (connectWalletType === 'MetaMask') {
-    await this.initWeb3()
-    // }
-    // }
+    if (connectWalletType) {
+      this.$store.dispatch('updateConnectType', localStorage.getItem('connectWalletType'))
+      if (connectWalletType === 'Polis') {
+        this.loginMetis()
+      } else if (connectWalletType === 'MetaMask') {
+        this.initNetWork()
+        await this.initWeb3()
+      }
+    }
     for (let i = 0; i < this.langInfo.tabList.length; i++) {
       if (('/' + this.langInfo.tabList[i].path) === this.$route.path) {
         this.tab = i

@@ -11,8 +11,8 @@ export default {
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
       // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
       // nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
-      nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
-      // nftTokenAddress: '0xF40Bdc6719b9C3A2c123Da86f6f0494051C8b732', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      // nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      nftTokenAddress: '0x719883E1985753D6b2d65774ed3B11f7aA632C4c', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       tokenStandardIndex: -1,
       // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
       // tokenTag: '0x3faec2ae9e76149343ca5fa3ef42480195a00fb6',
@@ -283,7 +283,7 @@ export default {
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.metaMaskNextStep()
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-        this.polisNextStep()
+        this.polisNextStepNew()
       }
     },
     // polis链接方式下一步
@@ -343,6 +343,63 @@ export default {
           console.log(e)
         }
       }
+    },
+    async polisNextStepNew () {
+      this.iconLoading = true
+      const that = this
+      this.originChainId = this.$store.state.netWork.chainId
+      console.log(this.$web3_http)
+      try {
+        this.tokenStandardIndex = 0
+        const tokenContract = useContractByRpc(this.nftTokenAddress, COIN_ABI.erc721, this.fromNet.rpcUrls[0])
+        // const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
+        // if (tokenContract?.code && tokenContract.code === 500) {
+        //   this.iconLoading = false
+        //   return that.$message.error(tokenContract.error.message, 3)
+        // }
+        this.symbol = 'm.' + await tokenContract.methods.symbol().call()
+        this.name = await tokenContract.methods.name().call()
+        try {
+          this.baseUrl = await tokenContract.methods.baseUri().call()
+        } catch (e) {
+          try {
+            this.baseUrl = await tokenContract.methods.baseURI().call()
+          } catch (e) {
+            this.baseUrl = ''
+          }
+        }
+        this.stepIndex = 1
+      } catch (e) {
+        console.log(e)
+        console.log(JSON.stringify(e))
+        console.log(e.toString())
+        if (e.toString().indexOf('-32000') > -1 || JSON.stringify(e).indexOf('32603') > -1) {
+          try {
+            const tokenContract = useContractByRpc(this.nftTokenAddress, COIN_ABI.erc1155, this.fromNet.rpcUrls[0])
+            // const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
+            // if (tokenContract?.code && tokenContract.code === 500) {
+            //   this.iconLoading = false
+            //   return that.$message.error(tokenContract.error.message, 3)
+            // }
+            const baseUrl = await tokenContract.methods.uri(1).call()
+            console.log(baseUrl)
+            this.baseUrl = baseUrl
+            this.tokenStandardIndex = 1
+            this.stepIndex = 1
+          } catch (err) {
+            this.baseUrl = ''
+            this.tokenStandardIndex = -1
+            this.stepIndex = 1
+            // console.log(err)
+            // that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+          }
+        } else if (e.toString().indexOf('call revert exception (method')) {
+          that.$message.error('contract address and Network mismatch ', 3)
+        } else {
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'get nft info error', 3)
+        }
+      }
+      this.iconLoading = false
     },
     // metamask链接方式下一步
     async metaMaskNextStep () {
@@ -435,9 +492,39 @@ export default {
     },
     // polis连接方式wrap操作
     async confirmWrapPolis (method, args) {
+      const getDomain = await this.getDomainPolis()
+      console.log(getDomain)
+      if (getDomain.code === 200) {
+        this.confirmWrapPolisFun(method, args)
+      } else {
+        const param = {
+          name: this.nftTokenAddress.toLocaleLowerCase(), // domain name
+          chains: [
+            {
+              chainid: this.fromNet.chainId,
+              contract_address: this.nftTokenAddress.toLocaleLowerCase()
+            }
+          ],
+          abi: JSON.stringify(this.tokenStandardIndex === 0 ? COIN_ABI.erc721 : COIN_ABI.erc1155)
+        }
+        this.$httpClient.createDomain(param).then(res => {
+          console.log('createDomain', res)
+          this.confirmWrapPolisFun(method, args)
+        }, reject => {
+          console.log(reject)
+          this.$message.error(reject.message.message, 8)
+          that.iconLoading = false
+        }).catch(err => {
+          console.log(err)
+          this.$message.error(err.message, 8)
+          that.iconLoading = false
+        })
+      }
+    },
+    confirmWrapPolisFun (method, args) {
       const that = this
       this.iconLoading = true
-      console.log(this.fromNet.domainInfo.bridgeFactory, parseInt(this.toNet.chainId))
+      console.log(this.nftTokenAddress, parseInt(this.toNet.chainId))
       console.log(method, args)
       try {
         this.$httpClient.sendTxAsync(
@@ -465,6 +552,32 @@ export default {
         that.iconLoading = false
         that.$message.error(e.message.message || 'wrap nft error', 3)
       }
+    },
+    getDomainPolis () {
+      return new Promise((resolve, reject) => {
+        this.$httpClient.getDomain(
+          this.nftTokenAddress.toLocaleLowerCase(),
+          this.fromNet.chainId
+        ).then(res => {
+          console.log('getDomain', res)
+          resolve({
+            code: 200,
+            message: 'success'
+          })
+        }, rejecta => {
+          console.log(rejecta)
+          resolve({
+            code: 404,
+            message: 'domain no exit，creating'
+          })
+        }).catch(err => {
+          console.log(err)
+          resolve({
+            code: 404,
+            message: 'domain no exit，creating'
+          })
+        })
+      })
     },
     // metamask连接方式wrap操作
     async createPair (method, args) {

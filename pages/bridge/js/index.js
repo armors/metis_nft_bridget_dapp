@@ -195,9 +195,56 @@ export default {
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.nftTokenBlurMetaMask()
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-        this.tokenStandardIndex = 1
-        this.getApprovePolis()
+        // this.tokenStandardIndex = 1
+        // this.getApprovePolis()
+        this.polisNextStepNew()
       }
+    },
+    async polisNextStepNew () {
+      this.iconLoading = true
+      const that = this
+      this.originChainId = this.$store.state.netWork.chainId
+      console.log(this.$web3_http)
+      try {
+        this.tokenStandardIndex = 0
+        const tokenContract = useContractByRpc(this.nftTokenAddress, COIN_ABI.erc721, this.fromNet.rpcUrls[0])
+        this.symbol = 'm.' + await tokenContract.methods.symbol().call()
+        this.name = await tokenContract.methods.name().call()
+        try {
+          this.baseUrl = await tokenContract.methods.baseUri().call()
+        } catch (e) {
+          try {
+            this.baseUrl = await tokenContract.methods.baseURI().call()
+          } catch (e) {
+            this.baseUrl = ''
+          }
+        }
+        this.getApprovePolis()
+      } catch (e) {
+        console.log(e)
+        console.log(JSON.stringify(e))
+        console.log(e.toString())
+        if (e.toString().indexOf('-32000') > -1 || JSON.stringify(e).indexOf('32603') > -1) {
+          try {
+            const tokenContract = useContractByRpc(this.nftTokenAddress, COIN_ABI.erc1155, this.fromNet.rpcUrls[0])
+            const baseUrl = await tokenContract.methods.uri(1).call()
+            console.log(baseUrl)
+            this.baseUrl = baseUrl
+            this.tokenStandardIndex = 1
+          } catch (err) {
+            this.baseUrl = ''
+            this.tokenStandardIndex = -1
+            // console.log(err)
+            // that.$message.error(err?.data?.message || err?.message ? err.message : 'wrap nft error', 3)
+          }
+          this.getApprovePolis()
+        } else if (e.toString().indexOf('call revert exception (method')) {
+          that.$message.error('contract address and Network mismatch ', 3)
+        } else {
+          that.$message.error(e?.data?.message || e?.message ? e.message : 'get nft info error', 3)
+        }
+      }
+      this.iconLoading = false
     },
     // async nftTokenBlurPolis () {
     //
@@ -250,23 +297,23 @@ export default {
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.getApprove()
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-        this.tokenStandardIndex = 1
+        // this.tokenStandardIndex = 1
         this.getApprovePolis()
       }
     },
     getApprovePolis (isShow = false) {
       console.log(this.nftTokenAddress, this.tokenId)
-      if (!this.nftTokenAddress || !this.tokenId) {
+      if (!this.nftTokenAddress || !this.tokenId || !this.receiverAddress) {
         return
       }
-      console.log(this.fromNet.domainInfo.token721,
+      console.log(this.nftTokenAddress.toLocaleLowerCase(),
         parseInt(this.$store.state.netWork.chainId),
         'getApproved',
         [this.tokenId])
       try {
         if (this.tokenStandardIndex === 0) { // 721
           this.$httpClient.sendTxAsync(
-            this.fromNet.domainInfo.token721,
+            this.nftTokenAddress.toLocaleLowerCase(),
             parseInt(this.$store.state.netWork.chainId),
             'getApproved',
             [this.tokenId],
@@ -286,7 +333,7 @@ export default {
           })
         } else if (this.tokenStandardIndex === 1) { // 1155
           this.$httpClient.sendTxAsync(
-            this.fromNet.domainInfo.token1155,
+            this.nftTokenAddress.toLocaleLowerCase(),
             parseInt(this.$store.state.netWork.chainId),
             'isApprovedForAll',
             [
@@ -357,15 +404,13 @@ export default {
         }
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
         that.iconLoading = true
-        let domain = ''
+        const domain = this.nftTokenAddress.toLocaleLowerCase()
         let methods = ''
         let args = []
         if (this.tokenStandardIndex === 0) {
-          domain = this.fromNet.domainInfo.token721
           methods = 'approve'
           args = [this.fromNet.bridge, this.tokenId]
         } else if (this.tokenStandardIndex === 1) {
-          domain = this.fromNet.domainInfo.token1155
           methods = 'setApprovalForAll'
           args = [this.fromNet.bridge, true]
         }

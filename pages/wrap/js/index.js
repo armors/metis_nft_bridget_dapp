@@ -11,8 +11,8 @@ export default {
       // nftTokenAddress: '0x5bd76e2e08322ee76b475cdc0205633424ae6430', // 0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc
       // nftTokenAddress: '0x107f5e08FD78Ca7Adca006f92e9B1F9FC17FADE7', // 0x193f243bd27c84cac320896691e18ea0c1d4fa2d
       // nftTokenAddress: '0x592593dc780b54ad70A6d24c18C40665a3B2F9E4', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
-      // nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
-      nftTokenAddress: '0x719883E1985753D6b2d65774ed3B11f7aA632C4c', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
+      // nftTokenAddress: '0x719883E1985753D6b2d65774ed3B11f7aA632C4c', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       tokenStandardIndex: -1,
       // tokenTag: '0x5efefb1b9e59c6fe3f0ad1f35de5e5c7538eddcc',
       // tokenTag: '0x3faec2ae9e76149343ca5fa3ef42480195a00fb6',

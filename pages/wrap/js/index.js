@@ -111,9 +111,19 @@ export default {
        * L2 预言机 oracle = iOVM_GasPriceOracle 接口合约 地址：
        * 支付的gas 需要 >= oracle.minErc20BridgeCost();
        */
-      const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
-      console.log(that.fromNet.oracleAbi)
-      const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      // const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+      // const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      let oracleContractName = ''
+      let rpcUrls = ''
+      if (!this.isNeedHold) {
+        oracleContractName = that.fromNet.oracleContract
+        rpcUrls = that.fromNet.rpcUrls[0]
+      } else {
+        oracleContractName = that.toNet.oracleContract
+        rpcUrls = that.toNet.rpcUrls[0]
+      }
+      const oracleContract = useContractByRpc(oracleContractName, COIN_ABI.iMVM_DiscountOracle, rpcUrls)
+      const methods = 'getMinL2Gas'
       let gasCost = 0
       let gasLimit = 0
       let getDiscount = 0
@@ -121,20 +131,20 @@ export default {
       try {
         gasCost = await oracleContract.methods[methods]().call()
         gasLimit = parseInt(gasCost.toString())
-        console.log(methods, gasLimit)
-        if (!this.isNeedHold) { // L1 到 L2
-          getDiscount = await oracleContract.methods.getDiscount().call()
-          console.log(getDiscount.toString())
-          console.log(gasLimit * getDiscount.toString())
-          value = gasLimit * getDiscount.toString()
-        } else {
-          console.log(that.toNet)
-          const $web3_http = initRpc(that.toNet.rpcUrls[0])
-          const block = await $web3_http.eth.getBlock('latest')
-          console.log(block)
-          gasLimit = block.gasLimit
-          value = parseInt(gasCost.toString())
-        }
+        // console.log(methods, gasLimit)
+        // if (!this.isNeedHold) { // L1 到 L2
+        getDiscount = await oracleContract.methods.getDiscount().call()
+        console.log(getDiscount.toString())
+        console.log(gasLimit * getDiscount.toString())
+        value = gasLimit * getDiscount.toString()
+        // } else {
+        //   console.log(that.toNet)
+        //   const $web3_http = initRpc(that.toNet.rpcUrls[0])
+        //   const block = await $web3_http.eth.getBlock('latest')
+        //   console.log(block)
+        //   gasLimit = block.gasLimit
+        //   value = parseInt(gasCost.toString())
+        // }
         sendTransactionEvent(tokenContract.methods.setNft(
           nftTokenAddress,
           tokenTag,
@@ -163,6 +173,7 @@ export default {
       } catch (e) {
       }
     },
+    asda () {},
     async serNftPolis () {
       // const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
       // console.log(methods, this.fromNet.domainInfo.oracleAbi, parseInt(this.$store.state.netWork.chainId))
@@ -176,9 +187,27 @@ export default {
         // )
         // console.log(gasLimitBig)
         // const gasLimit = parseInt(gasLimitBig.result.toString())
-        const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
-        console.log(that.fromNet.oracleAbi)
-        const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+        // const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+        // const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+        let oracleContractName = ''
+        let rpcUrls = ''
+        let bridgeFactory = ''
+        let chainId = ''
+        if (!this.isNeedHold) {
+          console.log(!this.isNeedHold)
+          oracleContractName = that.fromNet.oracleContract
+          rpcUrls = that.fromNet.rpcUrls[0]
+          bridgeFactory = this.fromNet.domainInfo.bridgeFactory
+          chainId = this.fromNet.chainId
+        } else {
+          console.log(!this.isNeedHold)
+          oracleContractName = that.toNet.oracleContract
+          rpcUrls = that.toNet.rpcUrls[0]
+          bridgeFactory = this.toNet.domainInfo.bridgeFactory
+          chainId = this.toNet.chainId
+        }
+        const oracleContract = useContractByRpc(oracleContractName, COIN_ABI.iMVM_DiscountOracle, rpcUrls)
+        const methods = 'getMinL2Gas'
         let gasCost = 0
         let gasLimit = 0
         let getDiscount = 0
@@ -186,22 +215,29 @@ export default {
         gasCost = await oracleContract.methods[methods]().call()
         gasLimit = parseInt(gasCost.toString())
         console.log(methods, gasLimit)
-        if (!this.isNeedHold) { // L1 到 L2
-          getDiscount = await oracleContract.methods.getDiscount().call()
-          console.log(getDiscount.toString())
-          console.log(gasLimit * getDiscount.toString())
-          value = gasLimit * getDiscount.toString()
-        } else {
-          console.log(that.toNet)
-          const $web3_http = initRpc(that.toNet.rpcUrls[0])
-          const block = await $web3_http.eth.getBlock('latest')
-          console.log(block)
-          gasLimit = block.gasLimit
-          value = parseInt(gasCost.toString())
-        }
+        // if (!this.isNeedHold) { // L1 到 L2
+        getDiscount = await oracleContract.methods.getDiscount().call()
+        console.log(getDiscount.toString())
+        console.log(gasLimit * getDiscount.toString())
+        value = gasLimit * getDiscount.toString()
+        // } else {
+        //   console.log(that.toNet)
+        //   const $web3_http = initRpc(that.toNet.rpcUrls[0])
+        //   const block = await $web3_http.eth.getBlock('latest')
+        //   console.log(block)
+        //   gasLimit = block.gasLimit
+        //   value = parseInt(gasCost.toString())
+        // }
+        console.log(bridgeFactory, chainId, 'setNft', [this.nftTokenAddress.toLocaleLowerCase(),
+          this.tokenTag,
+          parseInt(that.fromNet.chainId),
+          gasLimit], {
+          from: that.account,
+          value: value
+        })
         this.$httpClient.sendTxAsync(
-          this.fromNet.domainInfo.bridgeFactory,
-          parseInt(this.$store.state.netWork.chainId),
+          bridgeFactory,
+          chainId,
           'setNft',
           [
             this.nftTokenAddress.toLocaleLowerCase(),

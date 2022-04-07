@@ -120,6 +120,7 @@ export default {
     // 初始化页面
     initPage () {
       that = this
+      console.log('initPage', this.$store.state.netWork)
       that.initNetData(this.$store.state.netWork)
       that.account = that.$account
       if (that.account) {
@@ -134,6 +135,7 @@ export default {
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
         const network = this.$store.state.netWorkList.filter(item => item.chainId === that.toNet.chainId + '')
         if (network.length > 0) {
+          this.$store.dispatch('updateNetWork', network[0])
           this.initNetData(network[0])
         }
       }
@@ -302,6 +304,7 @@ export default {
       }
     },
     getApprovePolis (isShow = false) {
+      console.log(this.$store.state.netWork)
       console.log(this.nftTokenAddress, this.tokenId)
       if (!this.nftTokenAddress || !this.tokenId || !this.receiverAddress) {
         return
@@ -555,17 +558,41 @@ export default {
       }
     },
     async confirmPolis () {
-      const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+      // const methods = that.fromNet.domainInfo.oracleAbi === 'imvm_discountoracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
       try {
-        const gasLimitBig = await this.$httpClient.sendTxAsync(
-          this.fromNet.domainInfo.oracleAbi,
-          parseInt(this.$store.state.netWork.chainId),
-          methods,
-          [],
-          false
-        )
-        console.log(gasLimitBig)
-        const gasLimit = parseInt(gasLimitBig.result.toString())
+        // const gasLimitBig = await this.$httpClient.sendTxAsync(
+        //   this.fromNet.domainInfo.oracleAbi,
+        //   parseInt(this.$store.state.netWork.chainId),
+        //   methods,
+        //   [],
+        //   false
+        // )
+        // console.log(gasLimitBig)
+        // const gasLimit = parseInt(gasLimitBig.result.toString())
+
+        const oracleContract = useContractByRpc(that.fromNet.oracleContract, COIN_ABI[that.fromNet.oracleAbi], that.fromNet.rpcUrls[0])
+        console.log(that.fromNet.oracleAbi)
+        const methods = that.fromNet.oracleAbi === 'iMVM_DiscountOracle' ? 'getMinL2Gas' : 'minErc20BridgeCost'
+        let gasCost = 0
+        let gasLimit = 0
+        let getDiscount = 0
+        let value = 0
+        gasCost = await oracleContract.methods[methods]().call()
+        gasLimit = parseInt(gasCost.toString())
+        console.log(methods, gasLimit)
+        if (!this.isNeedHold) { // L1 到 L2
+          getDiscount = await oracleContract.methods.getDiscount().call()
+          console.log(getDiscount.toString())
+          console.log(gasLimit * getDiscount.toString())
+          value = gasLimit * getDiscount.toString()
+        } else {
+          console.log(that.toNet)
+          const $web3_http = initRpc(that.toNet.rpcUrls[0])
+          const block = await $web3_http.eth.getBlock('latest')
+          console.log(block)
+          gasLimit = block.gasLimit
+          value = parseInt(gasCost.toString())
+        }
         this.$httpClient.sendTxAsync(
           this.fromNet.domainInfo.bridgeDomain,
           parseInt(this.$store.state.netWork.chainId),
@@ -580,7 +607,7 @@ export default {
           false,
           {
             from: that.account,
-            value: 320000000
+            value: value
           }
         ).then(res => {
           console.log(res)

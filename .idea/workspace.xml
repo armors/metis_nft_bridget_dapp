@@ -28,6 +28,9 @@
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.env.dev" beforeDir="false" afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/wrap/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/wrap/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/js/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +144,8 @@
       <workItem from="1648911672993" duration="701000" />
       <workItem from="1649140386682" duration="2781000" />
       <workItem from="1649209904686" duration="3000" />
-      <workItem from="1649209910319" duration="199000" />
+      <workItem from="1649209910319" duration="237000" />
+      <workItem from="1649319094696" duration="2810000" />
     </task>
     <servers />
   </component>
@@ -173,12 +177,12 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog" timestamp="1648910237501">
+    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog" timestamp="1649323214301">
       <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state x="1540" y="76" width="1720" height="857" key="DiffContextDialog/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1645798029384" />
     <state x="1540" y="10" key="DiffContextDialog/0.23.1440.830/1440.-91.1920.1057@1440.-91.1920.1057" timestamp="1646747633917" />
-    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog/0.23.1440.830@0.23.1440.830" timestamp="1648910237501" />
+    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog/0.23.1440.830@0.23.1440.830" timestamp="1649323214301" />
     <state x="2045" y="78" key="RollbackChangesDialog" timestamp="1646747774623">
       <screen x="1440" y="-91" width="1920" height="1057" />
     </state>

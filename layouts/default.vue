@@ -35,7 +35,7 @@
             <div @click="openNewWindow('policy')" class="policy no-select">Privacy policy</div>
             <a target="_blank" href="https://docs.metis.io/metis-nft-bridge" class="policy no-select">User Guide</a>
           </div>
-          <div>© Copyright 2021 by MetisLab Foundation Ltd.</div>
+          <div>© Copyright 2021 by MetisDAO Foundation Ltd.</div>
         </div>
       </div>
       <yLloading></yLloading>

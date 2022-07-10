@@ -254,6 +254,11 @@ export default {
     async nftTokenBlurMetaMask () {
       const that = this
       console.log(this.$web3_http)
+      const tokenContractq = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1)
+      const mapAddress = await tokenContractq.clone(this.nftTokenAddress)
+      if (mapAddress === '0x0000000000000000000000000000000000000000') {
+        that.$message.error('We detected the NFT you are trying to bridge has not been wrapped by the developer. Please contact the NFT issuer to wrap the NFT on the NFT bridge and return to bridge your NFT.', 3)
+      }
       try {
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
         console.log(tokenContract)

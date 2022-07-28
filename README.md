@@ -1,5 +1,7 @@
 # nuxt-example
 
+dev 2月28号
+
 ## Build Setup
 
 ```bash

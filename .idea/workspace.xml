@@ -27,6 +27,7 @@
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,35 +163,9 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog" timestamp="1647697373047">
+    <state x="100" y="123" width="1240" height="630" key="DiffContextDialog" timestamp="1657448232639">
       <screen x="0" y="23" width="1440" height="830" />
     </state>
-    <state x="1540" y="76" width="1720" height="857" key="DiffContextDialog/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1645798029384" />
-    <state x="1540" y="10" key="DiffContextDialog/0.23.1440.830/1440.-91.1920.1057@1440.-91.1920.1057" timestamp="1646747633917" />
-    <state x="75" y="102" width="1290" height="673" key="DiffContextDialog/0.23.1440.830@0.23.1440.830" timestamp="1647697373047" />
-    <state x="2045" y="78" key="RollbackChangesDialog" timestamp="1646747774623">
-      <screen x="1440" y="-91" width="1920" height="1057" />
-    </state>
-    <state x="2045" y="78" key="RollbackChangesDialog/0.23.1440.830/1440.-91.1920.1057@1440.-91.1920.1057" timestamp="1646747774623" />
-    <state x="194" y="23" key="SettingsEditor" timestamp="1647750454572">
-      <screen x="0" y="23" width="1440" height="830" />
-    </state>
-    <state x="194" y="23" key="SettingsEditor/0.23.1440.830@0.23.1440.830" timestamp="1647750454572" />
-    <state x="1777" y="32" key="SettingsEditor/0.23.1440.877/1440.-24.1920.1010@1440.-24.1920.1010" timestamp="1645450959194" />
-    <state x="348" y="130" width="744" height="692" key="find.popup" timestamp="1647846972211">
-      <screen x="0" y="23" width="1440" height="830" />
-    </state>
-    <state x="1904" y="112" width="992" height="785" key="find.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1646717439853" />
-    <state x="1904" y="45" width="992" height="785" key="find.popup/0.23.1440.830/1440.-91.1920.1057@1440.-91.1920.1057" timestamp="1646814917033" />
-    <state x="348" y="130" width="744" height="692" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1647846972211" />
-    <state x="1904" y="73" width="992" height="751" key="find.popup/0.23.1440.877/1440.-57.1920.1010@1440.-57.1920.1010" timestamp="1646837293470" />
-    <state x="526" y="188" key="refactoring.ChangeSignatureDialog" timestamp="1645846497684">
-      <screen x="0" y="23" width="1440" height="830" />
-    </state>
-    <state x="526" y="188" key="refactoring.ChangeSignatureDialog/0.23.1440.830@0.23.1440.830" timestamp="1645846497684" />
-    <state x="1981" y="228" key="run.anything.popup" timestamp="1646314710059">
-      <screen x="1440" y="-24" width="1920" height="1057" />
-    </state>
-    <state x="1981" y="228" key="run.anything.popup/0.23.1440.830/1440.-24.1920.1057@1440.-24.1920.1057" timestamp="1646314710059" />
+    <state x="100" y="123" width="1240" height="630" key="DiffContextDialog/0.23.1440.830@0.23.1440.830" timestamp="1657448232639" />
   </component>
 </project>

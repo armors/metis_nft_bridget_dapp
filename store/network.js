@@ -82,7 +82,7 @@ export const networkAndromeda = {
   rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
   blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
   bridgeFactory: '0xDb3439640a0C8273E9c81bB2D9D4fa34fa180e17',
-  bridge: '0xB64585Bd0d686EaeD47eE986190eA8abE610ae33',
+  bridge: '0xea5eFa4f721DEB7cA4E4ed990F12A97577d8a287',
   oracleContract: '0x420000000000000000000000000000000000000F',
   oracleAbi: 'iOVM_GasPriceOracle',
   domainInfo: {

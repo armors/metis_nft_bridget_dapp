@@ -1,0 +1,191 @@
+@import "../../../assets/css/fun";
+.bridgeView{
+  padding-top: 30px;
+  .bridge-box{
+    width: 560px;
+    background: #060816;
+    border-radius: 16px;
+    padding: 32px 40px 24px;
+    margin: 0 auto;
+    box-shadow: 0px 0px 30px rgba(0, 148, 199, 0.49);
+    .bridge-title{
+      font-size: 24px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 33px;
+      text-align: center;
+    }
+    .step-list{
+      padding-top: 32px;
+      padding-bottom: 44px;
+      .step-item{
+        cursor: pointer;
+        font-size: 16px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 22px;
+        position: relative;
+        &.active{
+          color: @emColor;
+        }
+        &.active:after{
+          content: '';
+          position: absolute;
+          left: 50%;
+          margin-left: -50px;
+          width: 100px;
+          height: 2px;
+          background: #65DACF;
+          bottom: -18px;
+        }
+        &:nth-child(2){
+          text-align: center;
+        }
+      }
+    }
+    .network-box{
+      height: 72px;
+      padding: 0 40px;
+      border-radius: 4px;
+      background: rgba(101, 218, 207, 0.05);
+      font-size: 20px;
+      font-family: Helvetica;
+      color: #64D9CD;
+      .exchange-img{
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+      }
+      &.wrap{
+        background-color: #0C1130;
+      }
+      .to-chain{
+        text-align: right;
+      }
+    }
+    .title-text{
+      margin-top: 18px;
+      font-size: 14px;
+      font-family: Helvetica;
+      color: #64D9CD;
+    }
+    .token-id-list{
+      padding-top: 11px;
+      .token-id-item{
+        margin-top: 15px;
+        text-align: center;
+        cursor: pointer;
+        line-height: 40px;
+        width: 88px;
+        height: 40px;
+        background: rgba(101, 218, 207, 0.1);
+        margin-right: 16px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 14px;
+        font-family: Helvetica;
+        color: #FFFFFF;
+        &.active{
+          color: #060816;
+          background: #65DACF;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        &.token-standard-item{
+          background-color: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        &.token-standard-item.active{
+          color: #060816;
+          background: #F4B74F;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+    .ic-box{
+      margin-top: 24px;
+      &.standard{
+        font-size: 14px;
+        font-family: Helvetica;
+        color: #FFFFFF;
+      }
+      .date-box{
+        margin-top: 12px;
+        font-size: 12px;
+        color: #F4B74F;
+      }
+    }
+    .ic-img{
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+    }
+    &.wrap{
+      min-height: 729px;
+      .network-box {
+        background-color: #0C1130;
+      }
+      .wallet-address{
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+        text-align: center;
+        padding-top: 16px;
+      }
+      .input-item{
+        margin-top: 16px;
+        .label{
+          width: 80px;
+          font-size: 14px;
+          font-family: Helvetica;
+          color: #64D9CD;
+        }
+      }
+    }
+  }
+  .go-wrap-box{
+    width: 560px;
+    height: 64px;
+    background: #060816;
+    border-radius: 8px;
+    margin: 24px auto 0;
+    padding: 0 24px;
+
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #65DACF;
+    .img-box-wrap{
+      width: 27px;
+      height: 27px;
+      margin-right: 20px;
+      img{
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    }
+    .icon-right{
+      width: 10px;
+      height: 18px;
+      img{
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    }
+  }
+  .history-text{
+    padding-top: 53px;
+    margin: 0 auto;
+    font-size: 16px;
+    font-family: Helvetica;
+    color: #64D9CD;
+    font-weight: 400;
+    text-decoration:underline;
+  }
+}

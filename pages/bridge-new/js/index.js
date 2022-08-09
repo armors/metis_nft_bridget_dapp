@@ -12,6 +12,8 @@ let that
 export default {
   data () {
     return {
+      selectCollection: false,
+      agree: false,
       visible: false,
       isShowTop: false,
       account: '',

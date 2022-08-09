@@ -5,7 +5,17 @@
         <div class="logo-img" @click="$router.push({path: '/bridge'})"><img src="../assets/image/logo.png" alt=""></div>
         <div class="project-name" @click="$router.push({path: '/bridge'})">{{langInfo.projectName}}</div>
 <!--        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>-->
-        <div class="box-flex1"></div>
+        <div class="box-flex1">
+          <div class="switch-tab">
+            <div class="switch-tab-node switch-tab-cur">
+              <div class="bridge">Bridge</div>
+              <div class="users">for users</div>
+            </div>
+            <div class="switch-tab-node">
+              <div class="wrap">Wrap</div>
+            </div>
+          </div>
+        </div>
         <a-dropdown :trigger="['click']">
           <a-menu slot="overlay" @click="changeNetWorkFun">
             <a-menu-item  key="1" :class="{'item-active-select': $store.state.netWork.chainId === '1' || $store.state.netWork.chainId === '1088'}">
@@ -134,6 +144,48 @@ export { default } from './js/default'
 </style>
 <style lang="less">
   @import "../assets/css/color";
+  .switch-tab {
+    height: 56px;
+    width: 260px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    .bridge {
+      padding-top: 5px;
+    }
+    .users {
+      font-size: 12px;
+      line-height: 12px;
+    }
+    .wrap {
+      line-height: 56px;
+    }
+    .switch-tab-node {
+      width: 130px;
+      height: 56px;
+      background: #060816;
+      font-size: 18px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 25px;
+      background: #060816;
+      border-radius: 4px;
+      opacity: 0.8;
+      text-align: center;
+    }
+    .switch-tab-cur {
+      font-size: 18px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: #65DACF;
+      line-height: 25px;
+      background: #326D73;
+      border-radius: 4px;
+      opacity: 0.8;
+      text-align: center;
+    }
+  }
   .ant-spin, .ant-spin-dot{
     color: @emColor !important;
     width: 1.5em !important;

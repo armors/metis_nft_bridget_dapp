@@ -101,7 +101,6 @@
     <div class="display-flex">
       <a href="javascript:;" @click="$router.push({path: '/history'})" class="history-text">View history ></a>
     </div>
-
     <a-modal
       v-model="visible"
       title=""

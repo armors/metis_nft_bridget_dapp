@@ -57,6 +57,9 @@ export default {
   updateDialogConfirm (context, item) {
     context.commit('changeDialogConfirm', item)
   },
+  updateShowTabStatus (context, item) {
+    context.commit('updateShowTabStatus', item)
+  },
   updateConnectType (context, item) {
     context.commit('changeConnectType', item)
   },

@@ -7,11 +7,11 @@
 <!--        <div class="nav-item no-select" v-for="(v, i) in langInfo.tabList" @click="selectTab(v, i)" :class="{active: i === tab}" :key="`tab${i}`">{{v.name}}</div>-->
         <div class="box-flex1">
           <div class="switch-tab">
-            <div class="switch-tab-node switch-tab-cur">
+            <div @click="$router.push({path: '/bridge'});$store.dispatch('updateShowTabStatus', true)" :class="showBridge ? 'switch-tab-node switch-tab-cur' : 'switch-tab-node'">
               <div class="bridge">Bridge</div>
               <div class="users">for users</div>
             </div>
-            <div class="switch-tab-node">
+            <div @click="$router.push({path: '/wrap'});$store.dispatch('updateShowTabStatus', false)" :class="showBridge == false ? 'switch-tab-node switch-tab-cur' : 'switch-tab-node'">
               <div class="wrap">Wrap</div>
             </div>
           </div>
@@ -30,8 +30,9 @@
           </a-menu>
           <div class="net-btn no-select">{{currentChainName}}</div>
         </a-dropdown>
-        <div class="account-btn no-select" @click="openAccount" v-if="account !== null && account !== undefined">{{account.substr(0, 4)}}...{{account.substr(account.length - 5,
-                                                         account.length)}}</div>
+        <div class="account-btn no-select" @click="openAccount" v-if="account !== null && account !== undefined">
+          {{account.substr(0, 4)}}...{{account.substr(account.length - 5, account.length)}}
+        </div>
         <div class="connect-wallet no-select" v-else @click="openWalletType">Connect Wallet</div>
       </div>
       <div class="box-flex1 content no-scroller" style="overflow-y: scroll;">

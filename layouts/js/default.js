@@ -25,7 +25,8 @@ export default {
           type: 'MetaMask',
           icon_img: require('../../assets/image/metamask.svg')
         }
-      ]
+      ],
+      showBridge: true
     }
   },
   computed: {
@@ -39,10 +40,13 @@ export default {
   watch: {
     // 获取用户信息
     '$store.state.accounts': function (val) {
-      console.log('获取用户信息', val)
+      console.log('获取用户信息1111', val)
       this.setAccount(val)
     },
     '$store.state.lang': function (val) {
+    },
+    '$store.state.showTabStatus': function (val) {
+      this.showBridge = val
     }
   },
   components: {
@@ -50,6 +54,14 @@ export default {
     yLloading
   },
   created () {
+    switch (this.$router.currentRoute.path) {
+      case '/bridge':
+        this.showBridge = true
+        break
+      default:
+        this.showBridge = false
+    }
+    this.$store.dispatch('updateShowTabStatus', this.showBridge)
   },
   async mounted () {
     const connectWalletType = localStorage.getItem('connectWalletType')

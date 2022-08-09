@@ -12,6 +12,7 @@ export default () => ({
   connectType: '',
   authPolisParams: null,
   authUserInfo: null,
+  showTabStatus: true,
   netWork: {
     chainName: networkRinkeby.chainName,
     chainId: networkRinkeby.chainId,

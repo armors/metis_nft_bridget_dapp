@@ -25,6 +25,9 @@ export default {
   changeDialogAccount (state, payload) {
     state.dialogAccount = payload
   },
+  updateShowTabStatus (state, payload) {
+    state.showTabStatus = payload
+  },
   changeConnectType (state, payload) {
     state.connectType = payload
     localStorage.setItem('connectWalletType', payload)

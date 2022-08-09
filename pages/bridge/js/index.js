@@ -12,6 +12,8 @@ let that
 export default {
   data () {
     return {
+      selectCollection: false,
+      agree: false,
       visible: false,
       isShowTop: false,
       account: '',
@@ -558,6 +560,10 @@ export default {
       } catch (e) {
 
       }
+    },
+    openNew() {
+      this.$router.push({path: '/wrap'})
+      this.$store.dispatch('updateShowTabStatus', false)
     }
   }
 }

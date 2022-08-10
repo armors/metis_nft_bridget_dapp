@@ -25,27 +25,27 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="page update">
-      <change afterPath="$PROJECT_DIR$/assets/image/img_1@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/img_2@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/img_3@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/img_4@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/bridge.0809/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/wrap.0809/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/wrap.0809/js/index.js" afterDir="false" />
+    <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="page update wrap">
+      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_2@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_3@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_4@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_cur@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/ic_down@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/ic_up@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/p/p6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/image/price-bg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Select.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/bridge-event/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/bridge-event/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layouts/js/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/js/default.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge-new/css/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge.0809/css/index.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge-new/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge-new/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge.0809/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge/css/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/css/index.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/wrap/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/mutations.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/mutations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/state.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/state.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +75,9 @@
   <component name="MacroExpansionManager">
     <option name="directoryName" value="l0zn2v36" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="25NNf50V6qXwsorcdCAXQ4NnLCU" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -99,11 +102,13 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
     <property name="vuejs.nuxt.types-notification-shown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets/image" />
+      <recent name="$PROJECT_DIR$/assets/image/p" />
       <recent name="$PROJECT_DIR$/pages" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -111,6 +116,7 @@
       <recent name="$PROJECT_DIR$/pages" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -165,6 +171,8 @@
       <workItem from="1647956506212" duration="522000" />
       <workItem from="1648031961109" duration="1570000" />
       <workItem from="1648046526472" duration="3530000" />
+      <workItem from="1660035051084" duration="606000" />
+      <workItem from="1660096714352" duration="10209000" />
     </task>
     <task id="LOCAL-00001" summary="add new page">
       <created>1660010057631</created>
@@ -194,11 +202,18 @@
       <option name="project" value="LOCAL" />
       <updated>1660020246867</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="page update wrap">
+      <created>1660031699250</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1660031699250</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -226,6 +241,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add new page" />
     <MESSAGE value="page update" />
-    <option name="LAST_COMMIT_MESSAGE" value="page update" />
+    <MESSAGE value="page update wrap" />
+    <option name="LAST_COMMIT_MESSAGE" value="page update wrap" />
   </component>
 </project>

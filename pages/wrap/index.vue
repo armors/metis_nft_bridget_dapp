@@ -79,7 +79,7 @@
       <div class="new-footer">
         <div class="title">Develpoer Partners</div>
         <div class="image-box">
-          <div v-for="(item, index) in 8" :key="index" class="image-item">
+          <div v-for="(item, index) in 6" :key="index" class="image-item">
             <div class="image-item-inner">
               <div class="image">
                 <img src="../../assets/image/logo.png">
@@ -144,6 +144,8 @@ export { default } from './js/index'
   .new-footer {
     background: #101726;
     height: 340px;
+    width: 900px;
+    margin: 0 auto;
     .title {
       height: 140px;
       line-height: 140px;
@@ -151,7 +153,7 @@ export { default } from './js/index'
       font-size: 26px;
     }
     .image-box {
-      width: 1000px;
+      width: 750px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -204,7 +206,7 @@ export { default } from './js/index'
       font-size: 16px;
       font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
-      color: #65DACF;
+      color: #080d2a;
       line-height: 48px;
       text-align: center;
     }

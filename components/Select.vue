@@ -8,7 +8,7 @@
       @blur="onBlur"
       v-model="selectName" />
     <div :class="['triangle-down', { 'rotate': rotate }]" @click="openSelect"></div>
-    <div :class="['m-options-panel f16', showOptions ? 'show': 'hidden']" :style="`height: ${selectData.length * 52}px;`">
+    <div :class="['m-options-panel f16', showOptions ? 'show': 'hidden']" :style="`height: ${selectData.length * 52 + 10}px;`">
       <p class="u-option" @mousedown="getValue(item.name, item.value, index)" v-for="(item, index) in selectData" :key="index">
         {{ item.name }}
       </p>
@@ -94,7 +94,7 @@ export default {
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 10px solid #333;
+    border-top: 10px solid #65DACF;
     position: absolute;
     top: 18px;
     right: 15px;
@@ -112,9 +112,14 @@ export default {
     top: 46px;
     left: 0;
     color: #706F94;
+    border-radius: 5px;
+    padding: 5px 0;
     .u-option {
+      margin: 0;
       padding: 0 15px;
       cursor: pointer;
+      height: 52px;
+      line-height: 52px;
     }
     .u-option:hover {
       color: #3A79EE;

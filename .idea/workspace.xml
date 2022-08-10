@@ -25,27 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="page update wrap">
-      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_1@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_2@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_3@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_4@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/evet_img_cur@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/ic_down@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/ic_up@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/p/p6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/image/price-bg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Select.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/bridge-event/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/bridge-event/js/index.js" afterDir="false" />
+    <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="page done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/wrap/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Select.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/Select.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +154,7 @@
       <workItem from="1648031961109" duration="1570000" />
       <workItem from="1648046526472" duration="3530000" />
       <workItem from="1660035051084" duration="606000" />
-      <workItem from="1660096714352" duration="10209000" />
+      <workItem from="1660096714352" duration="11991000" />
     </task>
     <task id="LOCAL-00001" summary="add new page">
       <created>1660010057631</created>
@@ -209,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660031699250</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="page done">
+      <created>1660107942137</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1660107942137</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,6 +231,7 @@
     <MESSAGE value="add new page" />
     <MESSAGE value="page update" />
     <MESSAGE value="page update wrap" />
-    <option name="LAST_COMMIT_MESSAGE" value="page update wrap" />
+    <MESSAGE value="page done" />
+    <option name="LAST_COMMIT_MESSAGE" value="page done" />
   </component>
 </project>

@@ -188,17 +188,17 @@ export default {
       this.tokenIdIndex = i
     },
     // nft token address 鼠标移除事件判断是否授权
-    async nftTokenBlur () {
-      if (!this.nftTokenAddress) {
-        return
-      }
-      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
-        this.nftTokenBlurMetaMask()
-      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-        this.tokenStandardIndex = 1
-        this.getApprovePolis()
-      }
-    },
+    // async nftTokenBlur () {
+    //   if (!this.nftTokenAddress) {
+    //     return
+    //   }
+    //   if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+    //     this.nftTokenBlurMetaMask()
+    //   } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+    //     this.tokenStandardIndex = 1
+    //     this.getApprovePolis()
+    //   }
+    // },
     // async nftTokenBlurPolis () {
     //
     // },

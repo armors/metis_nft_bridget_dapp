@@ -476,6 +476,7 @@ export { default } from './js/index'
   .detail {
     height: 100px;
     .detail-btn {
+      cursor: pointer;
       margin: 0 auto;
       margin-top: 15px;
       width: 240px;

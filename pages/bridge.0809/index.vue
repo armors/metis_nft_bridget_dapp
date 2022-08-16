@@ -21,7 +21,10 @@
       </div>
       <div class="display-flex ic-box" v-show="!isNeedHold">
         <div class="ic-img"><img src="../../assets/image/ic@2x.png" alt=""></div>
-        <div class="box-flex1">Please note that at this time，the Metis NFT bridge only supports transferring one copy at a time</div>
+        <div class="box-flex1">
+          Please note that at this time,the Metis NFT bridge only supports transferring one copy at a time.<br />
+          it will take 8 days for the NFT token to be arrive to Ethereum network.
+        </div>
       </div>
       <div class="ic-box standard" v-show="isNeedHold">
         <div>it will take 8 days for the NFT token to be arrive to {{getChainName(toNet)}} network</div>

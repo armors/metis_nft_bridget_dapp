@@ -6,14 +6,20 @@ import {
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveToken } from '../../../utils/web3/approveToken'
+import Vue from 'vue'
 
 let that
 
 export default {
   data () {
     return {
+      isOwnerOfStatus: false,
       selectCollection: false,
-      agree: false,
+      searchSelectCollection: '',
+      selectCollectionList: [],
+      visibleError: false,
+      visibleErrorText: '',
+      agree: true,
       visible: false,
       isShowTop: false,
       account: '',
@@ -24,40 +30,6 @@ export default {
       nftTokenAddress: '', // 0xbc56b6f84bcffd3a4e24f806ac8f5f97e38839ec
       receiverAddress: '', // 0x5d6576ca71D1911310d841a0fBb1018211bb0E54
       tokenId: '',
-      tokenIdList: [
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        },
-        {
-          key: 123,
-          value: 123
-        }
-      ],
       tokenIdIndex: 0,
       tokenStandardIndex: -1,
       tokenStandardList: [
@@ -115,6 +87,68 @@ export default {
     this.initPage()
   },
   methods: {
+    openCollectionList () {
+      this.selectCollection = true
+      this.nftTokenAddress = ''
+      this.isOwnerOfStatus = false
+      this.selectCollectionList = Vue.prototype.$collectionData
+    },
+    searchCollectionList () {
+      const newList = []
+      for (let i = 0; i < Vue.prototype.$collectionData.length; i++) {
+        const data = Vue.prototype.$collectionData[i]
+        if (
+          data.address.indexOf(this.searchSelectCollection) >= 0 ||
+          data.developer_name.indexOf(this.searchSelectCollection) >= 0 ||
+          data.collection_name.indexOf(this.searchSelectCollection) >= 0
+        ) {
+          newList.push(data)
+        }
+        this.selectCollectionList = newList
+      }
+    },
+    async checkOwnerOf () {
+      console.log('check owner of')
+      this.isOwnerOfStatus = false
+      try {
+        let tokenContract = null
+        if (this.tokenStandardIndex === 0) { // 721
+          tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
+        } else {
+          tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
+        }
+        console.log(tokenContract)
+        const ownerOf = await tokenContract.ownerOf(this.tokenId)
+        console.log('ownerOf', this.nftTokenAddress, ownerOf, this.account)
+        if (ownerOf && ownerOf.toLowerCase() === this.account) {
+          this.isOwnerOfStatus = true
+        }
+      } catch (e) {
+        console.log(this.nftTokenAddress, e)
+      }
+    },
+    async selectThisCollection (item) {
+      this.selectCollection = false
+      this.tokenId = ''
+      this.isOwnerOfStatus = false
+      this.nftTokenAddress = ''
+      for (let i = 0; i < item.address.length; i++) {
+        console.log('selectThisCollection', item.address[i].chainId)
+        if (item.address[i].chainId.indexOf(this.fromNet.chainId) !== -1) {
+          this.nftTokenAddress = item.address[i].address
+          break
+        }
+      }
+      console.log('selectThisCollection', this.fromNet.chainId, this.nftTokenAddress)
+      if (this.nftTokenAddress) {
+        if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+          this.nftTokenBlurMetaMask()
+        } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+          this.tokenStandardIndex = 1
+          this.getApprovePolis()
+        }
+      }
+    },
     // 钱包地址获取到之后加载页面数据
     setAccount () {
       this.initPage()
@@ -125,17 +159,33 @@ export default {
       that.initNetData(this.$store.state.netWork)
       that.account = that.$account
       if (that.account) {
-        // that.receiverAddress = that.account
+        console.log('init account', that.$account)
+        if (that.agree) {
+          that.receiverAddress = that.account
+        }
+      }
+    },
+    agreeClick () {
+      if (that.agree) {
+        that.agree = false
+        that.receiverAddress = ''
+      } else {
+        that.agree = true
+        that.receiverAddress = that.account
       }
     },
     // 交换网络
     exchangeNet () {
-      console.log(that.toNet)
+      console.log(localStorage.getItem('connectWalletType'), that.toNet)
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
         this.switchNetWork(that.toNet, () => {})
       } else if (localStorage.getItem('connectWalletType') === 'Polis') {
         const network = this.$store.state.netWorkList.filter(item => item.chainId === that.toNet.chainId + '')
         if (network.length > 0) {
+          console.log('exchangeNet')
+          this.nftTokenAddress = ''
+          this.tokenId = ''
+          this.isOwnerOfStatus = false
           this.initNetData(network[0])
         }
       }
@@ -190,34 +240,31 @@ export default {
       this.tokenIdIndex = i
     },
     // nft token address 鼠标移除事件判断是否授权
-    async nftTokenBlur () {
-      if (!this.nftTokenAddress) {
-        return
-      }
-      if (localStorage.getItem('connectWalletType') === 'MetaMask') {
-        this.nftTokenBlurMetaMask()
-      } else if (localStorage.getItem('connectWalletType') === 'Polis') {
-        this.tokenStandardIndex = 1
-        this.getApprovePolis()
-      }
-    },
+    // async nftTokenBlur () {
+    //   if (!this.nftTokenAddress) {
+    //     return
+    //   }
+    //   if (localStorage.getItem('connectWalletType') === 'MetaMask') {
+    //     this.nftTokenBlurMetaMask()
+    //   } else if (localStorage.getItem('connectWalletType') === 'Polis') {
+    //     this.tokenStandardIndex = 1
+    //     this.getApprovePolis()
+    //   }
+    // },
     // async nftTokenBlurPolis () {
     //
     // },
     async nftTokenBlurMetaMask () {
-      const that = this
-      console.log(this.$web3_http)
-      const tokenContractq = useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1)
-      const mapAddress = await tokenContractq.clone(this.nftTokenAddress)
+      const mapAddress = await useTokenContract(this.fromNet.bridge, COIN_ABI.bridgeL1).clone(this.nftTokenAddress)
       if (mapAddress === '0x0000000000000000000000000000000000000000') {
-        that.$message.error('We detected the NFT you are trying to bridge has not been wrapped by the developer. Please contact the NFT issuer to wrap the NFT on the NFT bridge and return to bridge your NFT.', 3)
+        this.showErrorMessage('We detected the NFT you are trying to bridge has not been wrapped by the developer. Please contact the NFT issuer to wrap the NFT on the NFT bridge and return to bridge your NFT.', 3)
       }
       try {
         const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc721)
         console.log(tokenContract)
         if (tokenContract?.code && tokenContract.code === 500) {
           // this.iconLoading = false
-          return that.$message.error(tokenContract.error.message, 3)
+          return this.showErrorMessage(tokenContract.error.message, 3)
         }
         const symbol = await tokenContract.symbol()
         const name = await tokenContract.name()
@@ -236,7 +283,7 @@ export default {
             const tokenContract = useTokenContract(this.nftTokenAddress, COIN_ABI.erc1155)
             if (tokenContract?.code && tokenContract.code === 500) {
               // this.iconLoading = false
-              return that.$message.error(tokenContract.error.message, 3)
+              return this.showErrorMessage(tokenContract.error.message, 3)
             }
             const baseUrl = await tokenContract.uri(this.nftTokenAddress)
             console.log(baseUrl)
@@ -244,14 +291,19 @@ export default {
             await this.getApprove()
           } catch (err) {
             // console.log(err)
-            // that.$message.error(err?.data?.message || err?.message ? err.message : 'get nft info error', 3)
+            // this.showErrorMessage(err?.data?.message || err?.message ? err.message : 'get nft info error', 3)
           }
         } else if (e.toString().indexOf('call revert exception (method')) {
-          that.$message.error('contract address and Network mismatch ', 3)
+          this.showErrorMessage('contract address and Network mismatch ', 3)
         } else {
-          that.$message.error(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
+          this.showErrorMessage(e?.data?.message || e?.message ? e.message : 'wrap nft error', 3)
         }
       }
+    },
+    // eslint-disable-next-line handle-callback-err
+    showErrorMessage (error, duration) {
+      this.visibleError = true
+      this.visibleErrorText = error
     },
     tokenIdBlur () {
       if (localStorage.getItem('connectWalletType') === 'MetaMask') {
@@ -509,11 +561,11 @@ export default {
         }, err => {
           console.log(err)
           that.iconLoading = false
-          that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
+          this.showErrorMessage(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
         })
       } catch (err) {
         that.iconLoading = false
-        that.$message.error(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
+        this.showErrorMessage(err?.data ? err.data.message : (err?.message ? err.message : 'depositTo nft error'), 3)
       }
     },
     async confirmPolis () {

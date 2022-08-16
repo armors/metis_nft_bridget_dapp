@@ -31,17 +31,9 @@ export default {
       ],
       selectData: [
         {
-          name: '十一五',
-          value: 11
-        },
-        {
-          name: '十二五',
-          value: 12
-        },
-        {
-          name: '十三五',
-          value: 13
-        },
+          name: 'Phase 1',
+          value: 'Phase 1'
+        }
       ],
       selValue: '',
       iconLoading: false,

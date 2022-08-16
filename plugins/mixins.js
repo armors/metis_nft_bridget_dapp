@@ -305,6 +305,10 @@ export default {
         if (network.length > 0) {
           this.$store.dispatch('updateNetWork', network[0])
         }
+        console.log('exchangeNet')
+        this.nftTokenAddress = ''
+        this.tokenId = ''
+        this.isOwnerOfStatus = false
       }
     },
     // 链接钱包 metamask

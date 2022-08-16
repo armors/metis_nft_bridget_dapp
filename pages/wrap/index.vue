@@ -10,7 +10,7 @@
       </div>
       <div class="network-box display-flex box-center-Y">
         <div class="box-flex1 from-chain">{{getChainName(fromNet)}}</div>
-        <div class="exchange-img" @click="exchangeNet"><img src="../../assets/image/ic_next@2x.png" alt=""></div>
+        <div class="exchange-img" @click="exchangeNet"><img src="../../assets/image/ic_switch@2x.png" alt=""></div>
         <div class="box-flex1 to-chain">{{getChainName(toNet)}}</div>
       </div>
       <template v-if="stepIndex === 0">
@@ -74,7 +74,7 @@
         </div>
       </div>
       <div class="detail">
-        <div class="detail-btn">Details</div>
+        <div class="detail-btn" @click="$router.push({path: '/activity'})">Details</div>
       </div>
       <div class="new-footer">
         <div class="title">Develpoer Partners</div>
@@ -206,7 +206,7 @@ export { default } from './js/index'
       font-size: 16px;
       font-family: Helvetica-Bold, Helvetica;
       font-weight: bold;
-      color: #080d2a;
+      color: #65DACF;
       line-height: 48px;
       text-align: center;
     }

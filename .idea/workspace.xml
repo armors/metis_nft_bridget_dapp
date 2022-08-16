@@ -26,8 +26,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385d43e2-9cc6-4576-b8f0-ff1c30b709a3" name="Default Changelist" comment="page done">
+      <change afterPath="$PROJECT_DIR$/json/collection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/json/update.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Select.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/Select.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge.mode" beforeDir="false" afterPath="$PROJECT_DIR$/bridge.mode" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge-event/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/activity/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge-event/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/activity/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge.0809/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge.0809/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge.0809/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge.0809/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/css/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/css/index.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/bridge/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/bridge/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/wrap/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/wrap/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/mixins.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/mixins.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +86,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/image" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/json" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -89,6 +101,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/json" />
+      <recent name="$PROJECT_DIR$/json/data" />
       <recent name="$PROJECT_DIR$/assets/image" />
       <recent name="$PROJECT_DIR$/assets/image/p" />
       <recent name="$PROJECT_DIR$/pages" />
@@ -154,7 +168,14 @@
       <workItem from="1648031961109" duration="1570000" />
       <workItem from="1648046526472" duration="3530000" />
       <workItem from="1660035051084" duration="606000" />
-      <workItem from="1660096714352" duration="11991000" />
+      <workItem from="1660096714352" duration="12729000" />
+      <workItem from="1660113269607" duration="1351000" />
+      <workItem from="1660120319879" duration="753000" />
+      <workItem from="1660144236954" duration="11841000" />
+      <workItem from="1660273691237" duration="4951000" />
+      <workItem from="1660286273920" duration="1252000" />
+      <workItem from="1660528494294" duration="15068000" />
+      <workItem from="1660615760467" duration="5278000" />
     </task>
     <task id="LOCAL-00001" summary="add new page">
       <created>1660010057631</created>
@@ -198,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660107942137</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="page done">
+      <created>1660111177570</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1660111177570</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

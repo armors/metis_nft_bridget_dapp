@@ -25,4 +25,5 @@ Vue.use(ToastBox)
 Vue.prototype.$get = API.getJson
 Vue.prototype.$post = API.postJson
 Vue.prototype.$lang = lang
+Vue.prototype.$collectionData = require('../json/collection.js').CollectionData()
 Vue.use(API)
